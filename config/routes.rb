@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resources :utilities
+
+  resources :sites
+
+  resources :site_group_mappings
+
+  resources :site_groups
+
   resources :people
 
   devise_for :users

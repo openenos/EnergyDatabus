@@ -1,0 +1,73 @@
+<%= form_for @site, :html => { :class => "form-horizontal site" } do |f| %>
+
+    <% if @site.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@site.errors.count, "error") %> prohibited this site from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @site.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :area_gross_square_foot, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :area_gross_square_foot, :class => 'form-control' %>
+    </div>
+    <%= error_span(@site[:area_gross_square_foot]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :site_ref, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :site_ref, :class => 'form-control' %>
+    </div>
+    <%= error_span(@site[:site_ref]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :display, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :display, :class => 'form-control' %>
+    </div>
+    <%= error_span(@site[:display]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :year_built, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :year_built, :class => 'form-control' %>
+    </div>
+    <%= error_span(@site[:year_built]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :area_cond_square_foot, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :area_cond_square_foot, :class => 'form-control' %>
+    </div>
+    <%= error_span(@site[:area_cond_square_foot]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :operating_hours, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :operating_hours, :class => 'form-control' %>
+    </div>
+    <%= error_span(@site[:operating_hours]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :location_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :location_id, :class => 'form-control' %>
+    </div>
+    <%= error_span(@site[:location_id]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            sites_path, :class => 'btn btn-default' %>
+
+<% end %>

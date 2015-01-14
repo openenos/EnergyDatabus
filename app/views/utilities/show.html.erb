@@ -1,0 +1,31 @@
+<%- model_class = Utility -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:display) %>:</strong></dt>
+  <dd><%= @utility.display %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:utility_type) %>:</strong></dt>
+  <dd><%= @utility.utility_type %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:base_rate) %>:</strong></dt>
+  <dd><%= @utility.base_rate %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:demand) %>:</strong></dt>
+  <dd><%= @utility.demand %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:tier1_rate) %>:</strong></dt>
+  <dd><%= @utility.tier1_rate %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:tier2_rate) %>:</strong></dt>
+  <dd><%= @utility.tier2_rate %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:tier3_rate) %>:</strong></dt>
+  <dd><%= @utility.tier3_rate %></dd>
+</dl>
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              utilities_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_utility_path(@utility), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              utility_path(@utility),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
