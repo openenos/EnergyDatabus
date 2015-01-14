@@ -7,7 +7,17 @@ Rails.application.routes.draw do
 
   resources :site_groups
 
-  resources :people
+  resources :elec_meters
+
+  resources :locations
+
+  resources :postal_codes
+
+  resources :panels
+
+  resources :elec_load_types
+
+  resources :circuits
 
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
