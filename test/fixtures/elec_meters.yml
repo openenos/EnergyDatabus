@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  meter_type: MyString
+  meter_main: MyString
+  display: MyString
+  site_id: 1
+  meter_loc: 1
+  phase: MyString
+  amp: 1
+  volt: 1
+
+two:
+  meter_type: MyString
+  meter_main: MyString
+  display: MyString
+  site_id: 1
+  meter_loc: 1
+  phase: MyString
+  amp: 1
+  volt: 1
