@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  resources :elec_meters
+
+  resources :locations
+
+  resources :postal_codes
+
+  resources :panels
+
+  resources :elec_load_types
+
+  resources :circuits
+
   resources :people
 
   devise_for :users

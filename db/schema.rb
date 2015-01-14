@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150114063250) do
+ActiveRecord::Schema.define(version: 20150114084332) do
 
   create_table "api_keys", force: true do |t|
     t.string   "access_token"
@@ -59,8 +59,8 @@ ActiveRecord::Schema.define(version: 20150114063250) do
   create_table "locations", force: true do |t|
     t.string   "geo_addr"
     t.integer  "postal_code_id"
-    t.decimal  "geo_lat",        precision: 16, scale: 4
-    t.decimal  "geo_lng",        precision: 16, scale: 4
+    t.decimal  "geo_lat",        precision: 10, scale: 0
+    t.decimal  "geo_lng",        precision: 10, scale: 0
     t.integer  "utility_id"
     t.datetime "created_at"
     t.datetime "updated_at"
