@@ -5,7 +5,7 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:id) %></th> -->
       <th><%= model_class.human_attribute_name(:active) %></th>
       <th><%= model_class.human_attribute_name(:input) %></th>
       <th><%= model_class.human_attribute_name(:breaker_number) %></th>
@@ -17,14 +17,14 @@
       <th><%= model_class.human_attribute_name(:ct_sensor_type) %></th>
       <th><%= model_class.human_attribute_name(:double_ct) %></th>
       <th><%= model_class.human_attribute_name(:channel_no) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:created_at) %></th> -->
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @circuits.each do |circuit| %>
       <tr>
-        <td><%= link_to circuit.id, circuit_path(circuit) %></td>
+        <!--<td><%= link_to circuit.id, circuit_path(circuit) %></td> -->
         <td><%= circuit.active %></td>
         <td><%= circuit.input %></td>
         <td><%= circuit.breaker_number %></td>
@@ -36,7 +36,7 @@
         <td><%= circuit.ct_sensor_type %></td>
         <td><%= circuit.double_ct %></td>
         <td><%= circuit.channel_no %></td>
-        <td><%=l circuit.created_at %></td>
+       <!-- <td><%=l circuit.created_at %></td> -->
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_circuit_path(circuit), :class => 'btn btn-default btn-xs' %>
