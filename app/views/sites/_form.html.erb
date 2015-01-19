@@ -25,7 +25,8 @@
   <div class="control-group">
     <%= f.label :site_ref, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :site_ref, :class => 'form-control' %>
+      <%= f.select :site_ref,  options_for_select(Site.all.collect {|p| [p.site_ref, p.id ] }), {}, {:class => 'form-control'} %>
+      <%# f.select :state, options_for_select(Contact::STATES, :class => "span4"), :include_blank => "Select state" %>
     </div>
     <%= error_span(@site[:site_ref]) %>
   </div>
@@ -60,7 +61,7 @@
   <div class="control-group">
     <%= f.label :location_id, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :location_id, :class => 'form-control' %>
+      <%= f.select :location_id, options_for_select(Location.all.collect {|p| [p.geo_addr, p.id ] }), {}, {:class => 'form-control'} %>
     </div>
     <%= error_span(@site[:location_id]) %>
   </div>

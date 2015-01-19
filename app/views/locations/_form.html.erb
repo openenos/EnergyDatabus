@@ -46,7 +46,7 @@
   <div class="control-group">
     <%= f.label :utility_id, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :utility_id, :class => 'form-control' %>
+      <%= f.select :utility_id, options_for_select(Utility.all.collect {|p| [p.display, p.id ] }), {}, {:class => 'form-control'} %>
     </div>
     <%= error_span(@location[:utility_id]) %>
   </div>
