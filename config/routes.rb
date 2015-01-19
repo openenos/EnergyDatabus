@@ -1,9 +1,15 @@
 Rails.application.routes.draw do
+  resources :accounts
+
   get 'home/index'
 
   resources :utilities
 
-  resources :sites
+  resources :sites do
+    collection do
+      get 'getWeather'
+    end
+  end
 
   resources :site_group_mappings
 
