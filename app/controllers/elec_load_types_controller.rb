@@ -69,6 +69,6 @@ class ElecLoadTypesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def elec_load_type_params
-      params.require(:elec_load_type).permit(:load_type, :dispaly)
+      params.require(:elec_load_type).permit(:load_type, :display)
     end
 end

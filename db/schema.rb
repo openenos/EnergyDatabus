@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20150114084517) do
 
   create_table "elec_load_types", force: true do |t|
     t.string   "load_type"
-    t.string   "dispaly"
+    t.string   "display"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -59,8 +59,8 @@ ActiveRecord::Schema.define(version: 20150114084517) do
   create_table "locations", force: true do |t|
     t.string   "geo_addr"
     t.integer  "postal_code_id"
-    t.decimal  "geo_lat",        precision: 10, scale: 0
-    t.decimal  "geo_lng",        precision: 10, scale: 0
+    t.decimal  "geo_lat",        precision: 16, scale: 4
+    t.decimal  "geo_lng",        precision: 16, scale: 4
     t.integer  "utility_id"
     t.datetime "created_at"
     t.datetime "updated_at"
