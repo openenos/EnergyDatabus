@@ -2,6 +2,8 @@
 
 one:
   company_name: MyString
+  company_reference: MyString
 
 two:
   company_name: MyString
+  company_reference: MyString

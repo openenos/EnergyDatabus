@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :accounts
+
   get 'home/index'
 
   resources :utilities
