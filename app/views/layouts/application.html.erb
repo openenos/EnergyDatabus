@@ -94,7 +94,9 @@
               	<li><%= link_to "Locations", "/locations"  %></li>
               	<li><%= link_to "Electric Meters", "/elec_meters"  %></li>
               	<li><%= link_to "Utilities", "/utilities"  %></li>
-                <% unless current_user.account %>  
+                <% if current_user.account %>  
+                <li><%= link_to "Edit Account", "/accounts/#{current_user.account.id}/edit" %></li>
+                <% else %>
                 <li><%= link_to "Create Account", "/accounts/new" %></li>
                 <% end %>
               </ul>	
