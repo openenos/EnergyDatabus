@@ -38,6 +38,12 @@ gem "twitter-bootstrap-rails"
 
 gem "wunderground"
 
+gem "rufus-scheduler"
+
+gem 'rest-client', '~> 1.6.7'
+
+gem 'sinatra', require: false
+gem 'slim'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

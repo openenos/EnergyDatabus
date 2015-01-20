@@ -12,7 +12,7 @@ class CreateCircuits < ActiveRecord::Migration
       t.integer :ct_sensor_type
       t.boolean :double_ct
       t.string :channel_no
-
+      t.boolean :is_producing 
       t.timestamps
     end
   end

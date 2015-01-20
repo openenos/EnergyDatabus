@@ -1,3 +1,5 @@
+#this helper which will run when we create an account and for each account a keyspace will be created 
+
 require 'cassandra'
 
 module EnergySchemaHelper
