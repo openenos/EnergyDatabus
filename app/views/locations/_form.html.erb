@@ -25,7 +25,7 @@
   <div class="control-group">
     <%= f.label :postal_code_id, :class => 'control-label' %>
     <div class="controls">
-      <%= f.text_field :postal_code_id, :class => 'form-control' %>
+      <%= f.select :postal_code_id, options_for_select(PostalCode.all.collect { |p| [ p.geo_postal_code, p.id ] }), {}, {class: 'form-control'} %>
     </div>
     <%= error_span(@location[:postal_code_id]) %>
   </div>

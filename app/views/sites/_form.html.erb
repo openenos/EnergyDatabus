@@ -25,7 +25,8 @@
   <div class="control-group">
     <%= f.label :site_ref, :class => 'control-label' %>
     <div class="controls">
-      <%= f.select :site_ref,  options_for_select(Site.all.collect {|p| [p.site_ref, p.id ] }), {}, {:class => 'form-control'} %>
+      <%= f.text_field :site_ref, :class => 'form-control' %>
+      <%# f.select :site_ref,  options_for_select(Site.all.collect {|p| [p.site_ref, p.id ] }), {}, {:class => 'form-control'} %>
       <%# f.select :state, options_for_select(Contact::STATES, :class => "span4"), :include_blank => "Select state" %>
     </div>
     <%= error_span(@site[:site_ref]) %>
