@@ -86,6 +86,13 @@
     <%= error_span(@circuit[:double_ct]) %>
   </div>
   <div class="control-group">
+    <%= f.label :is_producing, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :is_producing, :class => 'form-control' %>
+    </div>
+    <%= error_span(@circuit[:double_ct]) %>
+  </div>
+  <div class="control-group">
     <%= f.label :channel_no, :class => 'control-label' %>
     <div class="controls">
       <%= f.text_field :channel_no, :class => 'form-control' %>

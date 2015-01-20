@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20150119071348) do
     t.integer  "panel_id"
     t.integer  "ct_sensor_type"
     t.boolean  "double_ct"
+    t.boolean  "is_producing"
     t.string   "channel_no"
     t.datetime "created_at"
     t.datetime "updated_at"

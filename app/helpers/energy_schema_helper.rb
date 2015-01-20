@@ -12,9 +12,9 @@ cluster = Cassandra.cluster
 session  = cluster.connect()
 
 # Creating a simple keyspace with replication factor 1
-session.execute_async("CREATE KEYSPACE enos_#{name} WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 }")
+session.execute("CREATE KEYSPACE enos_#{name} WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 }")
 
-session.execute_async("USE enos_#{name}")
+session.execute("USE enos_#{name}")
 # Creating a table
 # panel or site_ref both are same in db perspective
 
