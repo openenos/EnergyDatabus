@@ -5,12 +5,12 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:id) %></th> -->
       <th><%= model_class.human_attribute_name(:emon_url) %></th>
       <th><%= model_class.human_attribute_name(:equip_ref) %></th>
       <th><%= model_class.human_attribute_name(:panel_type) %></th>
       <th><%= model_class.human_attribute_name(:parent_panel_id) %></th>
-      <th><%= model_class.human_attribute_name(:site_id) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:site_id) %></th> -->
       <th><%= model_class.human_attribute_name(:no_of_circuits) %></th>
       <th><%= model_class.human_attribute_name(:amp) %></th>
       <!-- <th><%= model_class.human_attribute_name(:created_at) %></th> -->
@@ -20,12 +20,12 @@
   <tbody>
     <% @panels.each do |panel| %>
       <tr>
-        <td><%= link_to panel.id, panel_path(panel) %></td>
-        <td><%= panel.emon_url %></td>
+        <!-- <td><%= link_to panel.id, panel_path(panel) %></td> -->
+        <td><%= link_to panel.emon_url, panel_path(panel) %></td>
         <td><%= panel.equip_ref %></td>
         <td><%= panel.panel_type %></td>
         <td><%= panel.parent_panel_id %></td>
-        <td><%= panel.site_id %></td>
+        <!-- <td><%= panel.site_id %></td> -->
         <td><%= panel.no_of_circuits %></td>
         <td><%= panel.amp %></td>
         <!-- <td><%=l panel.created_at %></td> -->

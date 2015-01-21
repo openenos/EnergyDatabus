@@ -5,30 +5,30 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:id) %></th> -->
+      <th><%= model_class.human_attribute_name(:display) %></th>
       <th><%= model_class.human_attribute_name(:area_gross_square_foot) %></th>
       <th><%= model_class.human_attribute_name(:site_ref) %></th>
-      <th><%= model_class.human_attribute_name(:display) %></th>
       <th><%= model_class.human_attribute_name(:year_built) %></th>
       <th><%= model_class.human_attribute_name(:area_cond_square_foot) %></th>
       <th><%= model_class.human_attribute_name(:operating_hours) %></th>
       <th><%= model_class.human_attribute_name(:location_id) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:created_at) %></th> -->
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @sites.each do |site| %>
       <tr>
-        <td><%= link_to site.id, site_path(site) %></td>
+        <!-- <td><%=  site.id %></td> -->
+        <td><%= link_to site.display, site_path(site) %></td>
         <td><%= site.area_gross_square_foot %></td>
         <td><%= site.site_ref %></td>
-        <td><%= site.display %></td>
         <td><%= site.year_built %></td>
         <td><%= site.area_cond_square_foot %></td>
         <td><%= site.operating_hours %></td>
-        <td><%= site.location_id %></td>
-        <td><%=l site.created_at %></td>
+        <td><%= site.location.geo_addr %></td>
+        <!-- <td><%=l site.created_at %></td> --> 
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_site_path(site), :class => 'btn btn-default btn-xs' %>

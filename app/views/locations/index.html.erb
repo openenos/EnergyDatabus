@@ -5,26 +5,26 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:id) %></th> -->
       <th><%= model_class.human_attribute_name(:geo_addr) %></th>
       <th><%= model_class.human_attribute_name(:postal_code_id) %></th>
       <th><%= model_class.human_attribute_name(:geo_lat) %></th>
       <th><%= model_class.human_attribute_name(:geo_lng) %></th>
       <th><%= model_class.human_attribute_name(:utility_id) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:created_at) %></th> -->
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @locations.each do |location| %>
       <tr>
-        <td><%= link_to location.id, location_path(location) %></td>
-        <td><%= location.geo_addr %></td>
+        <!-- <td><%= location.id %></td> -->
+        <td><%= link_to location.geo_addr, location_path(location)%></td>
         <td><%= location.postal_code_id %></td>
         <td><%= location.geo_lat %></td>
         <td><%= location.geo_lng %></td>
-        <td><%= location.utility_id %></td>
-        <td><%=l location.created_at %></td>
+        <td><%= location.utility.display %></td>
+        <!-- <td><%=l location.created_at %></td> -->
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_location_path(location), :class => 'btn btn-default btn-xs' %>

@@ -5,32 +5,32 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:id) %></th> -->
+      <th><%= model_class.human_attribute_name(:display) %></th>
       <th><%= model_class.human_attribute_name(:meter_type) %></th>
       <th><%= model_class.human_attribute_name(:meter_main) %></th>
-      <th><%= model_class.human_attribute_name(:display) %></th>
       <th><%= model_class.human_attribute_name(:site_id) %></th>
       <th><%= model_class.human_attribute_name(:meter_loc) %></th>
       <th><%= model_class.human_attribute_name(:phase) %></th>
       <th><%= model_class.human_attribute_name(:amp) %></th>
       <th><%= model_class.human_attribute_name(:volt) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:created_at) %></th> -->
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @elec_meters.each do |elec_meter| %>
       <tr>
-        <td><%= link_to elec_meter.id, elec_meter_path(elec_meter) %></td>
+        <!-- <td><%= elec_meter.id%></td> -->
+        <td><%= link_to elec_meter.display, elec_meter_path(elec_meter)  %></td>
         <td><%= elec_meter.meter_type %></td>
         <td><%= elec_meter.meter_main %></td>
-        <td><%= elec_meter.display %></td>
-        <td><%= elec_meter.site_id %></td>
+        <td><%= elec_meter.site.display %></td>
         <td><%= elec_meter.meter_loc %></td>
         <td><%= elec_meter.phase %></td>
         <td><%= elec_meter.amp %></td>
         <td><%= elec_meter.volt %></td>
-        <td><%=l elec_meter.created_at %></td>
+        <!-- <td><%=l elec_meter.created_at %></td> -->
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_elec_meter_path(elec_meter), :class => 'btn btn-default btn-xs' %>

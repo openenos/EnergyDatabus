@@ -11,11 +11,11 @@
   <dt><strong><%= model_class.human_attribute_name(:panel_type) %>:</strong></dt>
   <dd><%= @panel.panel_type %></dd>
   <dt><strong><%= model_class.human_attribute_name(:parent_panel_id) %>:</strong></dt>
-  <dd><%= @panel.parent_panel_id %></dd>
+  <dd><%=  @panel.panel ? @panel.panel.emon_url : "No Parent Panel" %></dd>
   <dt><strong><%= model_class.human_attribute_name(:site_id) %>:</strong></dt>
-  <dd><%= @panel.site_id %></dd>
+  <dd><%=  @panel.site.display %></dd>
   <dt><strong><%= model_class.human_attribute_name(:no_of_circuits) %>:</strong></dt>
-  <dd><%= @panel.no_of_circuits %></dd>
+  <dd><%= @panel.no_of_circuits || "No Circuits" %></dd>
   <dt><strong><%= model_class.human_attribute_name(:amp) %>:</strong></dt>
   <dd><%= @panel.amp %></dd>
 </dl>

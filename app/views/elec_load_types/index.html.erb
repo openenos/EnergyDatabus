@@ -5,20 +5,20 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:id) %></th> -->
       <th><%= model_class.human_attribute_name(:load_type) %></th>
       <th><%= model_class.human_attribute_name(:dispaly) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:created_at) %></th> -->
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @elec_load_types.each do |elec_load_type| %>
       <tr>
-        <td><%= link_to elec_load_type.id, elec_load_type_path(elec_load_type) %></td>
-        <td><%= elec_load_type.load_type %></td>
+        <!-- <td><%= elec_load_type.id %></td> -->
+        <td><%= link_to elec_load_type.load_type, elec_load_type_path(elec_load_type) %></td>
         <td><%= elec_load_type.dispaly %></td>
-        <td><%=l elec_load_type.created_at %></td>
+        <!-- <td><%=l elec_load_type.created_at %></td> -->
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_elec_load_type_path(elec_load_type), :class => 'btn btn-default btn-xs' %>

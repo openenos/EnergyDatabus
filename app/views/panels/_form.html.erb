@@ -40,7 +40,7 @@
     <%= f.label :parent_panel_id, :class => 'control-label' %>
     <div class="controls">
       <%# f.text_field :parent_panel_id, :class => 'form-control' %>
-      <%= f.select :parent_panel_id, options_for_select(Panel.all.collect { |p| [ p.emon_url, p.id ] }), {}, {class: 'form-control'} %>
+      <%= f.select :parent_panel_id, options_for_select([["Select Parent", 0]] + Panel.all.collect { |p| [ p.emon_url, p.id ] }), {}, {class: 'form-control'} %>
     </div>
     <%= error_span(@panel[:parent_panel_id]) %>
   </div>

@@ -16,12 +16,29 @@
   <% end %>
 
   <div class="control-group">
+    <%= f.label :display, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :display, :class => 'form-control' %>
+    </div>
+    <%= error_span(@site[:display]) %>
+  </div>
+
+  <div class="control-group">
     <%= f.label :area_gross_square_foot, :class => 'control-label' %>
     <div class="controls">
       <%= f.text_field :area_gross_square_foot, :class => 'form-control' %>
     </div>
     <%= error_span(@site[:area_gross_square_foot]) %>
   </div>
+
+  <div class="control-group">
+    <%= f.label :area_cond_square_foot, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :area_cond_square_foot, :class => 'form-control' %>
+    </div>
+    <%= error_span(@site[:area_cond_square_foot]) %>
+  </div>
+
   <div class="control-group">
     <%= f.label :site_ref, :class => 'control-label' %>
     <div class="controls">
@@ -31,13 +48,7 @@
     </div>
     <%= error_span(@site[:site_ref]) %>
   </div>
-  <div class="control-group">
-    <%= f.label :display, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :display, :class => 'form-control' %>
-    </div>
-    <%= error_span(@site[:display]) %>
-  </div>
+  
   <div class="control-group">
     <%= f.label :year_built, :class => 'control-label' %>
     <div class="controls">
@@ -45,13 +56,7 @@
     </div>
     <%= error_span(@site[:year_built]) %>
   </div>
-  <div class="control-group">
-    <%= f.label :area_cond_square_foot, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :area_cond_square_foot, :class => 'form-control' %>
-    </div>
-    <%= error_span(@site[:area_cond_square_foot]) %>
-  </div>
+  
   <div class="control-group">
     <%= f.label :operating_hours, :class => 'control-label' %>
     <div class="controls">

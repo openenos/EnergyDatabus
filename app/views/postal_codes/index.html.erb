@@ -5,26 +5,26 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:id) %></th> -->
       <th><%= model_class.human_attribute_name(:geo_postal_code) %></th>
       <th><%= model_class.human_attribute_name(:geo_city) %></th>
       <th><%= model_class.human_attribute_name(:geo_state) %></th>
       <th><%= model_class.human_attribute_name(:tz) %></th>
       <th><%= model_class.human_attribute_name(:weather_ref) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <!-- <th><%= model_class.human_attribute_name(:created_at) %></th> -->
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @postal_codes.each do |postal_code| %>
       <tr>
-        <td><%= link_to postal_code.id, postal_code_path(postal_code) %></td>
-        <td><%= postal_code.geo_postal_code %></td>
+        <!-- <td><%= postal_code.id %></td> -->
+        <td><%= link_to postal_code.geo_postal_code, postal_code_path(postal_code) %></td>
         <td><%= postal_code.geo_city %></td>
         <td><%= postal_code.geo_state %></td>
         <td><%= postal_code.tz %></td>
         <td><%= postal_code.weather_ref %></td>
-        <td><%=l postal_code.created_at %></td>
+        <!-- <td><%=l postal_code.created_at %></td> -->
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_postal_code_path(postal_code), :class => 'btn btn-default btn-xs' %>
