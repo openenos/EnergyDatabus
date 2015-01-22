@@ -24,15 +24,18 @@ class HourWorker
       sum=0
       sum_not_zero_values=0
       no_min=0
+      
       result = session.execute("select * from emon_min_by_data where panel=\'#{site_ref}\' and channel=\'CH-#{circuit.channel_no}\' and asof_min>=#{time} and asof_min<#{(Time.now.utc.beginning_of_hour).to_i} ALLOW FILTERING")
+      
       result.each do|row|
         sum = row['value'].to_i+sum
         sum_not_zero_values = sum_not_zero_values + 1 unless row['value'].to_i==0
         no_min += 1
       end
+
       sum = sum/no_min unless sum==0
       sum = sum.round
-        
+      
       @totalPowerValue += sum if circuit.input
       
       if circuit.is_producing == 1
