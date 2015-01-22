@@ -1,16 +1,17 @@
 #
 # Description 
 
-#Hourly Worker
-
-#author : Sridhar Vedula
-#This worker updates records in cassandra database for every hour 
+##
+#Class' description
+#MinWorker class performs all actions related to every hour updates on the cassandra keyspace tables
+#@author:: Sridhar Vedula
+#@usage:: This class performs an action which will update emon_hourly_data table every hour
 
 class HourWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
    
-  def perform(panelId, name)
+  def perform(panel_id, name)
     isPowerProduced = false
     powerProduced = 0
     time= Time.now.utc.beginning_of_hour
@@ -19,7 +20,7 @@ class HourWorker
     session  = cluster.connect()
     session.execute("USE enos_#{name}")
     @totalPowerValue = 0
-    Circuit.where(:panel_id=>panelId, :active=>1).each do|circuit|
+    Circuit.where(:panel_id => panel_id, :active => true).each do|circuit|
       sum=0
       sum_not_zero_values=0
       no_min=0
@@ -33,7 +34,7 @@ class HourWorker
         sum = sum/no_min unless sum==0
         sum = sum.round
         
-        @totalPowerValue += sum if circuit.input
+      @totalPowerValue += sum if circuit.input
       
         if circuit.is_producing == 1
           powerProduced =  sum + powerProduced

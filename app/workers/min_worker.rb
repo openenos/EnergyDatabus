@@ -37,7 +37,7 @@ class MinWorker
         value = channel.elements["avg_power"].text.to_i
         value = 0 if value<0 || value > 100000
 
-				if channel.elements["paired_with_channel"].text.to_i !=0
+		if channel.elements["paired_with_channel"].text.to_i !=0
           @channel << channel_no
           @avg_power = @avg_power + value 												#channel.elements["avg_power"].text.to_i
           @avg_power = 0 if @avg_power < 0 || @avg_power > 36000
