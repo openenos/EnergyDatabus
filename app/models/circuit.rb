@@ -3,6 +3,8 @@ class Circuit < ActiveRecord::Base
   belongs_to :elec_load_type
   belongs_to :panel
 
+  validates_presence_of :panel_id, :elec_load_type_id, :display, :channel_no
+
   def self.cassandra_db
   	cluster = Cassandra.cluster # connects to localhost by default
 
