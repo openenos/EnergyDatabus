@@ -67,7 +67,7 @@
   <div class="control-group">
     <%= f.label :location_id, :class => 'control-label' %>
     <div class="controls">
-      <%= f.select :location_id, options_for_select(Location.all.collect {|p| [p.geo_addr, p.id ] }), {}, {:class => 'form-control'} %>
+      <%= f.select :location_id, options_for_select([["Select Site", 0]] + Location.all.collect {|p| [p.geo_addr, p.id ] }, @site.location_id), {}, {:class => 'form-control'} %>
     </div>
     <%= error_span(@site[:location_id]) %>
   </div>
