@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150119071348) do
+ActiveRecord::Schema.define(version: 20150121102216) do
 
   create_table "accounts", force: true do |t|
     t.string   "company_name"
@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(version: 20150119071348) do
     t.integer  "panel_id"
     t.integer  "ct_sensor_type"
     t.boolean  "double_ct"
-    t.string   "channel_no"
     t.boolean  "is_producing"
+    t.string   "channel_no"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -65,11 +65,20 @@ ActiveRecord::Schema.define(version: 20150119071348) do
     t.datetime "updated_at"
   end
 
+  create_table "emon_daily_data", force: true do |t|
+    t.integer  "circuit_id"
+    t.integer  "year"
+    t.integer  "as_of_day"
+    t.float    "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "locations", force: true do |t|
     t.string   "geo_addr"
     t.integer  "postal_code_id"
-    t.decimal  "geo_lat",        precision: 10, scale: 0
-    t.decimal  "geo_lng",        precision: 10, scale: 0
+    t.decimal  "geo_lat",        precision: 16, scale: 4
+    t.decimal  "geo_lng",        precision: 16, scale: 4
     t.integer  "utility_id"
     t.datetime "created_at"
     t.datetime "updated_at"

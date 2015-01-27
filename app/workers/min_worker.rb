@@ -24,8 +24,8 @@ class MinWorker
 
 	  	doc = REXML::Document.new(response.to_str)
 
-	  	cluster = Cassandra.cluster
-			session  = cluster.connect(keyspace)
+	  		cluster = Cassandra.cluster
+			session  = cluster.connect(keyspace.downcase)
 			time = (Time.now.utc.to_i/60)*60 #utc time
 			time_of_current_zone = time + Time.zone_offset(time_zone).to_i #time zone location time
 			@totalPowerValue = 0
@@ -80,7 +80,7 @@ class MinWorker
 
 	  rescue Exception => e
 	  	puts e.message 
-      puts "Fecthing data from emon_url for #{panel} is failed"
+       puts "Fecthing data from emon_url for #{panel} is failed"
 	  end
 
 	   puts "#{Time.now}: #{panel} End"

@@ -15,7 +15,7 @@ class HourWorker
     isPowerProduced = false
     powerProduced = 0
     time= Time.now.utc.beginning_of_hour
-    site_ref = Panel.find(panelId).site.site_ref
+    site_ref = Panel.find(panel_id).site.site_ref
     cluster = Cassandra.cluster
     session  = cluster.connect()
     session.execute("USE enos_#{name}")
@@ -44,7 +44,7 @@ class HourWorker
       session.execute("INSERT INTO emon_hourly_runtime(panel, channel, asof_hr, value) VALUES ('#{site_ref}', 'CH-#{circuit.channel_no}', #{time.to_i}, #{sum_not_zero_values})")
     end
      
-     @totalPowerValue = 0 if !Circuit.where(panel_id: panelId, display: "Main Power").present?
+     @totalPowerValue = 0 if !Circuit.where(panel_id: panel_id, display: "Main Power").present?
      session.execute("INSERT INTO emon_hourly_data(panel, channel, asof_hr, value) VALUES ('#{site_ref}', 'totalPower', #{time.to_i}, #{@totalPowerValue})")
      #session.execute("INSERT INTO hourly_power_produced(site_ref, asof_hr, value) VALUES ('#{site_ref}', #{time.to_i}, #{powerProduced})") if isPowerProduced == true
 
