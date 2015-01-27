@@ -34,6 +34,7 @@ class HourWorker
         sum = sum/no_min unless sum==0
         sum = sum.round
         
+
       @totalPowerValue += sum if circuit.input
       
         if circuit.is_producing == 1
