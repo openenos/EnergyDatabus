@@ -1,0 +1,10 @@
+
+development:
+  #url: "http://54.188.109.157:3000/"
+  url: "http://localhost:3000/"
+  #url: "http://192.168.199.141:3000/"  
+devlocal:
+  url: "http://localhost:3000/"
+
+production:
+  url: "http://54.188.109.157:3000/"

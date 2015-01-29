@@ -25,7 +25,16 @@ Rails.application.routes.draw do
 
   resources :elec_load_types
 
-  resources :circuits
+  resources :circuits do
+    collection do
+      get 'getLivePowerDataByGroup'
+    end
+  end
+
+  get '/ws/getAllGroups' => 'site_groups#get_all_groups'
+  get '/ws/getUsageByGroup' => 'site_groups#get_usage_by_group'
+  get '/ws/getSiteByGroup' => 'site_groups#get_site_by_group'
+  get '/ws/getDemandByGroup' => 'site_groups#get_demand_by_group'
 
   devise_for :users
 
@@ -45,6 +54,18 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
    root 'home#index'
+
+  Dir.glob File.expand_path("plugins/*", Rails.root) do |plugin_dir|
+    file = File.join(plugin_dir, "config/routes.rb")
+    if File.exists?(file)
+      begin
+        instance_eval File.read(file)
+      rescue Exception => e
+        puts "An error occurred while loading the routes definition of #{File.basename(plugin_dir)} plugin (#{file}): #{e.message}."
+        exit 1
+      end
+    end
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

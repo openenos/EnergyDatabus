@@ -40,14 +40,14 @@
     <%= f.label :parent_panel_id, :class => 'control-label' %>
     <div class="controls">
       <%# f.text_field :parent_panel_id, :class => 'form-control' %>
-      <%= f.select :parent_panel_id, options_for_select([["Select Parent", 0]] + Panel.all.collect { |p| [ p.emon_url, p.id ] }), {}, {class: 'form-control'} %>
+      <%= f.select :parent_panel_id, options_for_select([["Select Parent", 0]] + Panel.all.collect { |p| [ p.emon_url, p.id ] }, @panel.parent_panel_id), {}, {class: 'form-control'} %>
     </div>
     <%= error_span(@panel[:parent_panel_id]) %>
   </div>
   <div class="control-group">
     <%= f.label :site_id, :class => 'control-label' %>
     <div class="controls">
-      <%= f.select :site_id, options_for_select(Site.all.collect { |p| [ p.display, p.id ] }), {}, {class: 'form-control'} %>
+      <%= f.select :site_id, options_for_select([["Select Site", 0]]+ Site.all.collect { |p| [ p.display, p.id ] }, @panel.site_id), {}, {class: 'form-control'} %>
       <%# f.select("panel", "site_id", Site.all.collect{|site| [site.display, site.id]}, {include_blank: true})%>
       <%# f.select( "panel", "site_id", options_from_collection_for_select(Site.all, 'id', 'name') %>
 
