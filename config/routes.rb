@@ -25,28 +25,22 @@ Rails.application.routes.draw do
 
   resources :elec_load_types
 
-  resources :circuits do
-    collection do
-      get 'getLivePowerDataByGroup'
-    end
-  end
-
-  get '/ws/getAllGroups' => 'site_groups#get_all_groups'
-  get '/ws/getUsageByGroup' => 'site_groups#get_usage_by_group'
-  get '/ws/getSiteByGroup' => 'site_groups#get_site_by_group'
-  get '/ws/getDemandByGroup' => 'site_groups#get_demand_by_group'
+  resources :circuits 
+    
 
   devise_for :users
 
   namespace :ws, defaults: {format: 'json'} do
-    get '/ws/getAllGroups' => 'site_groups#get_all_groups'
-    get '/ws/getUsageByGroup' => 'site_groups#get_usage_by_group'
-    get '/ws/getSiteByGroup' => 'site_groups#get_site_by_group'
-    get '/ws/getDemandByGroup' => 'site_groups#get_demand_by_group'
-    
-    get '/ws/currentDemandByGroup' => "site_groups#current_demand_by_group"
-    get '/ws/solarPowerByGroup' => "site_groups#solar_power_by_group"
-    get '/ws/utilityPower' => "site_groups#utility_power"
+    get '/getAllGroups' => 'site_groups#get_all_groups'
+    get '/getUsageByGroup' => 'site_groups#get_usage_by_group'
+    get '/getSiteByGroup' => 'site_groups#get_site_by_group'
+    get '/getDemandByGroup' => 'site_groups#get_demand_by_group'
+    get '/usageByGroup' => 'site_groups#usage_by_group'
+
+    get '/currentDemandByGroup' => "site_groups#current_demand_by_group"
+    get '/solarPowerByGroup' => "site_groups#solar_power_by_group"
+    get '/utilityPower' => "site_groups#utility_power"
+
 
   end
   # The priority is based upon order of creation: first created -> highest priority.
