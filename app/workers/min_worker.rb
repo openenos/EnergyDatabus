@@ -5,6 +5,7 @@
 #@usage::           This class performs an action which will update emon_min_by_data table every minute
 
 require "rexml/document"
+require 'redis'
 class MinWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
@@ -16,8 +17,9 @@ class MinWorker
 	@flag=0
 	isPowerProduced = re_channels.length>0? true: false
 	powerProduced = 0
-
+  redis = Redis.new
 	puts "#{Time.now}: #{panel} Start"
+  puts "keyspace: #{keyspace}"
 	  	
 	begin
 		response = RestClient.get uri #get the response(data) from emon xml url
@@ -55,7 +57,7 @@ class MinWorker
       @totalPowerValue += @avg_power if @input==2
       session.execute("INSERT INTO emon_min_by_data(panel, channel, asof_min, value) VALUES ('#{panel}', 'CH-#{all_channels}', #{time}, #{@avg_power})")
       #session.execute("update emon_live_data set avg_power=#{@avg_power} where panel='#{panel}' and channel='CH-#{all_channels}'")
-    
+      redis.hset("panel-#{panel}-CH-#{all_channels}", "avg_power", @avg_power)
     end
 
     if @flag==0 
@@ -64,7 +66,7 @@ class MinWorker
       @totalPowerValue += value if channel.elements["input"].text.to_i == 1
       session.execute("INSERT INTO emon_min_by_data(panel, channel, asof_min, value) VALUES ('#{panel}', 'CH-#{channel_no}', #{time}, #{value})") 
       #session.execute("update emon_live_data set avg_power=#{value} where panel='#{panel}' and channel='CH-#{channel_no}'")
-    
+      redis.hset("panel-#{panel}-CH-#{channel_no}", "avg_power", @avg_power)
     end
 
 	end
@@ -73,7 +75,9 @@ class MinWorker
   @totalPowerValue = 0 if !Circuit.where(panel_id: panelId, display: "Main Power").present?
   session.execute("INSERT INTO emon_min_by_data(panel, channel, asof_min, value) VALUES ('#{panel}', 'totalPower', #{time}, #{@totalPowerValue})")
   #session.execute("update emon_live_data set avg_power=#{@totalPowerValue} where panel='#{panel}' and channel='totalPower'")
-  #session.execute("INSERT INTO min_by_power_produced(site_ref, asof_min, value) VALUES ('#{panel}', #{time.to_i}, #{powerProduced})") if isPowerProduced == true
+  session.execute("INSERT INTO min_by_power_produced(site_ref, asof_min, value) VALUES ('#{panel}', #{time.to_i}, #{powerProduced})") if isPowerProduced == true
+  redis.hset("panel-#{panel}-totalPower", "avg_power", @totalPowerValue)
+  
     
 
   rescue Exception => e

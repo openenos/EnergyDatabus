@@ -47,7 +47,7 @@ class HourWorker
      
     @totalPowerValue = 0 if !Circuit.where(panel_id: panel_id, display: "Main Power").present?
     session.execute("INSERT INTO emon_hourly_data(panel, channel, asof_hr, value) VALUES ('#{site_ref}', 'totalPower', #{time.to_i}, #{@totalPowerValue})")
-     #session.execute("INSERT INTO hourly_power_produced(site_ref, asof_hr, value) VALUES ('#{site_ref}', #{time.to_i}, #{powerProduced})") if isPowerProduced == true
+    session.execute("INSERT INTO hourly_power_produced(site_ref, asof_hr, value) VALUES ('#{site_ref}', #{time.to_i}, #{powerProduced})") if isPowerProduced == true
     session.close
   end
 end    
