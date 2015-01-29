@@ -1,5 +1,12 @@
 class Ws::SiteGroupsController < ApplicationController
 
+  def get_all_groups
+    siteGroups = SiteGroup.select("id, display")
+    respond_to do |format|
+      format.json { render :json => siteGroups unless siteGroups.nil? }
+    end    
+  end
+
   def current_demand_by_group
     site_data_json = {}
     params[:group_id] ||= SiteGroup.first.id
@@ -7,6 +14,7 @@ class Ws::SiteGroupsController < ApplicationController
     site_data_json[:demand_sum] = sum_of_demand_avg_values
     render :json =>  site_data_json
   end
+
 
   def solar_power_by_group
     site_data_json = {}

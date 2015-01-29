@@ -82,7 +82,7 @@ class MinWorker
 
   rescue Exception => e
   	puts e.message 
-     puts "Fecthing data from emon_url for #{panel} is failed"
+    puts "Fecthing data from emon_url for #{panel} is failed"
   end
 
 	puts "#{Time.now}: #{panel} End"
