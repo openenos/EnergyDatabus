@@ -13,5 +13,6 @@ class WeatherWorker
     location = result['current_observation']['observation_location']['city']
     temp = result['current_observation']['temp_c'].to_s
     session.execute("INSERT INTO weather_min_by_data(station, asof_min, value) VALUES ('#{location}', #{time}, #{temp})")
+    session.close
   end
 end
