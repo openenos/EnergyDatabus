@@ -37,10 +37,10 @@ class HourWorker
 
       @totalPowerValue += sum if circuit.input
       
-        if circuit.is_producing == 1
-          powerProduced =  sum + powerProduced
-          isPowerProduced = true
-        end  
+      if circuit.is_producing == 1
+        powerProduced =  sum + powerProduced
+        isPowerProduced = true
+      end  
       session.execute("INSERT INTO emon_hourly_data(panel, channel, asof_hr, value) VALUES ('#{site_ref}', 'CH-#{circuit.channel_no}', #{time.to_i}, #{sum})")
       session.execute("INSERT INTO emon_hourly_runtime(panel, channel, asof_hr, value) VALUES ('#{site_ref}', 'CH-#{circuit.channel_no}', #{time.to_i}, #{sum_not_zero_values})")
     end

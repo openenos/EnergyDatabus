@@ -61,39 +61,14 @@ class CircuitsController < ApplicationController
     end
   end
 
-  def get7DaysRuntimInfo
-    site_ref = params[:site_ref]
-    site = Site.find_by_site_ref(site_ref)
-    givenChannel = params[:channel]
-    
-    site_data_json = {site_name: site.dis}    
-    
-    beginningDay = (Time.now - 8.day).beginning_of_day.to_i
-    endingDay = (Time.now - 1.day).end_of_day.to_i
-    db = cassandraDbConnection
-    Circuit.where(panel_id: site.id, channel_no: "#{givenChannel}", input: 0, active: 1).each do|circuit|
-      results = db.execute("select * from emon_hourly_runtime where panel='#{site.site_ref}' and channel='CH-#{circuit.channel_no}' and asof_hr>=#{beginningDay} and asof_hr<#{endingDay} ALLOW FILTERING")
-      
-      totalMinutes = 0
-      results.each do|result|
-        totalMinutes = result['value'] + totalMinutes
-      end
-       site_data_json['duration'] = "#{Time.at(totalMinutes).utc.strftime("%H:%M:%S")}"
-    end
-    respond_to do |format|
-        format.json { render :json => site_data_json }
-    end
+  private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_circuit
+    @circuit = Circuit.find(params[:id])
   end
 
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_circuit
-      @circuit = Circuit.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def circuit_params
-      params.require(:circuit).permit(:active, :input, :breaker_number, :double_breaker, :breaker_size, :display, :elec_load_type_id, :panel_id, :ct_sensor_type, :double_ct, :channel_no)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def circuit_params
+    params.require(:circuit).permit(:active, :input, :breaker_number, :double_breaker, :breaker_size, :display, :elec_load_type_id, :panel_id, :ct_sensor_type, :double_ct, :channel_no)
+  end
 end
