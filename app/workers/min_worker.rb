@@ -86,6 +86,6 @@ class MinWorker
   end
 
 	puts "#{Time.now}: #{panel} End"
-	session.close
+	#session.close
   end
 end

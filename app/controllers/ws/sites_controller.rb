@@ -1,6 +1,6 @@
 class Ws::SitesController < ApplicationController
   
-  def getLiveDataBySite
+  def get_live_data_by_site
   	
   	redis = Redis.new
     site_data_json = {}
@@ -18,14 +18,15 @@ class Ws::SitesController < ApplicationController
 	    
 	    site = Site.find_by_site_ref(site_ref)
 
-	    site_data_json = {site_name: site.dis}
+	    site_data_json = {site_name: site.display}
 	    
 	    #if Circuit.where(panel_id: site.id, dis: "Main Power").present?
 	    
 	    #Circuit.where(panel_id: site.id, input: 1, active: 1).each do|circuit|
 
 	      #results = db.execute("select * from emon_live_data where panel='#{site.site_ref}' and channel='totalPower' ALLOW FILTERING")
-				results = redis.hget("panel-#{site.site_ref}-totalPower", "avg_power")
+		  results = redis.hget("panel-#{site.site_ref}-totalPower", "avg_power")
+	      #raise results.inspect
 	      results.each do|result|
 	        values = {avg_power: result['avg_power']/1000.0, max_power: result['max_power']/1000.0, total_power: result['total_power']}
 	        site_data_json = site_data_json.merge(values)

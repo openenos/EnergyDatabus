@@ -14,6 +14,9 @@ s = Rufus::Scheduler.singleton
 
 #minute worker
 s.every '50s' do # Run for every 50 secs
+	puts "------------------------------------------------"
+	puts Account.all.map(&:company_reference)
+	puts "------------------------------------------------"
 	Account.all.each do |account|
 		Panel.all.each do|row|
 			re_channels = row.circuits.where(is_producing: 1).map(&:channel_no)
