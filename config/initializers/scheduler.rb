@@ -42,3 +42,10 @@ s.cron '14,29,44,59 * * * *' do # For every 15th min of an hour
 	  end
   end	
 end
+
+
+s.every '5m' do
+  Panel.all.each do|row|
+    LivedataWorker.perform_async(row.id)
+  end
+end
