@@ -1,0 +1,11 @@
+development:
+  api_key: "87e74b8d9511ea00"
+
+devlocal:
+  api_key: "87e74b8d9511ea00"
+
+qa:
+  api_key: "87e74b8d9511ea00"
+
+production:
+  api_key: "87e74b8d9511ea00"
