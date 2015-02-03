@@ -8,9 +8,11 @@ class LivedataWorker
     cluster = Cassandra.cluster
     session  = cluster.connect()
    #db = CassandraCQL::Database.new('127.0.0.1:9160', {:keyspace => "enos_hgv"})
+    db = cassandraDbConnection
     Circuit.where(:panel_id=>panelId).each do|circuit|
       total_power = 0
       panel = circuit.panel.site.site_ref
+
       live_result = db.execute("select * from emon_min_by_data where panel='#{circuit.panel.site.site_ref}' and channel='CH-#{circuit.channel_no}' and asof_min>=#{Time.now.utc.beginning_of_day.to_i} and asof_min<=#{Time.now.utc.end_of_day.to_i} ALLOW FILTERING")
       values = live_result.map { |n| n['value'] }
       value = 0
@@ -28,6 +30,14 @@ class LivedataWorker
     totalPowerValue = ((live_values.sum)/live_values.length)/1000  unless live_values.empty?
     #db.execute("update emon_live_data set max_power=#{live_value}, total_power=#{totalPowerValue} where panel='#{site_ref}' and channel='totalPower'")
     redis.hmset("panel-#{panel}-totalPower", "max_power", value, "total_power", total_power)   
+  end
+
+
+  private
+
+  def cassandraDbConnection
+    cluster = Cassandra.cluster
+    session  = cluster.connect("enos_sample")
   end
   
 end

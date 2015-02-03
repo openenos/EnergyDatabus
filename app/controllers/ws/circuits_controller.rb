@@ -25,9 +25,10 @@ class Ws::CircuitsController < ApplicationController
     Circuit.where(panel_id: site.id, input: 0, active: 1).each do|circuit|
     	circuit_info[circuit.display] = circuit.id
 	    results = redis.hget("panel-#{site.site_ref}-CH-#{circuit.channel_no}", "avg_power")	
-	    results.each do |result|
-	    	channel_data[circuit.display] = result['avg_power']
-	    end
+	    channel_data[circuit.display] = results
+      #results.each do |result|
+	    #	channel_data[circuit.display] = result['avg_power']
+	    #end
 	  end
 	    
     site_data_json[:circuits] = circuit_info
@@ -35,14 +36,14 @@ class Ws::CircuitsController < ApplicationController
    end
    end
     respond_to do |format|
-        format.json { render :json => site_data_json }
+      format.json { render :json => site_data_json }
     end
   end
 
   def get_fivec_last_month
   	site_data_json = {}
     circuitData = {}
-    channel_list = getAllNonInputChannelNamesBySite params[:site_ref]
+    channel_list = get_all_non_input_channel_names_by_site
     db = cassandraDbConnection
     if params[:site_ref].present?
     results = db.execute("select * from emon_daily_data where site_ref='#{params[:site_ref]}'")
@@ -67,20 +68,20 @@ class Ws::CircuitsController < ApplicationController
 
 
   def getAllNonInputChannelNamesBySite site_ref
-    list_of_circuite = {}
+    list_of_circuits = {}
     site = Site.find_by_site_ref(site_ref)
     
     if site_ref=="HGV10"
-      Circuit.where(panel_id: site.id, re: 1).each do|circuit|
-        list_of_circuite["CH-#{circuit.channel_no}"] = circuit.dis
+      Circuit.where(panel_id: site.id, is_producing: 1).each do|circuit|
+        list_of_circuits["CH-#{circuit.channel_no}"] = circuit.display
       end
     else
       Circuit.where(panel_id: site.id, input: 0).each do|circuit|
-        list_of_circuite["CH-#{circuit.channel_no}"] = circuit.dis
+        list_of_circuits["CH-#{circuit.channel_no}"] = circuit.display
       end
     end
     
-    return list_of_circuite
+    return list_of_circuits
   end
    	
 end

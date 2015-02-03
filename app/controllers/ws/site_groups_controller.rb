@@ -111,7 +111,7 @@ class Ws::SiteGroupsController < ApplicationController
           #results.each do|result|
           #demand_sum = demand_sum + result['avg_power'].to_i
           #end
-          result = redis.hget("panel-#{site.site_ref}-CH-#{circuit.channel_no}", "avg_power")
+          #result = redis.hget("panel-#{site.site_ref}-CH-#{circuit.channel_no}", "avg_power")
           demand_sum = demand_sum + result.to_i
         end
         #end
