@@ -6,21 +6,22 @@
 
 require "rexml/document"
 require 'redis'
+
 class MinWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
 
   def perform(keyspace, panel, uri, time_zone, re_channels)
-  @channel=[]
-	@avg_power=0
-	@input=0
-	@flag=0
-	isPowerProduced = re_channels.length>0? true: false
-	powerProduced = 0
-  redis = Redis.new
-	puts "#{Time.now}: #{panel} Start"
-  puts "keyspace: #{keyspace}"
-	  	
+    @channel=[]
+  	@avg_power=0
+  	@input=0
+  	@flag=0
+  	isPowerProduced = re_channels.length>0? true: false
+  	powerProduced = 0
+    redis = Redis.new
+  	puts "#{Time.now}: #{panel} Start"
+    puts "keyspace: #{keyspace}"
+  	  	
 	begin
 		response = RestClient.get uri #get the response(data) from emon xml url
 	  doc = REXML::Document.new(response.to_str)
@@ -71,12 +72,12 @@ class MinWorker
 
 	end
 
-	panelId = Site.find_by_site_ref(panel).panels.map(&:id)
-  @totalPowerValue = 0 if !Circuit.where(panel_id: panelId, display: "Main Power").present?
-  session.execute("INSERT INTO emon_min_by_data(panel, channel, asof_min, value) VALUES ('#{panel}', 'totalPower', #{time}, #{@totalPowerValue})")
-  #session.execute("update emon_live_data set avg_power=#{@totalPowerValue} where panel='#{panel}' and channel='totalPower'")
-  session.execute("INSERT INTO min_by_power_produced(site_ref, asof_min, value) VALUES ('#{panel}', #{time.to_i}, #{powerProduced})") if isPowerProduced == true
-  redis.hset("panel-#{panel}-totalPower", "avg_power", @totalPowerValue)
+  	panelId = Site.find_by_site_ref(panel).panels.map(&:id)
+    @totalPowerValue = 0 if !Circuit.where(panel_id: panelId, display: "Main Power").present?
+    session.execute("INSERT INTO emon_min_by_data(panel, channel, asof_min, value) VALUES ('#{panel}', 'totalPower', #{time}, #{@totalPowerValue})")
+    #session.execute("update emon_live_data set avg_power=#{@totalPowerValue} where panel='#{panel}' and channel='totalPower'")
+    session.execute("INSERT INTO min_by_power_produced(site_ref, asof_min, value) VALUES ('#{panel}', #{time.to_i}, #{powerProduced})") if isPowerProduced == true
+    redis.hset("panel-#{panel}-totalPower", "avg_power", @totalPowerValue)
   
     
 
@@ -86,6 +87,6 @@ class MinWorker
   end
 
 	puts "#{Time.now}: #{panel} End"
-	#session.close
+	session.close
   end
 end

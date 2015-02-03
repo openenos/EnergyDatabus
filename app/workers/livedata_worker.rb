@@ -3,17 +3,17 @@ class LivedataWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
 
-  def perform(panelId)
+  def perform(panel_id) 
     redis = Redis.new
     cluster = Cassandra.cluster
     session  = cluster.connect()
    #db = CassandraCQL::Database.new('127.0.0.1:9160', {:keyspace => "enos_hgv"})
     db = cassandraDbConnection
-    Circuit.where(:panel_id=>panelId).each do|circuit|
+    Circuit.where(:panel_id => panel_id).each do|circuit|
       total_power = 0
       panel = circuit.panel.site.site_ref
 
-      live_result = db.execute("select * from emon_min_by_data where panel='#{circuit.panel.site.site_ref}' and channel='CH-#{circuit.channel_no}' and asof_min>=#{Time.now.utc.beginning_of_day.to_i} and asof_min<=#{Time.now.utc.end_of_day.to_i} ALLOW FILTERING")
+      live_result = db.execute("select * from emon_min_by_data where panel='#{panel}' and channel='CH-#{circuit.channel_no}' and asof_min>=#{Time.now.utc.beginning_of_day.to_i} and asof_min<=#{Time.now.utc.end_of_day.to_i} ALLOW FILTERING")
       values = live_result.map { |n| n['value'] }
       value = 0
       value = values.max unless values.empty?
@@ -22,7 +22,7 @@ class LivedataWorker
       redis.hmset("panel-#{panel}-CH-#{circuit.channel_no}", "max_power", value, "total_power", total_power)
     end
     totalPowerValue = 0
-    site_ref = Panel.find(panelId).site.site_ref
+    site_ref = Panel.find(panel_id).site.site_ref
     live_power_result = db.execute("select * from emon_min_by_data where panel='#{site_ref}' and channel='totalPower' and asof_min>=#{Time.now.utc.beginning_of_day.to_i} and asof_min<=#{Time.now.utc.end_of_day.to_i} ALLOW FILTERING")
     live_values = live_power_result.map { |n| n['value'] }
     live_value = 0
