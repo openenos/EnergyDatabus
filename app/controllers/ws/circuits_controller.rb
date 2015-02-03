@@ -67,17 +67,21 @@ class Ws::CircuitsController < ApplicationController
   end
 
 
-  def getAllNonInputChannelNamesBySite site_ref
+  def get_all_non_input_channel_names_by_site
     list_of_circuits = {}
-    site = Site.find_by_site_ref(site_ref)
+    site = Site.find_by_site_ref(params[:site_ref])
     
     if site_ref=="HGV10"
-      Circuit.where(panel_id: site.id, is_producing: 1).each do|circuit|
-        list_of_circuits["CH-#{circuit.channel_no}"] = circuit.display
+      site.panels.each do |panel|
+        Circuit.where(panel_id: panel.id, is_producing: 1).each do|circuit|
+          list_of_circuits["CH-#{circuit.channel_no}"] = circuit.display
+        end
       end
     else
-      Circuit.where(panel_id: site.id, input: 0).each do|circuit|
-        list_of_circuits["CH-#{circuit.channel_no}"] = circuit.display
+      site.panels.each do |panel|
+        Circuit.where(panel_id: site.id, input: 0).each do|circuit|
+          list_of_circuits["CH-#{circuit.channel_no}"] = circuit.display
+        end
       end
     end
     
