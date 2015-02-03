@@ -44,6 +44,9 @@ Rails.application.routes.draw do
     get '/getLiveDataBySite' => "sites#get_live_data_by_site"
     get '/solarDataBySite' => "sites#solar_data_by_site"
     get '/getWeather' => "sites#get_weather"
+
+    get '/getCurrentDemandBySite' => "circuits#get_current_demand_by_site"
+    get '/getFivecLastMonth' => "circuits#get_fivec_last_month"
   end
   
   # The priority is based upon order of creation: first created -> highest priority.

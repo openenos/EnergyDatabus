@@ -21,7 +21,7 @@ class Ws::SitesController < ApplicationController
     #Circuit.where(panel_id: site.id, input: 1, active: 1).each do|circuit|
 
       #results = db.execute("select * from emon_live_data where panel='#{site.site_ref}' and channel='totalPower' ALLOW FILTERING")
-	  results = redis.hmget("panel-#{site.site_ref}-totalPower", "avg_power", "max_power", "total_power")
+	  results = redis.hmget("panel-#{site_ref}-totalPower", "avg_power", "max_power", "total_power")
       #raise results.inspect
     results.each do|result|
       values = {avg_power: result['avg_power']/1000.0, max_power: result['max_power']/1000.0, total_power: result['total_power']}
