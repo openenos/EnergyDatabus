@@ -5,6 +5,8 @@ class LivedataWorker
 
   def perform(panelId)
     redis = Redis.new
+    cluster = Cassandra.cluster
+    session  = cluster.connect()
    #db = CassandraCQL::Database.new('127.0.0.1:9160', {:keyspace => "enos_hgv"})
     Circuit.where(:panel_id=>panelId).each do|circuit|
       total_power = 0
