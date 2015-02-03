@@ -22,12 +22,13 @@ class Ws::SitesController < ApplicationController
 
       #results = db.execute("select * from emon_live_data where panel='#{site.site_ref}' and channel='totalPower' ALLOW FILTERING")
 	  results = redis.hmget("panel-#{site_ref}-totalPower", "avg_power", "max_power", "total_power")
+    values = {avg_power: results[0]/1000.0, max_power: result[1]/1000.0, total_power: result[2]}
       #raise results.inspect
-    results.each do|result|
-      values = {avg_power: result['avg_power']/1000.0, max_power: result['max_power']/1000.0, total_power: result['total_power']}
+    #results.each do|result|
+      #values = {avg_power: result['avg_power']/1000.0, max_power: result['max_power']/1000.0, total_power: result['total_power']}
       site_data_json = site_data_json.merge(values)
-      #site_data_json[circuit.dis.to_s] = values
-    end
+      site_data_json[circuit.display.to_s] = values
+    #end
       #end
     #end
  
