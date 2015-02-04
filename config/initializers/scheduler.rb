@@ -27,10 +27,10 @@ s.every '50s' do # Run for every 50 secs
 end
 
 #weather worker
-s.cron '0,15,30,45 * * * *' do  # 0, 15, 30 which means it will run for every 15 mins interval
+s.every '50s' do   # 0, 15, 30 which means it will run for every 15 mins interval
   Account.all.each do|account|	
   	#raise account.company_reference.inspect	
-  	#WeatherWorker.perform_async(account.company_reference)  #ToDo Uncomment this later 
+  	WeatherWorker.perform_async(account.company_reference)  #ToDo Uncomment this later 
   end 	
 end
 
