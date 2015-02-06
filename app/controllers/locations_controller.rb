@@ -24,6 +24,7 @@ class LocationsController < ApplicationController
   # POST /locations
   # POST /locations.json
   def create
+    #raise params.inspect
     @location = Location.new(location_params)
 
     respond_to do |format|

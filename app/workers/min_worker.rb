@@ -72,8 +72,8 @@ class MinWorker
 
 	end
 
-  	panelId = Site.find_by_site_ref(panel).panels.map(&:id)
-    @totalPowerValue = 0 if !Circuit.where(panel_id: panelId, display: "Main Power").present?
+  	panel_id = Site.find_by_site_ref(panel).panels.map(&:id)
+    @totalPowerValue = 0 if !Circuit.where(panel_id: panel_id, display: "Main Power").present?
     session.execute("INSERT INTO emon_min_by_data(panel, channel, asof_min, value) VALUES ('#{panel}', 'totalPower', #{time}, #{@totalPowerValue})")
     #session.execute("update emon_live_data set avg_power=#{@totalPowerValue} where panel='#{panel}' and channel='totalPower'")
     session.execute("INSERT INTO min_by_power_produced(site_ref, asof_min, value) VALUES ('#{panel}', #{time.to_i}, #{powerProduced})") if isPowerProduced == true
