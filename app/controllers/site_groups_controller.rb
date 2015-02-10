@@ -35,6 +35,7 @@ class SiteGroupsController < ApplicationController
         format.json { render json: @site_group.errors, status: :unprocessable_entity }
       end
     end
+    expire_action(:controller => 'ws/site_groups', :action => 'get_all_groups')
   end
 
   # PATCH/PUT /site_groups/1

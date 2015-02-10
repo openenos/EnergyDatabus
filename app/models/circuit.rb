@@ -2,6 +2,7 @@ class Circuit < ActiveRecord::Base
 	require 'cassandra'
   belongs_to :elec_load_type
   belongs_to :panel
+  has_one :emon_daily_data
 
   validates_presence_of :panel_id, :elec_load_type_id, :display, :channel_no
 

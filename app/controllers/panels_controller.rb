@@ -1,6 +1,8 @@
 class PanelsController < ApplicationController
   before_action :set_panel, only: [:show, :edit, :update, :destroy]
 
+  caches_action :index
+ 
   # GET /panels
   # GET /panels.json
   def index
@@ -10,6 +12,7 @@ class PanelsController < ApplicationController
   # GET /panels/1
   # GET /panels/1.json
   def show
+    expire_action :action => :index
   end
 
   # GET /panels/new
