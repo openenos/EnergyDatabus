@@ -1,0 +1,21 @@
+"use strict";
+
+var async = require('async');
+
+function login(req, res, next) {
+  console.log("welcome");
+}
+
+function sayHi(req, res) {
+  console.log("Hi");
+}
+
+function logout(req, res) {
+    res.redirect("/");
+}
+
+module.exports = {
+    login: login,
+    logout: logout,
+    sayhi: sayHi
+};
