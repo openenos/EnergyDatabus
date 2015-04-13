@@ -1,8 +1,0 @@
-"use strict";
-
-var kairosdb = require('kairosdb'),
-    config = require("./config"),
-    winston = require("./logs"),
-    client = kairosdb.init(config.kairosdb_host, config.kairosdb_port, {});
-    
-    module.exports = mysqlConnection;
