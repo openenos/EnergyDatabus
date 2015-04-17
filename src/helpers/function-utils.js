@@ -1,13 +1,9 @@
-/*
- * Copyright (c) 2015 TopCoder, Inc. All rights reserved.
- */
-
-/**
- * Represents the utils that extend prototype of any function
- * @author TCSASSEMBLER
- * @version 1.0
- *
- */
+/*!
+ * Author:
+ *      Amzur Technologies
+ * Date:
+ *      Apr 10th 2015
+ !**/
 "use strict";
 
 /**

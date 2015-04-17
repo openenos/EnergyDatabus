@@ -1,6 +1,85 @@
+/*!
+ * Author:
+ *      Amzur Technologies
+ * Date:
+ *      Apr 10th 2015
+ * Description:
+ *      app routes
+ !**/
+ 
 "use strict";
 
 module.exports = {
+    '/user/signup': {
+        post: {
+            controller: "UserController",
+            method: "signup",
+            public: true
+        }
+    }, 
+    '/user/signin': {
+        post: {
+            controller: "UserController",
+            method: "signin",
+            public: true
+        }
+    }, 
+    '/Channel/create': {
+        post: {
+            controller: "ChannelController",
+            method: "create",
+            public: true
+        }
+    }, 
+    '/loadtype/create': {
+        post: {
+            controller: "ElecLoadTypeController",
+            method: "create",
+            public: true
+        }
+    }, 
+    '/group/create': {
+        post: {
+            controller: "GroupController",
+            method: "create",
+            public: true
+        }
+    }, 
+    '/location/create': {
+        post: {
+            controller: "LocationController",
+            method: "create",
+            public: true
+        }
+    }, 
+    '/panel/create': {
+        post: {
+            controller: "PanelController",
+            method: "create",
+            public: true
+        }
+    }, 
+    '/postal/create': {
+        post: {
+            controller: "PostalInfoController",
+            method: "create",
+            public: true
+        }
+    }, 
+    '/site/create': {
+        post: {
+            controller: "SiteController",
+            method: "create",
+            public: true
+        }
+    }, 
+    '/utility/create': {
+        post: {
+            controller: "UtilityController",
+            method: "create",
+            public: true
+        }
+    }, 
     '/test': {
         post: {
             controller: "HomeController",

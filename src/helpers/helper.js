@@ -1,15 +1,13 @@
-/*
- * Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
- */
-/**
- * Contains generic helper methods
- *
- * @version 1.0
- * @author TCSASSEMBLER
- */
+/*!
+ * Author:
+ *      Amzur Technologies
+ * Date:
+ *      Apr 10th 2015
+ !**/
+ 
 "use strict";
 
-require("./function-utils");
+//require("./function-utils");
 
 var crypto = require('crypto'),
     config = require("../config/config"),
@@ -26,20 +24,7 @@ helper.hashPassword = function (password) {
     return new Buffer(pass, "binary").toString("hex");
 };
 
-function fetchDataFromWS(ws_url, res){
-  request({
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    uri: config.ws_url+ws_url,
-    method: 'GET'
-     }, function (err, response, body) {
-      res.end(body);
-    });
-}
-
 module.exports = {
-    helper: helper,
-    fetchDataFromWS: fetchDataFromWS
+    helper: helper
 };
 

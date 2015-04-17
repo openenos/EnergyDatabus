@@ -1,6 +1,13 @@
 "use strict";
 
-var request = require("request"), fetchDataFromWS = require("../helpers/helper").fetchDataFromWS;
+var request = require("request"), fetchDataFromWS = require("../helpers/helper").fetchDataFromWS, groupService = require("../services/GroupService");
+
+function create(req, res) {
+  groupService.createGroup(req.body.tablePrefix,req.body.displayName, req.body.sites, function(status){
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({status: status}));
+  });
+}
 
 function getPowerUsage(req, res) {
   fetchDataFromWS('/home/getCurrentDemandSolarPowerUtilityPower.json?group_id='+req.param('group_id'), res);
@@ -39,6 +46,7 @@ function getPastDaysUsage(req, res) {
 }
 
 module.exports = {
+    create: create,
     getPowerUsage: getPowerUsage,
     getPast30DaysUsage: getPast30DaysUsage,
     getLast12MonthsData: getLast12MonthsData,

@@ -1,12 +1,13 @@
-/*
- * Copyright (C) 2015 TopCoder Inc., All Rights Reserved.
- */
-/**
- * Contains general configuration for app.
- *
- * @version 1.0
- * @author TCSASSEMBLER
- */
+/*!
+ * Author:
+ *      Amzur Technologies
+ * Date:
+ *      Apr 10th 2015
+ * Description:
+ *      read configuration credentials
+ !**/
+
+
 "use strict";
 
 var env = require('node-env-file'),
@@ -14,12 +15,6 @@ var env = require('node-env-file'),
 
 env(path.join(__dirname, "../../.env"));
 
-/**
- * Get an environmental setting
- * @param {String} name the name of setting
- * @returns {String} the value
- * @throws {Error} if setting is not defined
- */
 function getEnv(name) {
     if (!process.env.hasOwnProperty(name)) {
         throw new Error("Env setting: " + name + " is not configured!");
@@ -28,27 +23,15 @@ function getEnv(name) {
 }
 
 module.exports = {
-    db: getEnv("DB"),
-    db_host: getEnv("DB_HOST"),
-    db_port: getEnv("DB_PORT"),
-    db_user: getEnv("DB_USER"),
-    db_password: getEnv("DB_PASSWORD"),
+    log_file: getEnv("LOG_FILE"),
+    mysqldb: getEnv("MYSQLDB"),
+    mysqldb_host: getEnv("MYSQLDB_HOST"),
+    mysqldb_port: getEnv("MYSQLDB_PORT"),
+    mysqldb_user: getEnv("MYSQLDB_USER"),
+    mysqldb_password: getEnv("MYSQLDB_PASSWORD"),
     kairosdb_host: getEnv("KAIROSDB_HOST"),
     kairosdb_port: getEnv("KAIROSDB_PORT"),
+    mongodb: getEnv("MONGODB"),
+    mongodb_host: getEnv("MONGODB_HOST"),
     wunderground: getEnv("WUNDERGROUND"),
-    log_file: getEnv("LOG_FILE")
-/*    sessionSecret: getEnv("SESSION_SECRET"),
-    mongodbUrl: getEnv("MONGODB_URL"),
-    databus: {
-        databaseName: getEnv("DATABUS_DATABASE_NAME"),
-        apiUrl: getEnv("DATABUS_API_URL")
-    },
-    kwChartInterval: 5*60*1000,
-    chartIntervalTime: 5*60*1000,
-    security: {
-        salt: getEnv("SECURITY_SALT"),
-        iterations: 100,
-        keylen: 16
-    }
-*/
 };
