@@ -24,7 +24,20 @@ helper.hashPassword = function (password) {
     return new Buffer(pass, "binary").toString("hex");
 };
 
+function fetchDataFromWS(ws_url, res){
+  request({
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    uri: config.ws_url+ws_url,
+    method: 'GET'
+     }, function (err, response, body) {
+      res.end(body);
+    });
+}
+
 module.exports = {
-    helper: helper
+    helper: helper,
+    fetchDataFromWS: fetchDataFromWS
 };
 

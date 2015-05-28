@@ -65,23 +65,7 @@ var express = require('express'),
       });
     });
     
-    app.get("/:siteRef", function (req, res) {
-     var channels, isProducing, panels;
-     siteService.getSiteByCondition("enos", {'siteRef': req.params.siteRef }, function(siteResult){
-     panels = siteService.getPannelsList(siteResult)
-      _.each(panels, function(panel){
-       panelService.getPanelByCondition("enos", {'_id':panel}, function(panelResult){
-         _.each(panelResult, function(panel){
-             channels = panel.channels;
-             channelService.getChannelByCondition("enos", {$and: [{'_id':{ "$in": channels }}, {'isProducing':true}]}, function(channelResult){
-               locationService.getLocationByCondition("enos", {'_id':siteResult[0].location}, function(locationResult){
-                console.log("************\n"+locationResult+"\n"+siteResult[0]+"\n"+channelResult+"\n"+panel.url+"************");
-               });
-             });
-         });
-       }); 
-      });
-     });
+    app.get("/:siteRef", function (req, res) {     
      res.send("ok");
     });
         
