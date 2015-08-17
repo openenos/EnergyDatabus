@@ -1,5 +1,5 @@
 # this scheduler will run accordingly for every 50s , 1min, 1 hour , 1 day and so on.
-
+=begin
 require 'rufus-scheduler'
 require 'active_record'
 
@@ -49,3 +49,5 @@ s.every '5m' do
     LivedataWorker.perform_async(row.id)
   end
 end
+
+=end
