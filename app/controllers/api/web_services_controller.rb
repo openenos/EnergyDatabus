@@ -55,6 +55,7 @@ class Api::WebServicesController < ApplicationController
 	end
 
 	def get_live_data_by_site 
+		#Code to be re-written for exact data
 		solar_data =  $influxdb.query "select value from power_readings_by_min where LoadType='Energy Production' limit 1"
 		demand_data =  $influxdb.query "select value from power_readings_by_min where LoadType='Main Power' limit 1"
 		solar_power = solar_data.empty? ? 0 : solar_data.first["values"].first["value"]
@@ -64,6 +65,8 @@ class Api::WebServicesController < ApplicationController
 	end
 
 	def get_last_year_data
+		#Code to be re-written for exact data
 		solar_data =  $influxdb.query "select sum(value) from power_readings_by_hour where LoadType='Energy Production' and time>'2015-01-01' and time<'2015-10-05' GROUP BY time(30d)"
+		solar_data =  $influxdb.query "select sum(value) from power_readings_by_hour where LoadType='Main Power' and time>'2015-01-01' and time<'2015-10-05' GROUP BY time(30d)"
 	end
 end
