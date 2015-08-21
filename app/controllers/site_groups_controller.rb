@@ -1,10 +1,13 @@
 class SiteGroupsController < ApplicationController
   before_action :set_site_group, only: [:show, :edit, :update, :destroy]
 
+  before_filter :site_group_account, only: [:index, :new, :create]
+
+  before_filter :admin_check, only: [:update, :edit, :destroy]
   # GET /site_groups
   # GET /site_groups.json
   def index
-    @site_groups = SiteGroup.all
+    @site_groups = @account.site_groups
   end
 
   # GET /site_groups/1
@@ -14,7 +17,7 @@ class SiteGroupsController < ApplicationController
 
   # GET /site_groups/new
   def new
-    @site_group = SiteGroup.new
+    @site_group = @account.site_groups.new
   end
 
   # GET /site_groups/1/edit
@@ -24,7 +27,7 @@ class SiteGroupsController < ApplicationController
   # POST /site_groups
   # POST /site_groups.json
   def create
-    @site_group = SiteGroup.new(site_group_params)
+    @site_group = @account.site_groups.new(site_group_params)
 
     respond_to do |format|
       if @site_group.save
@@ -71,5 +74,15 @@ class SiteGroupsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def site_group_params
       params.require(:site_group).permit(:display)
+    end
+
+    def site_group_account
+      @account = current_user.account
+    end
+  
+    def admin_check
+      unless current_user.is_admin 
+        redirect_to :back
+      end  
     end
 end

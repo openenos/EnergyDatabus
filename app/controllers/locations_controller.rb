@@ -1,10 +1,14 @@
 class LocationsController < ApplicationController
+  
   before_action :set_location, only: [:show, :edit, :update, :destroy]
 
+  before_filter :location_account, only: [:index, :new, :create]
+
+  before_filter :admin_check, only: [:update, :edit, :destroy]
   # GET /locations
   # GET /locations.json
   def index
-    @locations = Location.all
+    @locations = @account.locations
   end
 
   # GET /locations/1
@@ -14,7 +18,7 @@ class LocationsController < ApplicationController
 
   # GET /locations/new
   def new
-    @location = Location.new
+    @location = @account.locations.new
   end
 
   # GET /locations/1/edit
@@ -25,7 +29,7 @@ class LocationsController < ApplicationController
   # POST /locations.json
   def create
     #raise params.inspect
-    @location = Location.new(location_params)
+    @location = @account.locations.new(location_params)
 
     respond_to do |format|
       if @location.save
@@ -71,5 +75,15 @@ class LocationsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def location_params
       params.require(:location).permit(:geo_addr, :postal_code_id, :geo_lat, :geo_lng, :utility_id)
+    end
+
+    def location_account
+      @account = current_user.account
+    end
+  
+    def admin_check
+      unless current_user.is_admin 
+        redirect_to :back
+      end  
     end
 end

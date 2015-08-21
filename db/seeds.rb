@@ -8,7 +8,7 @@
 
 
 
-['Historic Green Village','Commercial','Residential','Retail','Commercial Kitchen','Commercial Office'].each { |group| Site.create(display: group) }
+['Historic Green Village','Commercial','Residential','Retail','Commercial Kitchen','Commercial Office'].each { |group| SiteGroup.create(display: group) }
 
 Site.create([ {area_gross_square_foot:1088, site_ref: 'HGV1',display: "AMI Outfitters - Sears Cottage", year_built: 1935,area_cond_square_foot: 1088,location_id: 1}, {area_gross_square_foot:2805, site_ref: 'HGV2',display: "Rosedale Café", year_built: 1913,area_cond_square_foot: 2805,location_id: 2}, { area_gross_square_foot:1600, site_ref: 'HGV3',display: "Libby's Island Jewelry - Thelmas-by-the-Sea", year_built: 1913,area_cond_square_foot: 1600,location_id: 3}, {area_gross_square_foot:1200, site_ref: 'HGV4',display: "Thelmas-by-the-Sea Residence", year_built: 1913,area_cond_square_foot: 1200,location_id: 4}, {area_gross_square_foot:1000, site_ref: 'HGV5',display: "Hometown Desserts", year_built: 2013,area_cond_square_foot: 1000,location_id: 5}, {area_gross_square_foot:600, site_ref: 'HGV6',display: "Bob Brown Art", year_built: 2013,area_cond_square_foot: 600,location_id: 6}, {area_gross_square_foot:1000, site_ref: 'HGV7',display: "Pilsbury Office", year_built: 1915,area_cond_square_foot: 1000,location_id: 7 }, {area_gross_square_foot:1000, site_ref: 'HGV8',display: "Pilsbury Residence", year_built: 1915,area_cond_square_foot: 1000,location_id: 8 }, {area_gross_square_foot:0, site_ref: 'HGV9',display: "HGV Campus", year_built: 2012,area_cond_square_foot: 0,location_id: 9 }, {area_gross_square_foot:0, site_ref: 'HGV10',display: "HGV Solar PV", year_built: 2012,area_cond_square_foot: 0,location_id: 10 }] )
 

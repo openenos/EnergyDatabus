@@ -1,10 +1,13 @@
 class PostalCodesController < ApplicationController
   before_action :set_postal_code, only: [:show, :edit, :update, :destroy]
 
+  before_filter :postal_code_account, only: [:index, :new, :create]
+
+  before_filter :admin_check, only: [:update, :edit, :destroy]
   # GET /postal_codes
   # GET /postal_codes.json
   def index
-    @postal_codes = PostalCode.all
+    @postal_codes = @account.postal_codes
   end
 
   # GET /postal_codes/1
@@ -14,7 +17,7 @@ class PostalCodesController < ApplicationController
 
   # GET /postal_codes/new
   def new
-    @postal_code = PostalCode.new
+    @postal_code = @account.postal_codes.new
   end
 
   # GET /postal_codes/1/edit
@@ -24,7 +27,7 @@ class PostalCodesController < ApplicationController
   # POST /postal_codes
   # POST /postal_codes.json
   def create
-    @postal_code = PostalCode.new(postal_code_params)
+    @postal_code = @account.postal_codes.new(postal_code_params)
 
     respond_to do |format|
       if @postal_code.save
@@ -70,5 +73,15 @@ class PostalCodesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def postal_code_params
       params.require(:postal_code).permit(:geo_postal_code, :geo_city, :geo_state, :geo_country, :tz, :weather_ref)
+    end
+
+    def postal_code_account
+      @account = current_user.account
+    end
+  
+    def admin_check
+      unless current_user.is_admin 
+        redirect_to :back
+      end  
     end
 end

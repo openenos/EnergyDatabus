@@ -39,6 +39,9 @@
   </tbody>
 </table>
 
+<% if current_user.is_admin %>
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_location_path,
             :class => 'btn btn-primary' %>
+
+<% end %>            

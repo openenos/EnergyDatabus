@@ -12,6 +12,17 @@
   <div><%= f.label :password_confirmation, :class => 'control-label' %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off", :class => 'form-control' %></div>
 
+  <div><label>Company Name *</label><br />
+  	<input type="text" name="company_name" class="form-control"/>
+  </div>	
+
+  <div><label>Company Reference *</label><br />
+  	<input type="text" name="company_reference" class="form-control"/>
+  </div>
+
+  <div><%= f.label :is_admin, :class => 'control-label' %><br />
+    <%= f.check_box :is_admin %></div>
+
   <div><%= f.submit "Sign up", :class => 'btn btn-primary' %></div>
 <% end %>
 

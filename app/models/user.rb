@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_one :account
+  belongs_to :account
   
   def user_account(params)
   	 account = build_account(params)	

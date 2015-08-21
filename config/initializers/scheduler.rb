@@ -1,5 +1,7 @@
 # this scheduler will run accordingly for every 50s , 1min, 1 hour , 1 day and so on.
 
+=begin
+
 require 'rufus-scheduler'
 require 'active_record'
 
@@ -48,4 +50,18 @@ s.every '5m' do
   Panel.all.each do|row|
     LivedataWorker.perform_async(row.id)
   end
+end
+
+=end
+
+require 'rufus-scheduler'
+require 'active_record'
+require 'influxdb'
+
+s = Rufus::Scheduler.singleton
+
+$influxdb = InfluxDB::Client.new 'open_enos'
+
+s.every '60s' do
+	$inf
 end

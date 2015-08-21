@@ -1,12 +1,17 @@
 class PanelsController < ApplicationController
   before_action :set_panel, only: [:show, :edit, :update, :destroy]
 
+
+  before_filter :panel_account, only: [:index, :new, :create]
+
+  before_filter :admin_check, only: [:update, :edit, :destroy]
+
   caches_action :index
  
   # GET /panels
   # GET /panels.json
   def index
-    @panels = Panel.all
+    @panels = @account.panels
   end
 
   # GET /panels/1
@@ -17,7 +22,7 @@ class PanelsController < ApplicationController
 
   # GET /panels/new
   def new
-    @panel = Panel.new
+    @panel = @account.panels.new
   end
 
   # GET /panels/1/edit
@@ -27,7 +32,7 @@ class PanelsController < ApplicationController
   # POST /panels
   # POST /panels.json
   def create
-    @panel = Panel.new(panel_params)
+    @panel = @account.panels.new(panel_params)
 
     respond_to do |format|
       if @panel.save
@@ -73,5 +78,15 @@ class PanelsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def panel_params
       params.require(:panel).permit(:emon_url, :equip_ref, :panel_type, :parent_panel_id, :site_id, :no_of_circuits, :amp)
+    end
+
+    def panel_account
+      @account = current_user.account
+    end
+  
+    def admin_check
+      unless current_user.is_admin 
+        redirect_to :back
+      end  
     end
 end

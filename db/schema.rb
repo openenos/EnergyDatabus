@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150121102216) do
+ActiveRecord::Schema.define(version: 20150815060607) do
 
   create_table "accounts", force: true do |t|
     t.string   "company_name"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20150121102216) do
     t.boolean  "is_producing"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "account_id"
   end
 
   create_table "elec_load_types", force: true do |t|
@@ -63,6 +64,7 @@ ActiveRecord::Schema.define(version: 20150121102216) do
     t.integer  "volt"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "account_id"
   end
 
   create_table "emon_daily_data", force: true do |t|
@@ -82,6 +84,7 @@ ActiveRecord::Schema.define(version: 20150121102216) do
     t.integer  "utility_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "account_id"
   end
 
   create_table "panels", force: true do |t|
@@ -94,6 +97,7 @@ ActiveRecord::Schema.define(version: 20150121102216) do
     t.integer  "amp"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "account_id"
   end
 
   create_table "postal_codes", force: true do |t|
@@ -105,6 +109,7 @@ ActiveRecord::Schema.define(version: 20150121102216) do
     t.string   "weather_ref"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "account_id"
   end
 
   create_table "site_group_mappings", force: true do |t|
@@ -112,12 +117,14 @@ ActiveRecord::Schema.define(version: 20150121102216) do
     t.integer  "site_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "account_id"
   end
 
   create_table "site_groups", force: true do |t|
     t.string   "display"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "account_id"
   end
 
   create_table "sites", force: true do |t|
@@ -130,6 +137,7 @@ ActiveRecord::Schema.define(version: 20150121102216) do
     t.integer  "location_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "account_id"
   end
 
   create_table "users", force: true do |t|
@@ -145,6 +153,8 @@ ActiveRecord::Schema.define(version: 20150121102216) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_admin"
+    t.integer  "account_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

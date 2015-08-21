@@ -3,12 +3,16 @@ require 'open-uri'
 class SitesController < ApplicationController
   before_action :set_site, only: [:show, :edit, :update, :destroy]
 
-   before_filter :valid_site_check, only: [:getWeather, :getLiveDataBySite]
+  before_filter :valid_site_check, only: [:getWeather, :getLiveDataBySite]
+
+  before_filter :site_account, only: [:index, :new, :create]
+
+  before_filter :admin_check, only: [:update, :edit, :destroy]
 
   # GET /sites
   # GET /sites.json
   def index
-    @sites = Site.all
+    @sites = @account.sites
   end
 
   # GET /sites/1
@@ -18,7 +22,7 @@ class SitesController < ApplicationController
 
   # GET /sites/new
   def new
-    @site = Site.new
+    @site = @account.sites.new
   end
 
   # GET /sites/1/edit
@@ -28,7 +32,7 @@ class SitesController < ApplicationController
   # POST /sites
   # POST /sites.json
   def create
-    @site = Site.new(site_params)
+    @site = @account.sites.new(site_params)
 
     respond_to do |format|
       if @site.save
@@ -174,5 +178,15 @@ class SitesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def site_params
       params.require(:site).permit(:area_gross_square_foot, :site_ref, :display, :year_built, :area_cond_square_foot, :operating_hours, :location_id)
+    end
+
+    def site_account
+      @account = current_user.account
+    end
+  
+    def admin_check
+      unless current_user.is_admin 
+        redirect_to :back
+      end  
     end
 end

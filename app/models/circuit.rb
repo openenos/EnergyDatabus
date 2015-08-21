@@ -4,6 +4,8 @@ class Circuit < ActiveRecord::Base
   belongs_to :panel
   has_one :emon_daily_data
 
+  belongs_to :account
+
   validates_presence_of :panel_id, :elec_load_type_id, :display, :channel_no
 
   def self.cassandra_db

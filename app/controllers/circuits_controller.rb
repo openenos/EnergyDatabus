@@ -1,10 +1,20 @@
 class CircuitsController < ApplicationController
   before_action :set_circuit, only: [:show, :edit, :update, :destroy]
 
+  before_filter :circuit_account, only: [:index, :new, :create]
   # GET /circuits
   # GET /circuits.json
+  private
+
+  def circuit_account
+    @account = current_user.account
+  end
+  
+
+  public
+
   def index
-    @circuits = Circuit.all
+    @circuits = @account.circuits
   end
 
   # GET /circuits/1
@@ -14,7 +24,7 @@ class CircuitsController < ApplicationController
 
   # GET /circuits/new
   def new
-    @circuit = Circuit.new
+    @circuit = @account.circuits.new
   end
 
   # GET /circuits/1/edit
@@ -24,7 +34,7 @@ class CircuitsController < ApplicationController
   # POST /circuits
   # POST /circuits.json
   def create
-    @circuit = Circuit.new(circuit_params)
+    @circuit = @account.circuits.new(circuit_params)
 
     respond_to do |format|
       if @circuit.save
