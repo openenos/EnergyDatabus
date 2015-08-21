@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.1'
+gem 'rails', '4.2.3'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 # Use SCSS for stylesheets
@@ -14,7 +14,7 @@ gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
  gem 'therubyracer',  platforms: :ruby
 
-gem 'cassandra-driver'
+#gem 'cassandra-driver'
 
 gem 'devise'
 
@@ -37,14 +37,13 @@ gem "twitter-bootstrap-rails"
 
 gem 'influxdb', '~> 0.2.2'
 
-gem 'actionpack-action_caching'
-
-gem "wunderground"
+#gem 'actionpack-action_caching'
+#gem "wunderground"
 
 gem 'rest-client', '~> 1.6.7'
 gem "rufus-scheduler"
 gem 'unicorn'
-gem 'sinatra', require: false
+#gem 'sinatra', require: false
 gem 'slim'
 gem 'redis'
 # Use ActiveModel has_secure_password
@@ -59,9 +58,9 @@ gem 'redis'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'influxdb'
-
+#Commenet by BalaRaju 
+=begin
 Dir.glob(File.join(File.dirname(__FILE__), 'plugins', '**', "Gemfile")) do |gemfile|
      eval(IO.read(gemfile), binding)
 end
-
+=end
