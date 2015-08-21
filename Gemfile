@@ -59,6 +59,8 @@ gem 'redis'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'influxdb'
+
 Dir.glob(File.join(File.dirname(__FILE__), 'plugins', '**', "Gemfile")) do |gemfile|
      eval(IO.read(gemfile), binding)
 end

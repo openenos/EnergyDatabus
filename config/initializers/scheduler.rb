@@ -2,6 +2,9 @@
 
 =begin
 
+=======
+=begin
+>>>>>>> d86438593f1679cf55465e07b4e0b20f080b3b61
 require 'rufus-scheduler'
 require 'active_record'
 
@@ -52,8 +55,6 @@ s.every '5m' do
   end
 end
 
-=end
-
 require 'rufus-scheduler'
 require 'active_record'
 require 'influxdb'
@@ -65,3 +66,6 @@ $influxdb = InfluxDB::Client.new 'open_enos'
 s.every '60s' do
 	$inf
 end
+
+=end
+
