@@ -1,0 +1,2 @@
+module ElecLoadTypesHelper
+end
