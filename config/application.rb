@@ -8,15 +8,7 @@ Bundler.require(*Rails.groups)
 
 module EnergyDatabus
   class Application < Rails::Application
-    plugins = Dir.entries("#{Rails.root}/plugins/")
-    plugins.delete(".")
-    plugins.delete("..")
-    plugins.each do|plugin_dir|
-      config.eager_load_paths += %W(#{Rails.root}/plugins/#{plugin_dir}/app/helpers)
-      config.eager_load_paths += %W(#{Rails.root}/plugins/#{plugin_dir}/app/controllers)
-      config.eager_load_paths += %W(#{Rails.root}/plugins/#{plugin_dir}/app/models)
-      config.eager_load_paths += %W(#{Rails.root}/plugins/#{plugin_dir}/app/views)
-    end
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
