@@ -1,0 +1,27 @@
+<%- model_class = Location -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:geo_addr) %>:</strong></dt>
+  <dd><%= @location.geo_addr %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:postal_code_id) %>:</strong></dt>
+  <dd><%= @location.postal_code_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:geo_lat) %>:</strong></dt>
+  <dd><%= @location.geo_lat %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:geo_lng) %>:</strong></dt>
+  <dd><%= @location.geo_lng %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:utility_id) %>:</strong></dt>
+  <dd><%= @location.utility_id %></dd>
+</dl>
+
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              locations_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_location_path(@location), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              location_path(@location),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

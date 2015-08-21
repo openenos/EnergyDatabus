@@ -1,0 +1,73 @@
+<%= form_for @utility, :html => { :class => "form-horizontal utility" } do |f| %>
+
+    <% if @utility.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@utility.errors.count, "error") %> prohibited this utility from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @utility.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :display, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :display, :class => 'form-control' %>
+    </div>
+    <%= error_span(@utility[:display]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :utility_type, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :utility_type, :class => 'form-control' %>
+    </div>
+    <%= error_span(@utility[:utility_type]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :base_rate, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :base_rate, :class => 'form-control' %>
+    </div>
+    <%= error_span(@utility[:base_rate]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :demand, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :demand, :class => 'form-control' %>
+    </div>
+    <%= error_span(@utility[:demand]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :tier1_rate, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tier1_rate, :class => 'form-control' %>
+    </div>
+    <%= error_span(@utility[:tier1_rate]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :tier2_rate, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tier2_rate, :class => 'form-control' %>
+    </div>
+    <%= error_span(@utility[:tier2_rate]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :tier3_rate, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tier3_rate, :class => 'form-control' %>
+    </div>
+    <%= error_span(@utility[:tier3_rate]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            utilities_path, :class => 'btn btn-default' %>
+
+<% end %>

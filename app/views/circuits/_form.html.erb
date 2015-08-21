@@ -1,0 +1,98 @@
+<%= form_for @circuit, :html => { :class => "form-horizontal circuit" } do |f| %>
+
+    <% if @circuit.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@circuit.errors.count, "error") %> prohibited this circuit from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @circuit.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group ">
+    <%= f.check_box :active %>  <%= f.label :active, :class => 'control-label' %>
+    
+    <%= error_span(@circuit[:active]) %>
+  </div>
+  <div class="control-group">
+    <%= f.check_box :input %>  <%= f.label :input, :class => 'control-label' %>
+    
+    <%= error_span(@circuit[:input]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :breaker_number, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :breaker_number, :class => 'form-control' %>
+    </div>
+    <%= error_span(@circuit[:breaker_number]) %>
+  </div>
+  <div class="control-group">
+    <%= f.check_box :double_breaker %> <%= f.label :double_breaker, :class => 'control-label' %>
+   
+    <%= error_span(@circuit[:double_breaker]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :breaker_size, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :breaker_size, :class => 'form-control' %>
+    </div>
+    <%= error_span(@circuit[:breaker_size]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :display, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :display, :class => 'form-control' %>
+    </div>
+    <%= error_span(@circuit[:display]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :elec_load_type_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :elec_load_type_id, :class => 'form-control' %>
+    </div>
+    <%= error_span(@circuit[:elec_load_type_id]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :panel_id, :class => 'control-label' %>
+    <div class="controls">
+
+      <%= f.select :panel_id, options_for_select([["Select Panel", 0]] + Panel.all.collect { |p| [ p.emon_url, p.id ] }, @circuit.panel_id), {}, {class: 'form-control'} %>
+    </div>
+    <%= error_span(@circuit[:panel_id]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :ct_sensor_type, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :ct_sensor_type, :class => 'form-control' %>
+    </div>
+    <%= error_span(@circuit[:ct_sensor_type]) %>
+  </div>
+  <div class="control-group">
+    <%= f.check_box :double_ct %> <%= f.label :double_ct, :class => 'control-label' %>
+    
+    <%= error_span(@circuit[:double_ct]) %>
+  </div>
+  <div class="control-group">
+    <%= f.check_box :is_producing %> <%= f.label :is_producing, :class => 'control-label' %>
+    <%= error_span(@circuit[:double_ct]) %>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :channel_no, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :channel_no, :class => 'form-control' %>
+    </div>
+    <%= error_span(@circuit[:channel_no]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")), circuits_path, :class => 'btn btn-default' %>
+
+<% end %>

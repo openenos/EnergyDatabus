@@ -1,0 +1,60 @@
+<%= form_for @location, :html => { :class => "form-horizontal location" } do |f| %>
+
+    <% if @location.errors.any? %>
+    <div id="error_expl" class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= pluralize(@location.errors.count, "error") %> prohibited this location from being saved:</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <% @location.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :geo_addr, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :geo_addr, :class => 'form-control' %>
+    </div>
+    <%= error_span(@location[:geo_addr]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :postal_code_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.select :postal_code_id, options_for_select([["Select postal code", 0]] + PostalCode.all.collect { |p| [ p.geo_postal_code, p.id ] }, @location.postal_code_id), {}, {class: 'form-control'} %>
+    </div>
+    <%= error_span(@location[:postal_code_id]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :geo_lat, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :geo_lat, :class => 'form-control' %>
+       <%# check_box_tag "xyz", true %>
+    </div>
+    <%= error_span(@location[:geo_lat]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :geo_lng, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :geo_lng, :class => 'form-control' %>
+    </div>
+    <%= error_span(@location[:geo_lng]) %>
+  </div>
+  <div class="control-group">
+    <%= f.label :utility_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.select :utility_id, options_for_select([["Select utility"]] + Utility.all.collect { |p| [ p.display, p.id ] }, @location.utility_id ), {}, {class: 'form-control'} %>
+    </div>
+    <%= error_span(@location[:utility_id]) %>
+  </div>
+
+
+  <%= f.submit nil, :class => 'btn btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+            locations_path, :class => 'btn btn-default' %>
+
+<% end %>
