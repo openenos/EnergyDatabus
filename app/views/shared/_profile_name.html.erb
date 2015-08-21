@@ -1,0 +1,5 @@
+<% if current_user.full_name.present? %>
+  <%= current_user.full_name %>
+<% else %>
+  <%= current_user.email %>
+<% end %>

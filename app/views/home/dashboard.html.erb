@@ -1,0 +1,285 @@
+<% debug(@resp_data) %>
+<% debug(@groups) %>
+
+<nav class="navbar navbar-inverse" role="navigation">
+<input type="hidden" id="group_id" value="<%= params[:group_id] %>">
+	<div class="container">
+  <!-- Brand and toggle get grouped for better mobile display -->
+   <%= render :partial=>"shared/navbar_brand"%>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav navbar-right">
+<% if false %>
+          <li class="dropdown">
+			      <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-cog"></i>
+				      Settings
+				      <b class="caret"></b>
+			      </a>
+			      
+			      <ul class="dropdown-menu">
+				      <li><a href="/settings">Account Settings</a></li>
+				      <li><a href="javascript:;">Privacy Settings</a></li>
+				      <li class="divider"></li>
+				      <li><a href="javascript:;">Help</a></li>
+			      </ul>
+			    </li>
+          
+          <li class="dropdown">
+				    <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-fw fa-user"></i> 
+				     <%= render "shared/profile_name" %>
+				      <b class="caret"></b>
+			      </a>
+			      <ul class="dropdown-menu">
+				      <li><%= link_to "My Profile", profile_path %></li>
+				      <li><a href="javascript:;">My Groups</a></li>
+				      <li class="divider"></li>
+				      <li><%= link_to "logout", destroy_user_session_path, :method => :delete %></li>
+			      </ul>
+			    </li>
+			  <% else %>
+			    <li class="dropdown">
+			      <% link_to "Login", new_user_session_path%>
+			    </li>
+			   
+			  <% end %>
+    </ul>
+    
+  </div><!-- /.navbar-collapse -->
+</div> <!-- /.container -->
+</nav>
+  <div class="wrapper row-offcanvas row-offcanvas-left">
+     
+<!-- Right side column. Contains the navbar and content of the page -->
+<aside class="right-side strech">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+  <h1>
+HGV
+<small>Sites</small>
+  </h1>
+  <ol class="breadcrumb">
+<li class="active">Site</li>
+  </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+                  <div class="row">
+  <section class="col-lg-12 box box-primary"> 
+ <div class="box-body col-lg-6">
+
+   <label>View by Group</label>
+ <select class="form-control" id="changeGroup">
+  <% @groups.each do|group| %>
+    <% if params['group_id'].to_i == group['id'] %>
+      <option value="<%= group['id'] %>" selected="selected"><%= group['dis']%></option> 
+    <% else %>
+      <option value="<%= group['id'] %>"><%= group['dis']%></option> 
+    <% end %>
+  <% end %>
+ </select>
+</div>
+ <div class="box-body col-lg-6">
+    <label>View by Usage</label>
+  <select class="form-control">
+<option>All</option>
+<option>HVAC</option>
+<option>Lighting</option>
+<option>Refrigeration</option>
+<option>Always On</option>
+<option>Others</option>
+</select>
+</div>
+</section>
+</div>
+
+<!-- Main row -->
+  <div class="row">
+<!-- Left col -->
+
+  <section class="col-lg-6 connectedSortable"> 
+  			  <!--box -->
+    <div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+<!-- tools box -->
+     <div class="box-tools pull-right">
+    <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa fa-refresh"></i></button>
+    <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    <button class="btn btn-default btn-tn" data-widget="remove"><i class="fa fa-times"></i></button>
+</div><!-- /. tools -->
+
+<i class="fa  fa-dashboard"></i>
+<div id="snap-box-icon" class="snapshot-box-icon"></div>
+<h3 class="box-title">
+    POWER USAGE NOW
+</h3>
+    
+</div>
+			<!-- box-body -->
+    <div class="box-body no-padding row-fluid">
+ 
+
+
+<div class="span12  homeWidgetsPadding" style="margin-left:0">
+ <div class="span12 bottomBorder grayBorder spanContent">
+
+  <div class="col-lg-4">
+  <canvas id="g1" style="width:100%">guage</canvas>
+    <p class="mediumBold" style="text-align:center;"></p>
+    <p class="tinyBold" style="text-align:center">Power Usage Now</p>
+  </div>
+  <div class="col-lg-4">
+   <canvas id="g2" style="width:100%">guage</canvas>
+    <p class="mediumBold" style="text-align:center"></p>
+    <p class="tinyBold" style="text-align:center">Solar Power Production</p>
+  </div>
+  <div class="col-lg-4">
+  <canvas id="g3" style="width:100%">guage</canvas>
+    <p class="mediumBold" style="text-align:center"></p>
+    <p class="tinyBold" style="text-align:center"></p>
+  </div>
+</div>
+</div>
+
+
+
+  </div><!-- /.box-body-->
+     </div>
+    <!-- /.box -->
+
+    <div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+<!-- tools box -->
+<div class="pull-right box-tools">    
+    <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa fa-refresh"></i></button>
+    <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    <button class="btn btn-default btn-tn" data-widget="remove"><i class="fa fa-times"></i></button>
+</div><!-- /. tools -->
+
+<i class="fa fa-signal"></i>
+<h3 class="box-title">
+    Last 12 Months Data
+</h3>
+    <!-- Box -->
+</div>
+    <div class="box-body no-padding">
+<div class="row spanContent" style="margin-left:0">
+   <div class="col-lg-3">
+    <p class="mediumBold span12 noGaps" id="total_demand"></p>
+    <p class="tinyBold noGaps">Total Demand</p>
+   </div>
+   <div class="col-lg-3 leftBoder grayBorder" style="padding-left:10px">
+    <p class="mediumBold span12 noGaps" id="total_solar"></p>
+    <p class="tinyBold noGaps">Solar Power Produced</p>
+   </div>
+   <div class="col-lg-3 leftBoder grayBorder" style="padding-left:10px">
+    <p class="mediumBold span12 noGaps" id="utility_power"></p>
+    <p class="tinyBold noGaps"></p>
+   </div>
+   <div class="col-lg-3 leftBoder grayBorder" style="padding-left:10px">
+    <!--<p class="mediumBold span12 noGaps" id="net_power"></p>
+    <p class="tinyBold noGaps">Net</p>-->
+   </div>
+ </div>
+<div class="row spanContent" style="margin-left:0">
+   <div class="col-lg-4 pull-right">
+    <i class="fa  fa-square blue"></i> Demand
+    <i class="fa  fa-square green"></i> Solar Power
+   </div>
+</div>
+<div id="line-chart" style="height: 300px;"></div>
+ 
+    </div><!-- /.box -->  
+    </div>
+
+</section>
+
+  <section class="col-lg-6 connectedSortable"> 
+
+
+    <div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+<!-- tools box -->
+<div class="pull-right box-tools">    
+    <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa fa-refresh"></i></button>
+    <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa-minus"></i></button>
+    <button class="btn btn-default btn-tn" data-widget="remove"><i class="fa fa-times"></i></button>
+</div><!-- /. tools -->
+
+<i class="fa fa-building-o"></i>
+<h3 class="box-title">
+    Sites Past <%= @days_between_dates %> Days Usage
+</h3>
+
+ <button class="btn btn-primary btn-sm daterange" data-toggle="tooltip" title="Date range" style="margin: 5px;"><i class="fa fa-calendar"></i></button>
+<div>
+    </div>
+  <div class="box-body no-padding">
+<div class="table-responsive">
+    <!-- .table - Uses sparkline charts-->
+    <table class="table table-striped">
+  <tr>
+<th>Name</th>
+<th>kWh</th>
+<th>kWh<br/>Sq. Ft.</th>
+<th>Cost</th>
+<th>Cost<br/>Sq. Ft.</th>
+  </tr>
+  <% @resp_data.each do|site| %>
+    <tr>
+      <td>
+        <a href="/site_snapshots/index?site_ref=<%= site['site_ref'] %>" id="<%= site['site_ref'] %>_title"><%= site["site_name"] %></a>
+        <input type='hidden' id="<%= site['site_ref'] %>_lat" value="<%= site['lat'] %>">
+        <input type='hidden' id="<%= site['site_ref'] %>_lng" value="<%= site['lng'] %>">
+        </td>
+      <td><%= (site["data"]["kwh"]).round(2) %></td>
+      <td><%= (site["data"]["kwhpersqft"]).round(2) %></td>
+	    <td><%= (site["data"]["cost"]).round(2) %></td>
+      <td><%= (site["data"]["costsqft"]).round(2) %></td>
+    </tr>
+  <% end %>
+</table><!-- /.table -->
+</div>
+  </div><!-- /.box-body-->
+  <div class="box-footer">
+<!--<button class="btn btn-info"><i class="fa fa-download"></i> Export Data</button>-->
+  </div>
+    </div>
+    
+    </div><!-- /.box -->
+    
+ <div class="box box-warning sortable">
+                                <div class="box-header" style="cursor: move;">
+                                    <!-- tools box -->
+     <div class="box-tools pull-right">
+                                        <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa fa-refresh"></i></button>
+                                        <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        <button class="btn btn-default btn-tn" data-widget="remove"><i class="fa fa-times"></i></button>
+                                    </div><!-- /. tools -->
+
+                                    <i class="fa fa-adjust"></i>
+                                    <div id="snap-box-icon" class="snapshot-box-icon"></div>
+                                    <h3 class="box-title">
+                                        Past 30 days usage by load type
+                                    </h3>
+                            
+</div>
+			<!-- box-body -->
+                            <div class="box-body row-fluid">
+<div id="usage_pie" style="height: 300px;">
+</div>
+  			    </div><!-- /.box-body-->
+                             </div>
+</section><!-- right col -->
+  </div><!-- /.row (main row) -->
+
+    </section><!-- /.content -->
+</aside><!-- /.right-side -->
+  </div><!-- ./wrapper -->
+  
+  
+  <script>
+  $('.dropdown-toggle').dropdown();
+</script>

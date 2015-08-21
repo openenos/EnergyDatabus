@@ -1,11 +1,12 @@
 #this helper which will run when we create an account and for each account a keyspace will be created 
 
-require 'cassandra'
+#require 'cassandra'
 
 module EnergySchemaHelper
 
 	include ApplicationHelper
 
+=begin
 	def create_schema(name)
 	# Defaults to the system keyspace
 		puts "Create Cassandra Schema enos_#{name}"
@@ -35,5 +36,6 @@ module EnergySchemaHelper
 
 		puts "Completed Cassandra Schema"
 	end
+=end
 
 end
