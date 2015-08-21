@@ -1,0 +1,15 @@
+development:
+  api_key: "87e74b8d9511ea00"
+  api_secret: "pws:KFLPALME10"
+
+ devlocal:
+  api_key: "87e74b8d9511ea00"
+  api_secret: "pws:KFLPALME10"
+
+qa:
+  api_key: "87e74b8d9511ea00"
+  api_secret: "pws:KFLPALME10"
+
+production:
+  api_key: "87e74b8d9511ea00"
+  api_secret: "pws:KFLPALME10"
