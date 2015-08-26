@@ -38,7 +38,7 @@ gem "twitter-bootstrap-rails"
 gem 'influxdb', '~> 0.2.2'
 
 #gem 'actionpack-action_caching'
-#gem "wunderground"
+gem "wunderground"
 
 gem 'rest-client', '~> 1.6.7'
 gem "rufus-scheduler"
