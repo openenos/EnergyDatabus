@@ -3,8 +3,8 @@ class Api::WebServicesController < ApplicationController
 	$influxdb = InfluxDB::Client.new "openenos"
 	def get_monthly_data_by_site_by_month
 		if params[:site].present? && params[:month].present?
-			starting_day = (Date.today.beginning_of_year + (params["month"].to_i-1).months).to_time.to_i
-			ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.to_i
+			starting_day = (Date.today.beginning_of_year + (params["month"].to_i-1).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
+			ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
 			result = $influxdb.query "select sum(value) from power_readings_by_hour where time>#{starting_day} and time<#{ending_day} and Site='#{params[:site]}'"
 			if result.empty?
 				value = 0
@@ -23,8 +23,8 @@ class Api::WebServicesController < ApplicationController
 
 		#starting_day = (Date.today - 1.days).to_time.to_i
 		#ending_day = (Date.today - 31.days).to_time.to_i
-		starting_day = (Date.today.beginning_of_year + (params["month"].to_i-1).months).to_time.to_i
-		ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.to_i
+		starting_day = (Date.today.beginning_of_year + (params["month"].to_i-1).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
+		ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
 		#raise [starting_day, ending_day].inspect
 		site = params[:site_group]
 		if site.present? 
@@ -53,8 +53,8 @@ class Api::WebServicesController < ApplicationController
 		#starting_day = (Date.today - 1.days).to_time.to_i
 		#ending_day = (Date.today - 31.days).to_time.to_i
 		if params["month"].present? && params["site"].present?
-			starting_day = (Date.today.beginning_of_year + (params["month"].to_i-1).months).to_time.to_i
-			ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.to_i
+			starting_day = (Date.today.beginning_of_year + (params["month"].to_i-1).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
+			ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
 			site = params[:site]
 			query = "select sum(power) from power_readings_by_min where time>#{starting_day} and time<#{ending_day} and site_group =~ /"+"#{site}" +"/ group by site"
 			result = $influxdb.query query
@@ -87,7 +87,6 @@ class Api::WebServicesController < ApplicationController
 	def get_last_year_data
 		#Get the data of usage for the past 12 months grouped by month
 
-		#Code to be re-written for exact data
 		#solar_data =  $influxdb.query "select sum(value) from power_readings_by_hour where LoadType='Energy Production' and time>'2015-01-01' and time<'2015-10-05' GROUP BY time(30d)"
 		#solar_data =  $influxdb.query "select sum(value) from power_readings_by_hour where LoadType='Main Power' and time>'2015-01-01' and time<'2015-10-05' GROUP BY time(30d)"
 		$first_day = (Date.today.beginning_of_month - 13.months)
@@ -97,11 +96,10 @@ class Api::WebServicesController < ApplicationController
 			solar_data = []
 			#iterate through each month for 12 times for 12 months
 			12.times do
-				starting_day = $first_day.beginning_of_day.to_time.to_i
-				ending_day = $first_day.end_of_month.end_of_day.to_time.to_i
-				ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.to_i
+				starting_day = $first_day.beginning_of_day.to_time.strftime("%Y-%m-%d %H:%M:%S")
+				ending_day = $first_day.end_of_month.end_of_day.to_time.strftime("%Y-%m-%d %H:%M:%S")
+				#ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.to_i
 				query = "select sum(power) from power_readings_by_min where time>#{starting_day} and time<#{ending_day} and site_group =~ /"+"#{site}" +"/ and load_type = 'Demand'"
-				#raise query.inspect
 				result = $influxdb.query query
 				if result.empty?
 					demand_data << 0
@@ -109,7 +107,6 @@ class Api::WebServicesController < ApplicationController
 					demand_data << (result.first["values"].first["sum"]/1000).abs
 				end
 				query = "select sum(power) from power_readings_by_min where time>#{starting_day} and time<#{ending_day} and site_group =~ /"+"#{site}" +"/ and load_type = 'Energy Production'"
-				#raise query.inspect
 				result = $influxdb.query query
 				if result.empty?
 					solar_data << 0
