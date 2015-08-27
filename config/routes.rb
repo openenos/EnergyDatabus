@@ -28,6 +28,10 @@ Rails.application.routes.draw do
   resources :circuits 
     
 
+  get 'site_appliances/index' 
+  get 'site_usage/index'
+  get 'site_snapshots/index' => "site_snapshots#index"
+
   #devise_for :users
 
   devise_for :users, controllers: { registrations: 'registrations'}
