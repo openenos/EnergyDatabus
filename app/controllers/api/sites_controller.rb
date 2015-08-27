@@ -3,7 +3,7 @@ require 'open-uri'
 
 class Api::SitesController < ApplicationController
 	$influxdb = InfluxDB::Client.new "openenos"
-	
+
 	def get_top_circuits_by_site
 		if params[:site].present?
 			site = Site.find_by_display(params[:site])
@@ -83,5 +83,31 @@ class Api::SitesController < ApplicationController
 			render json: { message: "Required parameters are site name"}
 		end
 	end
-
+=begin
+	def get_appliances_usage_by_site
+		if params[:site].present?
+			site = Site.find_by_display(params[:site])
+   		if site.present?
+   			data = []
+   			today = Date.today
+   			start_time = today.beginning_of_day.to_time 
+   			end_time = 
+   			site.panels.first.circuits.where(:input => 0).each do |circuit|
+   				query = " select power from power_readings_by_hour where time > #{start_time.strftime("%Y-%m-%d %H:%M:%S")} and time < #{end_time.strftime("%Y-%m-%d %H:%M:%S")} and circuit = #{circuit.display}"
+   				result = $influxdb.query query
+   				result.each do |hash|
+						values = hash["values"]
+						values.each do |value|
+							data << value.values
+						end
+					end
+   			end
+   		else
+   			render json: { message: "Required a valid site name"}	
+   		end
+		else
+			render json: { message: "Required parameters are site name"}
+		end
+	end
+=end
 end

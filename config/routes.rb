@@ -65,14 +65,14 @@ Rails.application.routes.draw do
     match "/get_weather_forecast" => "sites#get_weather_forecast", via: :get
 
     #routes for site usage
-    match "/get_year_usage_data_by_site" => "site#get_year_usage_data_by_site", via: :get
-    match "/get_year_production_data_by_site" => "site#get_year_production_data_by_site", via: :get
-    match "/get_month_usage_data_by_site" => "site#get_month_usage_data_by_site", via: :get
-    match "/get_month_production_data_by_site" => "site#get_month_production_data_by_site", via: :get
-    match "/get_week_usage_data_by_site" => "site#get_week_usage_data_by_site", via: :get
-    match "/get_week_production_data_by_site" => "site#get_week_production_data_by_site", via: :get
-    match "/get_day_usage_data_by_site" => "sites#get_day_usage_data_by_site", via: :get
-    match "/get_day_production_data_by_site" => "sites#get_day_production_data_by_site", via: :get
+    match "/get_year_usage_data_by_site" => "site_usage#get_year_usage_data_by_site", via: :get
+    match "/get_year_production_data_by_site" => "site_usage#get_year_production_data_by_site", via: :get
+    match "/get_month_usage_data_by_site" => "site_usage#get_month_usage_data_by_site", via: :get
+    match "/get_month_production_data_by_site" => "site_usage#get_month_production_data_by_site", via: :get
+    match "/get_week_usage_data_by_site" => "site_usage#get_week_usage_data_by_site", via: :get
+    match "/get_week_production_data_by_site" => "site_usage#get_week_production_data_by_site", via: :get
+    match "/get_day_usage_data_by_site" => "site_usage#get_day_usage_data_by_site", via: :get
+    match "/get_day_production_data_by_site" => "site_usage#get_day_production_data_by_site", via: :get
   end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
