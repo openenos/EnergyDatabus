@@ -12,19 +12,20 @@ angular.module('enos.controllers')
 		{id: 2, label: "Lighting"}, {id: 3, label: "Refrigeration"}, 
 		{id: 4, label: "Always On"}, {id: 5, label: "Others"}];
 
-		$scope.getPieChart = function(){
-		//	var url = "http://192.168.199.108:3000/api/get_last_month_data_by_load_type";
-			$http.get("http://localhost:3000/api/get_last_month_data_by_load_type")
-			.success(function(response){
-				//console.log(response.data);
-			
-			var data = response.data;
-			drawPieChart(data);
-			console.log(data);
-			}).error(function(){
-        alert("error");
-    });
-		}
+		
+        $scope.getPieChart = function () {
+                 GoogleChartService.piechart({site_group: 'Commercial'}, function(result) {
+       // $window.alert();
+            var data = result.data;
+            drawPieChart(data);
+            console.log(data);
+            
+        });
+
+        }
+   
+        
+
 
 
 		$scope.getPieChart();
@@ -142,10 +143,30 @@ angular.module('enos.controllers')
     $scope.linechart = linechart;
 
     //Table
+/*
+     $scope.getPieChart = function () {
+                 GoogleChartService.piechart({site_group: 'Commercial'}, function(result) {
+       // $window.alert();
+            var data = result.data;
+            drawPieChart(data);
+            console.log(data);
+            
+        });
 
+        } */
+    $scope.data_tables = function(){
+        GoogleChartService.data_tables({site_group: 'Commercial', month: 7}, function(result){
+            var data = result.data;
+           $scope.sites = data;
+
+        });
+
+    }
+
+/*
    $scope.data_tables = function(){
 		//	var url = "http://192.168.199.108:3000/api/get_last_month_data_by_load_type";
-			$http.get("http://localhost:3000/api/get_last_month_data")
+			$http.get("http://localhost:3002/api/get_last_month_data")
 			.success(function(response){
 				//console.log(response.data);
 			
@@ -155,7 +176,7 @@ angular.module('enos.controllers')
 			}).error(function(){
         alert("error");
     });
-		}
+		} */
 
 
    $scope.data_tables();

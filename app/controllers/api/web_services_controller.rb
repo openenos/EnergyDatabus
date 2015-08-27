@@ -30,14 +30,15 @@ class Api::WebServicesController < ApplicationController
 		if site.present? 
 			puts site
 			#raise site.inspect
-			query = "select sum(power) from power_readings_by_min where time>#{starting_day} and time<#{ending_day} and site_group =~ /"+"#{site}" +"/ group by load_type"
+			#query = "select sum(power) from power_readings_by_min where time > #{starting_day} and time < #{ending_day} site_group =~ /"+"#{site}" +"/ group by load_type"
+			query = "select sum(power) from power_readings_by_min where site_group =~ /"+"#{site}" +"/ group by load_type"
 			#raise query.inspect
 			result = $influxdb.query query
 			data = []
 			data << ["load_type", "Value"]
 			result.each do |site|
 
-				data << [site["tags"]["load_type"], site["values"].first["sum"]]
+				data << [site["tags"]["load_type"], (site["values"].first["sum"]).abs]
 			end
 			 
 			render :json => { data: data }
@@ -52,11 +53,12 @@ class Api::WebServicesController < ApplicationController
 
 		#starting_day = (Date.today - 1.days).to_time.to_i
 		#ending_day = (Date.today - 31.days).to_time.to_i
-		if params["month"].present? && params["site"].present?
+		if params["month"].present? && params["site_group"].present?
 			starting_day = (Date.today.beginning_of_year + (params["month"].to_i-1).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
 			ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
-			site = params[:site]
-			query = "select sum(power) from power_readings_by_min where time>#{starting_day} and time<#{ending_day} and site_group =~ /"+"#{site}" +"/ group by site"
+			site = params[:site_group]
+
+			query = "select sum(power) from power_readings_by_min where time>'#{starting_day}' and time<'#{ending_day}' and site_group =~ /"+"#{site}" +"/ group by site"
 			result = $influxdb.query query
 			data = []
 			result.each do |site|
@@ -94,29 +96,34 @@ class Api::WebServicesController < ApplicationController
 		if site.present? 
 			demand_data = []
 			solar_data = []
+			demand_value = 0
+			solar_value = 0
 			#iterate through each month for 12 times for 12 months
-			12.times do
+			12.times do |i|
 				starting_day = $first_day.beginning_of_day.to_time.strftime("%Y-%m-%d %H:%M:%S")
 				ending_day = $first_day.end_of_month.end_of_day.to_time.strftime("%Y-%m-%d %H:%M:%S")
 				#ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.to_i
-				query = "select sum(power) from power_readings_by_min where time>#{starting_day} and time<#{ending_day} and site_group =~ /"+"#{site}" +"/ and load_type = 'Demand'"
+				query = "select sum(power) from power_readings_by_min where time>'#{starting_day}' and time<'#{ending_day}' and site_group =~ /"+"#{site}" +"/ and load_type = 'Demand'"
 				result = $influxdb.query query
 				if result.empty?
-					demand_data << 0
+					demand_data << { i => 0 }
 				else
-					demand_data << (result.first["values"].first["sum"]/1000).abs
+					demand_data << { i => (result.first["values"].first["sum"]/1000).abs}
+					demand_value = demand_value + (result.first["values"].first["sum"]/1000).abs
 				end
-				query = "select sum(power) from power_readings_by_min where time>#{starting_day} and time<#{ending_day} and site_group =~ /"+"#{site}" +"/ and load_type = 'Energy Production'"
+				query = "select sum(power) from power_readings_by_min where time>'#{starting_day}' and time<'#{ending_day}' and site_group =~ /"+"#{site}" +"/ and load_type = 'Energy Production'"
+
 				result = $influxdb.query query
 				if result.empty?
-					solar_data << 0
+					solar_data << { i => 0 }
 				else
-					solar_data << (result.first["values"].first["sum"]/1000).abs
+					solar_data << { i => (result.first["values"].first["sum"]/1000).abs}
+					solar_value = solar_value + (result.first["values"].first["sum"]/1000).abs
 				end
 				$first_day = $first_day + 1.month
 			end
-			total_demand = (demand_data.sum/1000).round
-			total_solar = (solar_data.sum/1000).round
+			total_demand = (demand_value/1000).round
+			total_solar = (solar_value/1000).round
 			render :json => {demand_data: demand_data, solar_data: solar_data, total_demand: total_demand, total_solar: total_solar, utility_power: (total_demand - total_solar).abs }
 		else
 			render :json => {message: "Required parameters are site group name"}
