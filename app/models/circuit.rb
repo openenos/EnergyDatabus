@@ -1,5 +1,4 @@
 class Circuit < ActiveRecord::Base
-	require 'cassandra'
   belongs_to :elec_load_type
   belongs_to :panel
   has_one :emon_daily_data
@@ -8,6 +7,7 @@ class Circuit < ActiveRecord::Base
 
   validates_presence_of :panel_id, :elec_load_type_id, :display, :channel_no
 
+=begin  
   def self.cassandra_db
   	cluster = Cassandra.cluster # connects to localhost by default
 
@@ -15,4 +15,5 @@ class Circuit < ActiveRecord::Base
 		  puts "Host #{host.ip}: id=#{host.id} datacenter=#{host.datacenter} rack=#{host.rack}"
 		end
   end
+=end  
 end

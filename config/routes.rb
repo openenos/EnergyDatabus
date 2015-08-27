@@ -49,6 +49,18 @@ Rails.application.routes.draw do
     end
   end
 
+
+
+  namespace :api, defaults: {format: 'json'} do
+    match "/get_monthly_data" => "web_services#get_monthly_data_by_site_by_month", via: :get
+    match "/get_last_month_data_by_load_type" => "web_services#get_last_month_data_by_load_type", via: :get
+    match "/get_last_month_data_by_site" => "web_services#get_last_month_data_by_site", via: :get
+    match "/get_live_data_by_site" => "web_services#get_live_data_by_site", via: :get
+    match "/get_last_year_data" => "web_services#get_last_year_data", via: :get
+    match "/get_top_circuits_by_site" => "sites#get_top_circuits_by_site", via: :get
+    match "/get_last_day_demand" => "sites#get_last_day_demand", via: :get
+    match "/get_weather_forecast" => "sites#get_weather_forecast",via: :get
+  end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

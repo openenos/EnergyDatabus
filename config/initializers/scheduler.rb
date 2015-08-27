@@ -60,7 +60,7 @@ require 'influxdb'
 
 s = Rufus::Scheduler.singleton
 
-$influxdb = InfluxDB::Client.new 'open_enos'
+$influxdb = InfluxDB::Client.new 'openenos'
 
 s.every '60s' do
 	$inf

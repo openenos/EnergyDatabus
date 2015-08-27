@@ -67,6 +67,15 @@ ActiveRecord::Schema.define(version: 20150815060607) do
     t.integer  "account_id", limit: 4
   end
 
+  create_table "emon_daily_data", force: :cascade do |t|
+    t.integer  "circuit_id", limit: 4
+    t.integer  "year",       limit: 4
+    t.integer  "as_of_day",  limit: 4
+    t.float    "value",      limit: 24
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "locations", force: :cascade do |t|
     t.string   "geo_addr",       limit: 255
     t.integer  "postal_code_id", limit: 4
@@ -144,8 +153,8 @@ ActiveRecord::Schema.define(version: 20150815060607) do
     t.string   "last_sign_in_ip",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "account_id",             limit: 4
     t.boolean  "is_admin"
+    t.integer  "account_id",             limit: 4
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
