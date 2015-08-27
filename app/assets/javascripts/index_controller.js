@@ -1,5 +1,6 @@
 angular.module('enos.controllers')
-	.controller('IndexController', ['$scope', '$window', '$http', function ($scope, $window, $http){
+	.controller('IndexController', ['$scope', '$window', '$http', 'GoogleChartService',  
+        function ($scope, $window, $http, GoogleChartService){
 		
 		$scope.name = "balaraju"
          

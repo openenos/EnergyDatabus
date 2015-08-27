@@ -486,3 +486,4 @@
         };
     }
 })();
+//# sourceMappingURL=ng-google-chart.js.map
