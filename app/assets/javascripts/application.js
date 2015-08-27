@@ -2,7 +2,7 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require moment.min.js
-//= require angular.min.js
+//= require angular.min
 //= require angular-animate.min
 //= require angular-sanitize.min
 //= require angular-file-upload.min
