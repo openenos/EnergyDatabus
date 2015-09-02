@@ -56,12 +56,11 @@ end
 
 require 'rufus-scheduler'
 require 'active_record'
-require 'influxdb'
 
 s = Rufus::Scheduler.singleton
 
-$influxdb = InfluxDB::Client.new 'openenos'
-
 s.every '60s' do
-	$inf
+	   Panel.all.each do|row|
+			EmonWorker.perform_async(row.id)
+	   end
 end
