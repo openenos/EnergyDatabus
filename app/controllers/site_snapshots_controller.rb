@@ -86,7 +86,7 @@ class SiteSnapshotsController < ApplicationController
     url = URI.escape(url)
     res = jsonResponse url
     respond_to do |format|
-        format.json { render :json => res }
+      format.json { render :json => res }
     end
   end
   

@@ -77,6 +77,8 @@ Rails.application.routes.draw do
     match "/get_week_production_data_by_site" => "site_usage#get_week_production_data_by_site", via: :get
     match "/get_day_usage_data_by_site" => "site_usage#get_day_usage_data_by_site", via: :get
     match "/get_day_production_data_by_site" => "site_usage#get_day_production_data_by_site", via: :get
+
+    match "/get_appliances_usage_by_site" => "sites#get_appliances_usage_by_site", via: :get
   end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

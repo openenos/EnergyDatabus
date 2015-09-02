@@ -14,7 +14,7 @@ angular.module('enos.controllers')
 
 		
         $scope.getPieChart = function () {
-                 GoogleChartService.piechart({site_group: 'Commercial'}, function(result) {
+                 GoogleChartService.piechart({site_group: 'Historic Green Village', month: 9}, function(result) {
        // $window.alert();
             var data = result.data;
             drawPieChart(data);
@@ -142,6 +142,47 @@ angular.module('enos.controllers')
 
     $scope.linechart = linechart;
 
+
+
+ /*    $scope.line_chart = function(){
+    GoogleChartService.line_chart({site_group: 'Historic Green Village'}, function(result){
+     var data = result.data
+      var linechart = {};
+      linechart.type = "LineChart";
+      linechart.cssStyle = "height:200px; width:300px;";
+      linechart.type = "LineChart";
+    linechart.cssStyle = "height:200px; width:300px;";
+    linechart.data = {"cols": [
+        {id: "month", label: "Month", type: "string"},
+        {id: "demand", label: "Demand", type: "number"},
+        {id: "solar", label: "Solar", type: "number"}
+    ], "rows": data 
+    };
+
+    linechart.options = {
+        "title": "Last 12 month demand vs solar power",
+        "isStacked": "true",
+        "fill": 20,
+        "displayExactValues": true,
+        "vAxis": {
+            "title": "Power unit", "gridlines": {"count": 6}
+        },
+        "hAxis": {
+            "title": "Month"
+        }
+    };
+
+    linechart.formatters = {};
+
+    $scope.linechart = linechart;
+
+
+    }
+  }
+*/
+
+
+
     //Table
 /*
      $scope.getPieChart = function () {
@@ -155,7 +196,7 @@ angular.module('enos.controllers')
 
         } */
     $scope.data_tables = function(){
-        GoogleChartService.data_tables({site_group: 'Commercial', month: 7}, function(result){
+        GoogleChartService.data_tables({site_group: 'Historic Green Village', month: 9}, function(result){
             var data = result.data;
            $scope.sites = data;
 

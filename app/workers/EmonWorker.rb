@@ -12,19 +12,20 @@ class EmonWorker
     @flag=0
 	@data=[]
 	
-	host = "54.203.254.118"
+	#host = "54.203.254.118"
+  host = "localhost"
 	username = 'enos'
-    password = 'p@ssw0rd'
-    database = 'openenos'
-    series     = 'power_readings_new'
+  password = 'p@ssw0rd'
+  database = 'openenos'
+  series     = 'power_readings_new'
 	time_precision = 'm'
   
-    panel = Panel.find(panelId)
+  panel = Panel.find(panelId)
 	site = panel.site
-	site_name = site.dis
+	site_name = site.display
 	site_group = ""
 	site.site_groups.each do|group|
-		site_group.concat(group.dis)
+		site_group.concat(group.display)
 		site_group.concat(";")
 	end
 	
@@ -35,8 +36,8 @@ class EmonWorker
 	loads = Hash.new()
   
 	Circuit.where(:panel_id=>panelId).each do|ct|
-	    cts[ct.channel_no] = ct.dis
-		loads[ct.channel_no] = ct.elec_load_type.dis
+	    cts[ct.channel_no] = ct.display
+		loads[ct.channel_no] = ct.elec_load_type.display
 	end
 	
 	
@@ -52,6 +53,9 @@ class EmonWorker
       #time_of_current_zone = time + Time.zone_offset(time_zone).to_i #time zone location time
 	  #time_of_current_zone = time_of_current_zone*1000
 
+      time = Time.now
+      mon = time.strftime("%b")
+      year = time.strftime("%Y")
       @totalPowerValue = 0
       #puts "#{Time.now}: #{panel} 2"
       doc.elements.each("emonitor/channels/channel") do |channel|
@@ -81,7 +85,7 @@ class EmonWorker
 			  @data << {
 			        series: series,
                     values: { value: @avg_power },
-                    tags: { Group: site_group, Site: site_name, LoadType: loads[all_channels], Circuit: cts[all_channels]}
+                    tags: { Year: year, Month: mon, SiteGroup: site_group, Site: site_name, LoadType: loads[all_channels], Circuit: cts[all_channels]}
                   }
               #influxdb.write_point(name, data)
 			  
@@ -96,7 +100,7 @@ class EmonWorker
 				  @data << {
 						series: series,
 						values: { value: value },
-						tags: { Group: site_group, Site: site_name, LoadType: loadType, Circuit: circuit}
+						tags: { Year: year, Month: mon, SiteGroup: site_group, Site: site_name, LoadType: loadType, Circuit: circuit}
 					  }
 			   end
               #influxdb.write_point(name, data)
@@ -106,12 +110,12 @@ class EmonWorker
 	  @data << {
 			series: series,
             values: { value: @totalPowerValue },
-            tags: { Group: site_group, Site: site_name, LoadType: 'Demand', Circuit: 'Total Power'}
+            tags: { Year: year, Month: mon, SiteGroup: site_group, Site: site_name, LoadType: 'Demand', Circuit: 'Total Power'}
         }
 	  influxdb.write_points(@data)
         rescue   Exception => e  
           puts e.message 
-          puts "Fecthing data from emon_url for #{panel} is failed"
+          puts "Fecthing data from emon_url for #{panel.site.display} is failed"
         end  
   end
 end

@@ -4,6 +4,7 @@ require 'open-uri'
 class Api::SitesController < ApplicationController
 	$influxdb = InfluxDB::Client.new "openenos"
 
+	# Get the top 5 circuits by usage.
 	def get_top_circuits_by_site
 		if params[:site].present?
 			site = Site.find_by_display(params[:site])
@@ -16,6 +17,7 @@ class Api::SitesController < ApplicationController
 			end
 			data.delete("Main Power")
 			data.delete("Total Power")
+			# Main Power and Total Power not required in the list so remove
 			data = data.sort_by {|k, v| v}.reverse
 			data = Hash[(data.first(5))]
 			render json: {data: data}
@@ -83,23 +85,21 @@ class Api::SitesController < ApplicationController
 			render json: { message: "Required parameters are site name"}
 		end
 	end
-=begin
+
 	def get_appliances_usage_by_site
 		if params[:site].present?
 			site = Site.find_by_display(params[:site])
    		if site.present?
    			data = []
-   			today = Date.today
-   			start_time = today.beginning_of_day.to_time 
-   			end_time = 
+   			start_time = Time.now.beginning_of_hour - 24.hours
+   			end_time = Time.now.beginning_of_hour
    			site.panels.first.circuits.where(:input => 0).each do |circuit|
-   				query = " select power from power_readings_by_hour where time > #{start_time.strftime("%Y-%m-%d %H:%M:%S")} and time < #{end_time.strftime("%Y-%m-%d %H:%M:%S")} and circuit = #{circuit.display}"
+   				query = "select value from power_readings_by_hour_new where time > #{start_time.strftime("%Y-%m-%d %H:%M:%S")} and time < #{end_time.strftime("%Y-%m-%d %H:%M:%S")} and Circuit = #{circuit.display}"
+   				
    				result = $influxdb.query query
    				result.each do |hash|
 						values = hash["values"]
-						values.each do |value|
-							data << value.values
-						end
+						data << {circuit.display => values}
 					end
    			end
    		else
@@ -109,5 +109,5 @@ class Api::SitesController < ApplicationController
 			render json: { message: "Required parameters are site name"}
 		end
 	end
-=end
+
 end

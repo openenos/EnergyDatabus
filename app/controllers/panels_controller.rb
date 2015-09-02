@@ -6,7 +6,7 @@ class PanelsController < ApplicationController
 
   before_filter :admin_check, only: [:update, :edit, :destroy]
 
-  caches_action :index
+  #caches_action :index
  
   # GET /panels
   # GET /panels.json
