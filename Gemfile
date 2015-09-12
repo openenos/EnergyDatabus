@@ -42,25 +42,11 @@ gem "wunderground"
 
 gem 'rest-client', '~> 1.6.7'
 gem "rufus-scheduler"
-gem 'unicorn'
-#gem 'sinatra', require: false
+gem 'sinatra', require: false
 gem 'slim'
 gem 'redis'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
 
-# Use unicorn as the app server
-# gem 'unicorn'
+gem 'lograge'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'puma'
 
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-
-#Commenet by BalaRaju 
-=begin
-Dir.glob(File.join(File.dirname(__FILE__), 'plugins', '**', "Gemfile")) do |gemfile|
-     eval(IO.read(gemfile), binding)
-end
-=end
