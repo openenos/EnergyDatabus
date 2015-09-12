@@ -1,224 +1,132 @@
 angular.module('enos.controllers')
 	.controller('IndexController', ['$scope', '$window', '$http', 'GoogleChartService',  
-        function ($scope, $window, $http, GoogleChartService){
-		
-		$scope.name = "balaraju"
-         
-		$scope.selectedGroup = "1";
-		$scope.groups = [{id: '1', label: "First"}, {id: '2', label: "second"}, {id:'3', label: "Third"}];
-		
-		$scope.selectedUsage = "(1,2,3,4,5,6)";
-		$scope.usages = [{id: '(1,2,3,4,5,6)', label: "All"},{id: 1, label: "HVAC"}, 
-		{id: 2, label: "Lighting"}, {id: 3, label: "Refrigeration"}, 
-		{id: 4, label: "Always On"}, {id: 5, label: "Others"}];
+    function ($scope, $window, $http, GoogleChartService){
 
-		
-        $scope.getPieChart = function () {
-                 GoogleChartService.piechart({site_group: 'Historic Green Village', month: 9}, function(result) {
-       // $window.alert();
-            var data = result.data;
-            drawPieChart(data);
-            console.log(data);
-            
-        });
-
-        }
-   
+		/* Pie chart code */
+    $scope.getPieChart = function () {
+      GoogleChartService.piechart({site_group: 'Historic Green Village', month: 9}, function(result) {
+      var data = result.data;
+      drawPieChart(data);
+      console.log(data);
         
+    });
 
-
-
+    }
+   
 		$scope.getPieChart();
-		
 
-
-		$scope.groupSelect = function(){
-			$scope.getPieChart();
-			$window.alert($scope.selectedGroup);
-		};
-
-		$scope.usageSelect = function(){
-			$window.alert($scope.selectedUsage);
-		};
-
-		//$scope.search();
-		
-		//Gauge Chart 
-		var chart1 = {};
-	    chart1.type = "Gauge";
-	    //chart1.cssStyle = "height:200px; width:300px;";
-	    chart1.data = [ ['Label', 'Value'],
-          ['Usage Now', 80],
-          ['Solr Power', 55],
-          ['Utility', 68]];
-	    chart1.options = {
-	    	 "width": 1000, 
-	    	 "height": 200,
-         "redFrom": 90,
-         "redTo": 100,
-         "yellowFrom":75, 
-         "yellowTo": 90,
-         "minorTicks": 5
-	       
-	    };
-
-	    chart1.formatters = {};
-
-	    $scope.gauage = chart1;
-
-
-	   // Pie Chart 
-
-
-			//$scope.data = [];
-				
-							
-		
-	   function drawPieChart (data){
-		console.log(data);
-	   var pie_chart = {};
-	   pie_chart.type = "PieChart";
-    pie_chart.data = data;
-    pie_chart.options = {
+    function drawPieChart (data){
+      console.log(data);
+      var pie_chart = {};
+      pie_chart.type = "PieChart";
+      pie_chart.data = data;
+      pie_chart.options = {
         displayExactValues: true,
         width: 800,
         height: 300,
         chartArea: {left:10,top:10,bottom:0,height:"100%"}
-    };
+      };
 
-    pie_chart.formatters = {
-      number : [{
-        columnNum: 1,
-        pattern: "$ #,##0.00"
-      }]
-    };
+      pie_chart.formatters = {
+        number : [{
+          columnNum: 1,
+          pattern: "Watt #,##0.00"
+        }]
+      };
+      $scope.pie_chart = pie_chart;
+    }
+    /* end */
+		
+    /*  Guage chart */
 
-    $scope.pie_chart = pie_chart;
-}
+    $scope.getGaugeChart = function(){
+      GoogleChartService.gaugechart({site_group: 'Historic Green Village'}, function(result) {
+        var data = result.data;
+        drawGaugeChart(data);
+        console.log(data);
+    });
 
-  //  $window.alert($scope.pieChartdetails);
-    //Line Chart
+    }
+    $scope.getGaugeChart();
+    function drawGaugeChart(data){
+      $scope.chartObject = {};
+      $scope.chartObject.type = "Gauge";
 
-     var linechart = {};
-    linechart.type = "LineChart";
-    linechart.cssStyle = "height:200px; width:300px;";
-    linechart.data = {"cols": [
-        {id: "month", label: "Month", type: "string"},
-        {id: "server-id", label: "Server", type: "number"},
-        {id: "cost-id", label: "Shipping", type: "number"}
-    ], "rows": [
-        {c: [
-            {v: "January"},
-            {v: 12, f: "Ony 12 items"},
-            {v: 4}
-        ]},
-        {c: [
-            {v: "February"},
-            {v: 13},
-            {v: 2}
-        ]},
-        {c: [
-            {v: "March"},
-            {v: 24},
-            {v: 6}
+      $scope.chartObject.options = {
+        width: 450,
+        height: 175,
+        redFrom: 40,
+        redTo: 50,
+        max: 50,
+        yellowFrom: 25,
+        yellowTo: 40,
+        minorTicks: 5
+      };
 
-        ]}
-    ]};
+      $scope.chartObject.data = [
+        ['Label', 'Value'],
+        ['Power Usage', (data.demand_power/1000)],
+        ['Solar Power', (data.solar_power/1000)],
+        ['Utility Power', (data.utility_power/1000)]
+      ];
+    }
+    /* end */
 
-    linechart.options = {
-        "title": "Sales per month",
-        "isStacked": "true",
-        "fill": 20,
-        "displayExactValues": true,
-        "vAxis": {
-            "title": "Sales unit", "gridlines": {"count": 6}
-        },
-        "hAxis": {
-            "title": "Date"
-        }
-    };
+    /* Line Chart */
+    $scope.getLineChart = function(){
+      GoogleChartService.line_chart({site_group: 'Historic Green Village'}, function(result) {
+        var data = result.data;
+        $scope.total_demand = result.total_demand
+        $scope.total_solar = result.total_solar
+        $scope.utility_power = result.utility_power
+        drawLineChart(data);
+        console.log(data);
+    }); 
+    }
 
-    linechart.formatters = {};
-
-    $scope.linechart = linechart;
-
-
-
- /*    $scope.line_chart = function(){
-    GoogleChartService.line_chart({site_group: 'Historic Green Village'}, function(result){
-     var data = result.data
+    $scope.getLineChart();
+    
+    function drawLineChart (data) {
       var linechart = {};
       linechart.type = "LineChart";
       linechart.cssStyle = "height:200px; width:300px;";
       linechart.type = "LineChart";
-    linechart.cssStyle = "height:200px; width:300px;";
-    linechart.data = {"cols": [
-        {id: "month", label: "Month", type: "string"},
-        {id: "demand", label: "Demand", type: "number"},
-        {id: "solar", label: "Solar", type: "number"}
-    ], "rows": data 
-    };
+      linechart.cssStyle = "height:200px; width:300px;";
+      linechart.data = {"cols": [
+          {id: "month", label: "Month", type: "string"},
+          {id: "demand", label: "Demand", type: "number"},
+          {id: "solar", label: "Solar", type: "number"}
+      ], "rows": data
+      };
 
-    linechart.options = {
-        "title": "Last 12 month demand vs solar power",
-        "isStacked": "true",
-        "fill": 20,
-        "displayExactValues": true,
-        "vAxis": {
-            "title": "Power unit", "gridlines": {"count": 6}
-        },
-        "hAxis": {
-            "title": "Month"
-        }
-    };
+      linechart.options = {
+          "title": "Last 12 month demand vs solar power",
+          "isStacked": "true",
+          "fill": 20,
+          "displayExactValues": true,
+          "vAxis": {
+              "title": "Power unit", "gridlines": {"count": 6}
+          },
+          "hAxis": {
+              "title": "Month"
+          }
+      };
 
-    linechart.formatters = {};
-
-    $scope.linechart = linechart;
-
-
+      linechart.formatters = {};
+      $scope.linechart = linechart;
     }
-  }
-*/
-
-
-
-    //Table
-/*
-     $scope.getPieChart = function () {
-                 GoogleChartService.piechart({site_group: 'Commercial'}, function(result) {
-       // $window.alert();
-            var data = result.data;
-            drawPieChart(data);
-            console.log(data);
-            
-        });
-
-        } */
+    
+    /* end */
+		
+    /* data tables code */
     $scope.data_tables = function(){
-        GoogleChartService.data_tables({site_group: 'Historic Green Village', month: 9}, function(result){
-            var data = result.data;
-           $scope.sites = data;
-
-        });
-
+      GoogleChartService.data_tables({site_group: 'Historic Green Village', month: 9}, function(result){
+        var data = result.data;
+        $scope.sites = data;
+         
+      });
     }
 
-/*
-   $scope.data_tables = function(){
-		//	var url = "http://192.168.199.108:3000/api/get_last_month_data_by_load_type";
-			$http.get("http://localhost:3002/api/get_last_month_data")
-			.success(function(response){
-				//console.log(response.data);
-			
-			var data = response.data;
-			$scope.sites = data;
-			console.log(data);
-			}).error(function(){
-        alert("error");
-    });
-		} */
-
-
-   $scope.data_tables();
-    }]);
+    $scope.data_tables();
+    /* end */
+}]);

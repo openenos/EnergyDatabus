@@ -1,0 +1,43 @@
+<div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+    <!-- tools box -->
+    <div class="pull-right box-tools">    
+      <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa fa-refresh"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="remove"><i class="fa fa-times"></i></button>
+    </div><!-- /. tools -->
+
+    <i class="fa fa-signal"></i>
+    <h3 class="box-title">
+      Last 12 Months Data
+    </h3>
+    <!-- Box -->
+  </div>
+  <div class="box-body no-padding">
+    <div class="row spanContent" style="margin-left:0">
+      <div class="col-lg-3">
+        <p class="mediumBold span12 noGaps" id="total_demand">{{ total_demand }} mWh</p>
+        <p class="tinyBold noGaps">Total Demand</p>
+      </div>
+      <div class="col-lg-3 leftBoder grayBorder" style="padding-left:10px">
+        <p class="mediumBold span12 noGaps" id="total_solar">{{ total_solar }} mWh</p>
+        <p class="tinyBold noGaps">Solar Power Produced</p>
+      </div>
+      <div class="col-lg-3 leftBoder grayBorder" style="padding-left:10px">
+        <p class="mediumBold span12 noGaps" id="utility_power">{{ utility_power }} mWh</p>
+        <p class="tinyBold noGaps">Utility Provided Power</p>
+      </div>
+      <div class="col-lg-3 leftBoder grayBorder" style="padding-left:10px">
+        <!--<p class="mediumBold span12 noGaps" id="net_power"></p>
+        <p class="tinyBold noGaps">Net</p>-->
+      </div>
+    </div>
+    <div class="row spanContent" style="margin-left:0">
+      <div class="col-lg-4 pull-right">
+        <i class="fa  fa-square blue"></i> Demand
+        <i class="fa  fa-square green"></i> Solar Power
+      </div>
+    </div>
+     <div google-chart chart="linechart" id="line-chart" style="height: 300px;"/> </div>
+  </div><!-- /.box -->  
+</div>

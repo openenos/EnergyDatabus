@@ -1,0 +1,75 @@
+<!--box -->
+    <div class="box box-warning  sortable">
+      <div class="box-header" style="cursor: move;" >
+        <!-- tools box -->
+        <div class="pull-right box-tools">                                        
+          <button class="btn btn-default btn-tn refresh-btn" data-toggle="tooltip" title="" data-original-title="Reload"><i class="fa fa-refresh"></i></button>
+          <button class="btn btn-default btn-tn" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+          <button class="btn btn-default btn-tn" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
+        </div><!-- /. tools -->
+
+        <i class="fa fa-sun-o"></i>
+        <h3 class="box-title">
+          Weather
+        </h3>
+      </div>
+      <!-- box-body -->
+      <div class="box-body no-padding row-fluid">
+
+
+
+        <div class="span12  homeWidgetsPadding" style="margin-left:0">
+          <div class="span12 bottomBorder grayBorder spanContent">
+            <div class="span5">
+
+              <p class="extraBold" style="margin-top:20px"><i class="fa ion-thermometer blue"></i> <span id="temp_f">{{ weather_data.temp_f }} </span>°F</p>
+              <p class="tinyBold noGaps">at 04:31</p>
+            </div>
+            <div class="span7 leftBoder grayBorder">
+              <div class="span12">
+                <div class="span4">
+                  <img width="36" height="36" id="weather_img" style="margin: 5px;" src="{{weather_data.image}}"></img>
+                </div>
+                <div class="span8">
+                  <p class="smallBold" style="margin-top: 12px;"><span id="weather_status">{{weather_data.status}}</span></p>
+                </div>
+              </div>
+
+              <div class="span12">
+                <div class="span4">
+                  <img width="36" height="36" style="margin: 5px;" src="/assets/wind.png"></img>
+                </div>
+                <div class="span8">
+                  <p class="smallBold"><span id="wind_string">{{weather_data.wind_string}}</span></p>
+                </div>
+              </div>
+
+              <div class="span12">
+                <div class="span4">
+                  <img width="36" height="36" style="margin: 5px;" src="/assets/humidity.png"></img>
+                </div>
+                <div class="span8">
+                  <p class="smallBold" style="margin-top: 10px;">Humidity <span id="relative_humidity">{{weather_data.relative_humidity}}</span></p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="span12 spanContent" style="margin-left:0">
+            <div class="span5">
+              <p class="mediumBold span12 noGaps">76.5°F</p>
+              <p class="tinyBold noGaps">AVERAGE TODAY</p>
+            </div>
+            <div class="span6 leftBoder grayBorder" style="padding-left:10px;padding-bottom:4px">
+              <p class="mediumBold span12 noGaps">70.5°F</p>
+              <p class="tinyBold noGaps">AVERAGE THIS WEEK</p></div>
+          </div>
+
+        </div>
+
+
+      </div><!-- /.box-body-->
+      <div class="box-footer">
+        <p class="span10 snapShotFooter blue" style="margin-left:5px"><i class="fa fa-arrow-down"></i> 1°F LOWER THAN YESTERDAY</p>
+      </div> 
+    </div>

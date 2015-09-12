@@ -8,18 +8,12 @@ class Api::SitesController < ApplicationController
 	def get_top_circuits_by_site
 		if params[:site].present?
 			site = Site.find_by_display(params[:site])
-			query = "select sum(power) from power_readings_by_min where site =~ /"+"#{params[:site]}" +"/ group by circuit"
 			
-			result = $influxdb.query query
-			data = {}
-			result.each do |circuit|
-				data[circuit["tags"]["circuit"]] = (circuit["values"].first["sum"]/1000).round
-			end
-			data.delete("Main Power")
-			data.delete("Total Power")
+			data = get_demand_by_circuits
 			# Main Power and Total Power not required in the list so remove
 			data = data.sort_by {|k, v| v}.reverse
-			data = Hash[(data.first(5))]
+			data = data.first(5)
+			data = data.prepend(["Circuit", "Value"])
 			render json: {data: data}
 		else
 			render json: { message: "Required parameters are site name"}
@@ -28,17 +22,15 @@ class Api::SitesController < ApplicationController
 
 	def get_last_day_demand
 		if params[:site].present?
-			$start_time = Time.now - 24.hours
-			data = []
-			24.times do
-				end_time = $start_time + 1.hours
-				st = $start_time.strftime("%Y-%m-%d %H:%M:%S")
-				et = end_time.strftime("%Y-%m-%d %H:%M:%S")
-				query = "select power from power_readings_by_hour where time > #{st} and time < #{et} and site =~ /"+"#{params[:site]}" +"/ and load_type='Demand'"
-				result = $influxdb.query query
-				data << (result.first["values"].first["sum"]/1000).round
-				$start_time = $start_time + 1.hours
+			$start_time = (Time.now.beginning_of_hour - 24.hours).strftime("%Y-%m-%d %H:%M:%S")
+			$end_time = (Time.now.beginning_of_hour).strftime("%Y-%m-%d %H:%M:%S")
+			data = {}
+			query = "select value from power_readings_by_hour_new where time > '#{$start_time}' and time < '#{$end_time}' and Site =~ /#{params[:site]}/ and LoadType='Demand' group by Site"
+			result = $influxdb.query query
+			result.first["values"].each do |hash|
+				data[hash["time"]] = hash["value"]
 			end
+			
 			render json: { data: data }
 		else
 			render json: { message: "Required parameters are site name"}
@@ -47,7 +39,6 @@ class Api::SitesController < ApplicationController
 
 	def get_weather_forecast
 		#Get the weather forecast using wunderground api
-
 		if params[:site].present?
 			api_key = "87e74b8d9511ea00"
    		wunder = Wunderground.new(api_key)
@@ -74,7 +65,6 @@ class Api::SitesController < ApplicationController
 			    end
     
     			data['forecast'] = forecast_data
-
     			render json: { data: data }
    			end
    		else
@@ -110,4 +100,77 @@ class Api::SitesController < ApplicationController
 		end
 	end
 
+	def get_site_demand
+		if params[:site].present?
+			site = Site.find_by_display(params[:site])
+   		if site.present?
+   			time = Time.now.beginning_of_day.strftime("%Y-%m-%d %H:%M:%S")
+   			query = "select value from power_readings_new where LoadType='Demand' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
+   			result = $influxdb.query query
+   			values = result.first["values"].map { |hash| hash["value"] }
+   			current_demand = values.last/1000
+   			top_demand = values.max/1000
+   			total_demand = values.sum/(1000)
+   			data = { current_demand: current_demand, top_demand: top_demand, total_demand: total_demand }
+   			render json: { data: data }
+   		else
+   			render json: { message: "Required a valid site name"}	
+   		end
+		else
+			render json: { message: "Required parameters are site name"}
+		end
+	end
+
+	def get_solar_power
+		if params[:site].present?
+			site = Site.find_by_display(params[:site])
+   		if site.present?
+   			time = Time.now.beginning_of_day.strftime("%Y-%m-%d %H:%M:%S")
+   			#Query to get the total power so far for current day
+   			query = "select sum(value) from power_readings_new where LoadType='Energy Production' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
+   			result = $influxdb.query query
+   			total_power = (result.first["values"].first["sum"]/1000.0).round(2)
+
+   			#Query to get Current/Live power 
+   			query = "select last(value) from power_readings_new where LoadType='Energy Production' and Site=~ /#{params[:site]}/ and time >= '#{time}' group by Circuit"
+   			result = $influxdb.query query
+   			current_power = result.map { |hash| hash["values"].first["last"] }.inject(:+)
+   			
+   			render json: {data: { current_power: current_power, total_power: total_power} }
+   		else
+   			render json: { message: "Required a valid site name"}	
+   		end
+		else
+			render json: { message: "Required parameters are site name"}
+		end
+
+	end
+
+	def get_top_demand
+		if params[:site].present?
+			site = Site.find_by_display(params[:site])
+   		if site.present?
+   			data = get_demand_by_circuits
+   			data = data.sort_by {|k, v| v}.reverse
+   			render json: { data: data }
+   		else
+   			render json: { message: "Required a valid site name"}	
+   		end
+		else
+			render json: { message: "Required parameters are site name"}
+		end
+	end
+ 
+ 	private
+
+ 	def get_demand_by_circuits
+ 		query = "select LAST(value) from power_readings_new where Site =~ /#{params[:site]}/ and Circuit <> 'Main Power' and Circuit <> 'Total Power' group by Circuit"
+		result = $influxdb.query query
+		data = {}
+		result.each do |circuit|
+			data[circuit["tags"]["Circuit"]] = (circuit["values"].first["last"]).round
+		end
+		return data
+
+ 	end
 end

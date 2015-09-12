@@ -103,11 +103,29 @@ class Api::SiteUsageController < ApplicationController
 
 	def get_year_data(load_type)
 		data = []
-		(1..12).to_a.each do |month|
-			query = "select sum(power) from power_readings_by_hour where month=#{month} and year=#{params[:year]} and site =~ /"+"#{params[:site]}" +"/ and load_type = #{load_type}"
-			result = $influxdb.query query
-			value = result.empty? ? 0 : (result.first["values"].first["sum"]/1000).round
-			data << [month, value]
+		query = "select sum(value) from power_readings_by_hour_new where year=#{params[:year]} and Site =~ /"+"#{params[:site]}" +"/ and LoadType = #{load_type} group by Month"
+		result = $influxdb.query query
+		result.each do |hash|
+			month = hash["tags"]["Month"]
+			value = hash["values"].first["sum"].present? ? (hash["values"].first["sum"]/1000).abs : 0
+			data << {c: [{v: month}, {v: value}]}
+		end
+		return data
+	end
+
+	def get_demand_production()
+		data = []
+		query = "select sum(value) from power_readings_by_hour_new where year=#{params[:year]} and Site =~ /"+"#{params[:site]}" +"/ and LoadType = 'Demand' group by Month"
+		demand_result = $influxdb.query query
+		query = "select sum(value) from power_readings_by_hour_new where year=#{params[:year]} and Site =~ /"+"#{params[:site]}" +"/ and LoadType = 'Energy Production' group by Month"
+		solar_result = $influxdb.query query
+		demand_result.each_with_index do |hash, i|
+			month = hash["tags"]["Month"]
+			demand = hash["values"].first["sum"].present? ? (hash["values"].first["sum"]/1000).abs : 0
+			solar = solar_result[i]["values"].first["sum"].present? ? (solar_result[i]["values"].first["sum"]/1000).abs : 0
+			total_solar = total_solar + solar
+			total_demand = total_demand + demand
+			data << {c: [{v: month}, {v: demand}, {v: solar}]}
 		end
 		return data
 	end

@@ -1,0 +1,26 @@
+ <div class="box box-warning sortable">
+      <div class="box-header" style="cursor: move;">
+        <!-- tools box -->
+        <div class="box-tools pull-right">
+          <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa fa-refresh"></i></button>
+          <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          <button class="btn btn-default btn-tn" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div><!-- /. tools -->
+
+        <i class="fa fa-adjust"></i>
+        <div id="snap-box-icon" class="snapshot-box-icon"></div>
+        <h3 class="box-title">
+          Past 30 days usage: Top 5 Circuits
+        </h3>
+      </div>
+        <!-- box-body -->
+      <div class="box-body row-fluid">
+        <div google-chart chart="pie_chart" id="usage_pie" style="height: 300px;"/> </div> 
+
+      </div><!-- /.box-body-->
+      
+      <!-- box-body -->
+      <div class="box-body row-fluid">
+        <a href='#'class="btn btn-primary btn-lg" id="model_pie" data-toggle="modal" data-target="#myModal">All Channels</a>
+      </div><!-- /.box-body-->
+    </div>

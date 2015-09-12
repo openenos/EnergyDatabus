@@ -1,0 +1,48 @@
+<div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+    <!-- tools box -->
+    <div class="pull-right box-tools">                                        
+      <button class="btn btn-default btn-tn refresh-btn" data-toggle="tooltip" title="" data-original-title="Reload"><i class="fa fa-refresh"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
+    </div><!-- /. tools -->
+
+    <i class="fa ion-arrow-graph-up-right"></i>
+    <h3 class="box-title">
+      Top Demand Now
+    </h3>
+  </div>
+  <!-- box-body -->
+  <div class="box-body no-padding row-fluid">
+    <!--<ul ng-repeat="circuit in top_demand">
+      <li><a href="#">{{circuit[0]}}</a></li>
+    </ul> -->
+
+    <div class="span12" style="margin-left:0">
+      <div class="span12 bottomBorder grayBorder">
+
+        <div class="span12 spanContent" style="margin-left:10px;" >
+          <span id="top_ten_demand" ng-repeat="circuit in top_demand">
+            <div class="span12 noGaps bulbContainer">
+              <div ng-class="(circuit[1]==0) ? 'span1 red' : 'span1 green'">
+                <i class="fa fa-circle"></i>
+              </div> 
+              <p class="span8 smallBold noGaps">
+                <a href="#">{{ circuit[0] }}</a>
+              </p>
+              <p class="span3 smallBold activeCost">{{circuit[1]}} W</p>
+            </div>
+          </span>
+
+        </div>
+
+
+      </div>
+    </div>
+
+
+  </div><!-- /.box-body-->
+  <div class="box-footer">
+    <a href="">See All</a>
+  </div> 
+</div>

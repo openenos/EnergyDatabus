@@ -11,7 +11,7 @@ class HomeController < ApplicationController
       from_date = params[:from] if params[:from].present?
       to_date = params[:to] if  params[:to].present?
       @days_between_dates = Date.parse(to_date).mjd - Date.parse(from_date).mjd
-      @groups = []
+      @groups = Hash[SiteGroup.pluck(:id, :display)]
       if params[:group_id].present?
         groupId = params[:group_id]
       else

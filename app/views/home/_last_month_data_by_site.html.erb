@@ -1,0 +1,45 @@
+<div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+    <!-- tools box -->
+    <div class="pull-right box-tools">    
+      <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa fa-refresh"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="remove"><i class="fa fa-times"></i></button>
+    </div><!-- /. tools -->
+
+    <i class="fa fa-building-o"></i>
+    <h3 class="box-title">
+      Sites Past <%= @days_between_dates %> Days Usage
+    </h3>
+
+    <button class="btn btn-primary btn-sm daterange" data-toggle="tooltip" title="Date range" style="margin: 5px;"><i class="fa fa-calendar"></i></button>
+    <div>
+    </div>
+    <div class="box-body no-padding">
+      <div class="table-responsive">
+        <!-- .table - Uses sparkline charts-->
+        <table class="table table-striped">
+          <tr>
+            <th>Name</th>
+            <th>kWh</th>
+            <th>kWh<br/>Sq. Ft.</th>
+            <th>Cost</th>
+            <th>Cost<br/>Sq. Ft.</th>
+          </tr>
+
+          <tr ng-repeat="site in sites">
+            <td><a href="site_snapshots/index ">{{site.name}}</a></td>
+            <td>{{site.kwh}}</td>
+            <td>{{site.kwhSqft}}</td>
+            <td>{{site.cost}}</td>
+            <td>{{site.costSqft}}</td>
+          </tr>
+        </table><!-- /.table -->
+      </div>
+    </div><!-- /.box-body-->
+    <div class="box-footer">
+      <!--<button class="btn btn-info"><i class="fa fa-download"></i> Export Data</button>-->
+    </div>
+  </div>
+
+</div><!-- /.box -->

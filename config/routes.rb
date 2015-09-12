@@ -67,8 +67,13 @@ Rails.application.routes.draw do
     match "/get_top_circuits_by_site" => "sites#get_top_circuits_by_site", via: :get
     match "/get_last_day_demand" => "sites#get_last_day_demand", via: :get
     match "/get_weather_forecast" => "sites#get_weather_forecast", via: :get
+    match "/get_site_demand" => "sites#get_site_demand", via: :get
+    match "/get_appliances_usage_by_site" => "sites#get_appliances_usage_by_site", via: :get
+    match "/get_top_demand" => "sites#get_top_demand", via: :get
+    match "/get_solar_power" => "sites#get_solar_power", via: :get
 
     #routes for site usage
+
     match "/get_year_usage_data_by_site" => "site_usage#get_year_usage_data_by_site", via: :get
     match "/get_year_production_data_by_site" => "site_usage#get_year_production_data_by_site", via: :get
     match "/get_month_usage_data_by_site" => "site_usage#get_month_usage_data_by_site", via: :get
@@ -77,8 +82,7 @@ Rails.application.routes.draw do
     match "/get_week_production_data_by_site" => "site_usage#get_week_production_data_by_site", via: :get
     match "/get_day_usage_data_by_site" => "site_usage#get_day_usage_data_by_site", via: :get
     match "/get_day_production_data_by_site" => "site_usage#get_day_production_data_by_site", via: :get
-
-    match "/get_appliances_usage_by_site" => "sites#get_appliances_usage_by_site", via: :get
+    
   end
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
