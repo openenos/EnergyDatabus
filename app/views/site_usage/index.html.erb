@@ -1,5 +1,5 @@
 <input type="hidden" name="date" id="current_date" value='<%= Time.now.strftime("%d-%m-%Y")%>'>
-<input type="hidden" name="site_ref" id="site_ref" value="<%=  params[:site_ref] %>">
+<input type="hidden" name="site_ref" id="site_ref" value="<%=  params[:site] %>">
 <input type="hidden" id="prev_next" name="prev_next" value="0">
 <input type="hidden" id="usage_tab" name="usage_tab" value="day">
 				    
@@ -12,12 +12,12 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        <%= @site["dis"]  %>
+                        <%= @site.display  %>
                         <small>Power Usage</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#">Site</a></li>
-                        <li class="active"><%= @site["dis"]  %></li>
+                        <li class="active"><%= @site.display  %></li>
                     </ol>
                 </section>
 

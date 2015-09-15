@@ -2,10 +2,11 @@ class SiteUsageController < ApplicationController
 
   include ApplicationHelper
  
-  layout 'site_usage'
+  layout 'dashboard'
   
   def index
-    @site = getSiteBySiteRef params[:site_ref]
+     @site = Site.find_by_display(params[:site])
+     @site = Site.first unless @site.present?
   end
 
   def getSiteBySiteRef site_ref

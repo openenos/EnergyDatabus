@@ -1,5 +1,4 @@
 
-<input type="hidden" name="site_ref" id="site_ref" value="<%=  params[:site_ref] %>">
 
   <%= render :partial=>"shared/subnavbar" %>
 
@@ -11,12 +10,12 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        <%= @site["dis"]  %>
+                        <%= @site.display  %>
                         <small>Appliances</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="#">Site</a></li>
-                        <li class="active"><%= @site["dis"]  %></li>
+                        <li class="active"><%= @site.display  %></li>
                     </ol>
                 </section>
 
@@ -37,7 +36,7 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tab_1">
-<div id='ajax_loader' style="float:right;width: 80%;height: 300px;background-color: rgba(217, 231, 222, 0.6);background:url(/assets/ajax-loader.gif) no-repeat center center;">
+<!-- <div id='ajax_loader' style="float:right;width: 80%;height: 300px;background-color: rgba(217, 231, 222, 0.6);background:url(/assets/ajax-loader.gif) no-repeat center center;"> -->
 </div>
 <div class="no-padding row-fluid">
 <div class="col-lg-2" style="border: 1px solid #ccc;margin: 0 20px 0 0;width: 15%;height: 500px;" id="legendPlaceholder"></div>

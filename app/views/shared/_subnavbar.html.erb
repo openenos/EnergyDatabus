@@ -21,14 +21,14 @@
 						</a>	    				
 					</li>
 					<li class="<%= params[:controller]=="site_snapshots"? "active":"" %>"> 
-						<a href="/site_snapshots/index?site_ref=<%= params[:site_ref] %>">
+						<a href="/site_snapshots/index?site=<%= @site.display %>">
 							<i class="fa  fa-camera"></i>
 							<span>Snapshot</span>
 						</a>	    				
 					</li>
 					
 					<li class="<%= params[:controller]=="site_usage"? "active":"" %>"> 				
-						<a href="/site_usage/index?site_ref=<%= params[:site_ref] %>">
+						<a href="/site_usage/index?site=<%= @site.display %>">
 							<i class="fa fa-bar-chart-o"></i>
 							<span>Power Usage</span>
 						</a>	    				
@@ -48,7 +48,7 @@
 						</a>	   				
 					</li>
 					<li class="<%= params[:controller]=="site_appliances"? "active":"" %>">					
-						<a href="/site_appliances/index?site_ref=<%= params[:site_ref] %>">
+						<a href="/site_appliances/index?site=<%= @site.display %>">
 							<i class="fa fa-bolt"></i>
 							<span>Appliances</span>
 						</a>	   				

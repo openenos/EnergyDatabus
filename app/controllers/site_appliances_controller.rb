@@ -2,10 +2,10 @@ class SiteAppliancesController < ApplicationController
 
   include ApplicationHelper
   
-  layout 'site_appliances'
+  layout 'dashboard'
   
   def index
-    @site = getSiteBySiteRef params[:site_ref]
+    @site = Site.find_by_display(params[:site])
   end
   
   def getAllchannelsData
