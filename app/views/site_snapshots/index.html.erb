@@ -7,12 +7,13 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
   <h1> 
-    <small>{{ name }}</small>
+    <%= @site.display  %>
+    <small>Snapshot</small>
   </h1>
   <span id="site" style="display:none"><%= @site.display%></span>
   <ol class="breadcrumb">
-    <li><a href="/home/index">{{site_name}}</a></li>
-    <li class="active"></li>
+    <li><a href="#">Site</a></li>
+    <li class="active"><%= @site.display  %></li>
   </ol>
   </section>
 
