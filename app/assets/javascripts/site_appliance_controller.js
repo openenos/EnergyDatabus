@@ -1,6 +1,6 @@
 angular.module('enos.controllers')
-	.controller('SiteApplianceController', ['$scope', '$window', '$http', 'GoogleChartService',  
-    function ($scope, $window, $http, GoogleChartService){
+	.controller('SiteApplianceController', ['$scope', '$window', '$http',  
+    function ($scope, $window, $http){
     	$scope.name = "Site Appliance"
 
     	 /* Last 24hours Demand 
@@ -91,7 +91,7 @@ angular.module('enos.controllers')
 
         var options = {
           title: 'Last 24Hrs Usage',
-          hAxis: {title: 'Time',  titleTextStyle: {color: '#333'}},
+          hAxis: {format: 'M/d/yy', title: 'Time',  titleTextStyle: {color: '#333'}},
           vAxis: {minValue: 0, title: 'Value'},
           isStacked: true
         };

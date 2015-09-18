@@ -1,0 +1,25 @@
+<%= render :partial=>"shared/subnavbar" %>
+<div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="SiteCircuitController">
+	<aside class="right-side strech">
+  <!-- Content Header (Page header) -->
+	  <section class="content-header">
+		  <h1> 
+		    <%= @site.display  %>
+		    <small>Snapshot</small>
+		  </h1>
+		  <span id="site" style="display:none"><%= @site.display%></span>
+		  <ol class="breadcrumb">
+		    <li><a href="#">Site</a></li>
+		    <li class="active"><%= @site.display  %></li>
+		  </ol>
+	  </section>
+
+	  <!-- Main content -->
+	  <section class="content">
+	  <!-- Main row -->
+	  	<div class="row">
+	  	</div>
+
+	  </section>
+	</aside>
+</div>

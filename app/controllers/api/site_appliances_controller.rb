@@ -15,7 +15,6 @@ class Api::SiteAppliancesController < ApplicationController
         result.first["values"].each do |hash|
           hash.delete("Site")
           hash.delete("Main Power")
-          hash["time"] = hash["time"].to_time.strftime("%H:%M")
           data << hash.values
         end
         render json: { data: data }

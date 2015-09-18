@@ -1,6 +1,6 @@
 angular.module('enos.controllers')
-	.controller('SiteSnapshotController', ['$scope', '$window', '$http', 'GoogleChartService',  
-    function ($scope, $window, $http, GoogleChartService){
+	.controller('SiteSnapshotController', ['$scope', '$window', '$http',  
+    function ($scope, $window, $http){
     	$scope.name = "Site Snapshot"
       $scope.site_name = $("#site").text();    	
       /* Weather Report Chart */

@@ -35,6 +35,7 @@ mount Sidekiq::Web => '/sidekiq'
   get 'site_appliances/index' 
   get 'site_usage/index'
   get 'site_snapshots/index' => "site_snapshots#index"
+  get 'site_circuit/index' => "site_circuit#index"
 
   #devise_for :users
 
