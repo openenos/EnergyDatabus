@@ -24,11 +24,11 @@ class Api::SitesController < ApplicationController
 		if params[:site].present?
 			$start_time = (Time.now.beginning_of_hour - 24.hours).strftime("%Y-%m-%d %H:%M:%S")
 			$end_time = (Time.now.beginning_of_hour).strftime("%Y-%m-%d %H:%M:%S")
-			data = {}
-			query = "select value from power_readings_by_hour_new where time > '#{$start_time}' and time < '#{$end_time}' and Site =~ /#{params[:site]}/ and LoadType='Demand' group by Site"
+			data = []
+			query = "select value from power_readings_new where time > now() - 24h and Site =~ /#{params[:site]}/ and LoadType='Demand'"
 			result = $influxdb.query query
 			result.first["values"].each do |hash|
-				data[hash["time"]] = hash["value"]
+				data << {c: [{v: hash["time"].to_time.strftime("%H:%M")}, {v: hash["value"]}]}
 			end
 			
 			render json: { data: data }
@@ -71,30 +71,6 @@ class Api::SitesController < ApplicationController
    			render json: { message: "Required a valid site name"}	
    		end
 
-		else
-			render json: { message: "Required parameters are site name"}
-		end
-	end
-
-	def get_appliances_usage_by_site
-		if params[:site].present?
-			site = Site.find_by_display(params[:site])
-   		if site.present?
-   			data = []
-   			start_time = Time.now.beginning_of_hour - 24.hours
-   			end_time = Time.now.beginning_of_hour
-   			site.panels.first.circuits.where(:input => 0).each do |circuit|
-   				query = "select value from power_readings_by_hour_new where time > #{start_time.strftime("%Y-%m-%d %H:%M:%S")} and time < #{end_time.strftime("%Y-%m-%d %H:%M:%S")} and Circuit = #{circuit.display}"
-   				
-   				result = $influxdb.query query
-   				result.each do |hash|
-						values = hash["values"]
-						data << {circuit.display => values}
-					end
-   			end
-   		else
-   			render json: { message: "Required a valid site name"}	
-   		end
 		else
 			render json: { message: "Required parameters are site name"}
 		end
@@ -151,7 +127,7 @@ class Api::SitesController < ApplicationController
 			site = Site.find_by_display(params[:site])
    		if site.present?
    			data = get_demand_by_circuits
-   			data = data.sort_by {|k, v| v}.reverse
+   			data = data.sort_by {|k, v| v}.reverse.first(10)
    			render json: { data: data }
    		else
    			render json: { message: "Required a valid site name"}	

@@ -71,13 +71,9 @@
     <div class="box-body col-lg-6">
 
       <label>View by Group</label>
-      <select class="form-control" id="changeGroup">
+      <select class="form-control" id="changeGroup" ng-model="siteGroup" ng-change="change()">
         <% @groups.each do |id, display| %>
-          <% if params['group_id'].to_i == id %>
-            <option value="<%= id %>" selected="selected"><%= display %></option> 
-          <% else %>
-            <option value="<%= id %>"><%= display %></option> 
-          <% end %>
+            <option><%= display %></option> 
         <% end %>
       </select>
     </div>

@@ -7,6 +7,8 @@ class SiteSnapshotsController < ApplicationController
   def index
     @liveData = []
     @solarData = []
+    @site = Site.find_by_display(params[:site])
+    @site = Site.first unless @site.present?
   end
   
   def getWeatherReport site_ref

@@ -18,6 +18,7 @@ class HomeController < ApplicationController
         #groupId = @groups.first['id']
       end
       @resp_data = []
+      @site_group = SiteGroup.first
   end
 
 end

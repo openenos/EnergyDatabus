@@ -2,19 +2,27 @@ angular.module('enos.controllers')
 	.controller('IndexController', ['$scope', '$window', '$http', 'GoogleChartService',  
     function ($scope, $window, $http, GoogleChartService){
 
+    $scope.siteGroup = "Historic Green Village"
+    $scope.change = function() {
+      console.log("Change site_group:" + $scope.siteGroup)
+      $scope.getPieChart($scope.siteGroup);
+      $scope.getGaugeChart($scope.siteGroup);
+      $scope.getLineChart($scope.siteGroup);
+      $scope.data_tables($scope.siteGroup);
+    };
+
 		/* Pie chart code */
-    $scope.getPieChart = function () {
-      GoogleChartService.piechart({site_group: 'Historic Green Village', month: 9}, function(result) {
+    $scope.getPieChart = function (site_group) {
+      if(site_group == undefined){
+        site_group = 'Historic Green Village'
+      }
+      GoogleChartService.piechart({site_group: site_group , month: 9}, function(result) {
       var data = result.data;
       drawPieChart(data);
       console.log(data);
-        
     });
-
     }
-   
 		$scope.getPieChart();
-
     function drawPieChart (data){
       console.log(data);
       var pie_chart = {};
@@ -39,8 +47,11 @@ angular.module('enos.controllers')
 		
     /*  Guage chart */
 
-    $scope.getGaugeChart = function(){
-      GoogleChartService.gaugechart({site_group: 'Historic Green Village'}, function(result) {
+    $scope.getGaugeChart = function(site_group){
+      if(site_group == undefined){
+        site_group = 'Historic Green Village'
+      }
+      GoogleChartService.gaugechart({site_group: site_group}, function(result) {
         var data = result.data;
         drawGaugeChart(data);
         console.log(data);
@@ -73,8 +84,11 @@ angular.module('enos.controllers')
     /* end */
 
     /* Line Chart */
-    $scope.getLineChart = function(){
-      GoogleChartService.line_chart({site_group: 'Historic Green Village'}, function(result) {
+    $scope.getLineChart = function(site_group){
+      if(site_group == undefined){
+        site_group = 'Historic Green Village'
+      }
+      GoogleChartService.line_chart({site_group: site_group}, function(result) {
         var data = result.data;
         $scope.total_demand = result.total_demand
         $scope.total_solar = result.total_solar
@@ -119,8 +133,11 @@ angular.module('enos.controllers')
     /* end */
 		
     /* data tables code */
-    $scope.data_tables = function(){
-      GoogleChartService.data_tables({site_group: 'Historic Green Village', month: 9}, function(result){
+    $scope.data_tables = function(site_group){
+      if(site_group == undefined){
+        site_group = 'Historic Green Village'
+      }
+      GoogleChartService.data_tables({site_group: site_group, month: 9}, function(result){
         var data = result.data;
         $scope.sites = data;
          

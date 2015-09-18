@@ -9,8 +9,9 @@
   <h1> 
     <small>{{ name }}</small>
   </h1>
+  <span id="site" style="display:none"><%= @site.display%></span>
   <ol class="breadcrumb">
-    <li><a href="/home/index">Site</a></li>
+    <li><a href="/home/index">{{site_name}}</a></li>
     <li class="active"></li>
   </ol>
   </section>
@@ -29,7 +30,9 @@
 
     <!--box -->
     <!-- solar -->
-    <%= render "solar_power" %>
+    <% unless @site.panels.map(&:circuits).first.where(:is_producing => true).empty? %>
+      <%= render "solar_power" %>
+    <% end %>
     <!-- end -->
     <!-- /.box -->
     <!--box -->
@@ -52,7 +55,7 @@
       </div>
       <!-- box-body -->
       <div class="box-body row-fluid">
-        <!-- <div google-chart chart="pie_chart"/></div> -->
+        <div google-chart chart="lastdaydemand" id="line-chart" style="height: 300px;"/> </div>
       </div><!-- /.box-body-->
     </div>
     <!-- /.box -->

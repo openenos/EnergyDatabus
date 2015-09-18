@@ -2,7 +2,8 @@ angular.module('enos.controllers')
 	.controller('SiteSnapshotController', ['$scope', '$window', '$http', 'GoogleChartService',  
     function ($scope, $window, $http, GoogleChartService){
     	$scope.name = "Site Snapshot"
-    	/* Weather Report Chart */
+      $scope.site_name = $("#site").text();    	
+      /* Weather Report Chart */
     	$scope.getWeatherReport = function(){
     		var req = {
 					method: 'GET',
@@ -10,7 +11,7 @@ angular.module('enos.controllers')
 					headers: {
 					 'Accept': 'application/json'
 					},
-					params: { site: 'AMI Outfitters - Sears Cottage' }
+					params: { site: $scope.site_name }
 				}
 
 				$http(req).then(function(result){
@@ -35,7 +36,7 @@ angular.module('enos.controllers')
 					headers: {
 					 'Accept': 'application/json'
 					},
-					params: { site: 'AMI Outfitters - Sears Cottage' }
+					params: { site: $scope.site_name }
 				}
 
 				$http(req).then(function(result){
@@ -82,14 +83,11 @@ angular.module('enos.controllers')
 				headers: {
 				 'Accept': 'application/json'
 				},
-				params: { site: 'AMI Outfitters - Sears Cottage' }
+				params: { site: $scope.site_name }
 			}
 
 			$http(req).then(function(result){
 					data = result.data.data;
-					//drawPieChart(data)
-					//console.log("Top Demand: ");
-					//console.log(data);
 					$scope.top_demand = data;
 				}, 
 				function(data){
@@ -110,15 +108,12 @@ angular.module('enos.controllers')
 				headers: {
 				 'Accept': 'application/json'
 				},
-				params: { site: 'AMI Outfitters - Sears Cottage' }
+				params: { site: $scope.site_name }
 			}
 
 			$http(req).then(function(result){
 				data = result.data.data
-				//drawPieChart(data)
-				console.log("Site Demand");
 				drawGaugeChart(data);
-				console.log(data);
 			}, 
 			function(data){
 				console.log(data);
@@ -164,15 +159,12 @@ angular.module('enos.controllers')
 				headers: {
 				 'Accept': 'application/json'
 				},
-				params: { site: 'Pilsbury Office' }
+				params: { site: $scope.site_name }
 			}
 
 			$http(req).then(function(result){
 				data = result.data.data
-				//drawPieChart(data)
-				console.log("Site Demand");
 				drawGaugeChartSolar(data);
-				console.log(data);
 			}, 
 			function(data){
 				console.log(data);
@@ -206,6 +198,73 @@ angular.module('enos.controllers')
   	}   
 
     /* Solar Power Gauges End */
+
+
+    /* Last 24hours Demand */
+    $scope.getLastDayDemand = function(){
+      var req = {
+        method: 'GET',
+        url: '/api/get_last_day_demand',
+        headers: {
+         'Accept': 'application/json'
+        },
+        params: { site: $scope.site_name }
+      }
+
+      $http(req).then(function(result){
+        data = result.data.data
+        //drawPieChart(data)
+        console.log("Last Day Demand");
+        //drawGaugeChartSolar(data);
+        drawLineChart(data);
+        //console.log(data);
+      }, 
+      function(data){
+        console.log(data);
+      });
+
+    }
+    $scope.getLastDayDemand();
+    
+    function drawLineChart (data) {
+      var linechart = {};
+      linechart.type = "LineChart";
+      linechart.cssStyle = "height:200px; width:300px;";
+      linechart.type = "LineChart";
+      linechart.cssStyle = "height:200px; width:300px;";
+      linechart.data = {"cols": [
+          {id: "time", label: "Time", type: "string"},
+          {id: "demand", label: "Demand", type: "number"}
+          
+      ], "rows": data
+      };
+
+      linechart.options = {
+          "title": "Last 24 hours demand",
+          "isStacked": "true",
+          "fill": 20,
+          "displayExactValues": true,
+          "vAxis": {
+              "title": "Power unit", "gridlines": {"count": 6}
+          },
+          "hAxis": {
+              "title": "Time"
+          }
+      };
+
+      linechart.formatters = {};
+      $scope.lastdaydemand = linechart;
+    }
+
+
+
+
+
+
+
+
+
+    /* Last 24hours Demand End */
 
 
 

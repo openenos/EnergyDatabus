@@ -77,7 +77,6 @@ mount Sidekiq::Web => '/sidekiq'
     match "/get_solar_power" => "sites#get_solar_power", via: :get
 
     #routes for site usage
-
     match "/get_year_usage_data_by_site" => "site_usage#get_year_usage_data_by_site", via: :get
     match "/get_year_production_data_by_site" => "site_usage#get_year_production_data_by_site", via: :get
     match "/get_month_usage_data_by_site" => "site_usage#get_month_usage_data_by_site", via: :get
@@ -86,6 +85,9 @@ mount Sidekiq::Web => '/sidekiq'
     match "/get_week_production_data_by_site" => "site_usage#get_week_production_data_by_site", via: :get
     match "/get_day_usage_data_by_site" => "site_usage#get_day_usage_data_by_site", via: :get
     match "/get_day_production_data_by_site" => "site_usage#get_day_production_data_by_site", via: :get
+
+    #routes for site appliances
+    match "/get_last_day_usage" => "site_appliances#get_last_day_usage", via: :get
     
   end
   # Example of regular route:
