@@ -4,14 +4,20 @@ class WeatherWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
 
-  def perform
+  #Getting influxdb object and series using influx db config file
+  influxdb_config = YAML.load_file('config/influxdb_config.yml')
+  $influxdb_config = influxdb_config[Rails.env]
+  $database = $influxdb_config["database"]
+  $username = $influxdb_config["username"]
+  $password = $influxdb_config["password"]
+
+  def perform(station)
     host = "localhost"
-    username = 'enos'
-    password = 'p@ssw0rd'
-    database = 'openenos'
+    username = $username
+    password = $password
+    database = $database
     series     = 'temperature_readings'
     time_precision = 'm'
-	station = 'KFLPALME10'
 	
 	puts "Fetching Weather data for #{station} - Start"
 	

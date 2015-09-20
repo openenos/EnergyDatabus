@@ -11,7 +11,7 @@ class Api::SiteAppliancesController < ApplicationController
 			site = Site.find_by_display(params[:site])
    		if site.present?
    			data = []
- 				query = "select * from power_readings_#{site.id} where time > now() - 24h"
+ 				query = "select * from emon_readings_table_#{site.id} where time > now() - 24h"
  				result = $influxdb.query query
         result.first["values"].first.delete("Site")
         result.first["values"].first.delete("Main Power")

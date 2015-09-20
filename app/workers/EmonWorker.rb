@@ -5,6 +5,13 @@ class EmonWorker
   include Sidekiq::Worker
   sidekiq_options :retry=>1
 
+  #Getting influxdb object and series using influx db config file
+  influxdb_config = YAML.load_file('config/influxdb_config.yml')
+  $influxdb_config = influxdb_config[Rails.env]
+  $database = $influxdb_config["database"]
+  $username = $influxdb_config["username"]
+  $password = $influxdb_config["password"]
+
   def perform(panelId)
 
     @channel=[]
@@ -16,11 +23,11 @@ class EmonWorker
     rowValues = {}
 
     host = "localhost"
-    username = 'enos'
-    password = 'p@ssw0rd'
-    database = 'openenos'
+    username = $username
+    password = $password
+    database = $database
     series     = 'emon_readings'
-	runtime_series = 'appliance_runtimes'
+	 runtime_series = 'appliance_runtimes'
     time_precision = 'm'
 
     panel = Panel.find(panelId)

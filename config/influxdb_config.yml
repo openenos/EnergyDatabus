@@ -9,8 +9,8 @@ development:
 
 production:
   database: 'openenos'
-  username: 'test'
-  password:	'test'
+  username: 'enos'
+  password:	'p@ssw0rd'
   series:
-    min_table: 'power_readings_new'
-    hour_table: 'power_readings_by_hour_new'
+    min_table: 'emon_readings'
+    hour_table: 'emon_readings_by_hour'

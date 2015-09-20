@@ -28,7 +28,7 @@
                 <i class="fa fa-circle"></i>
               </div> 
               <p class="span8 smallBold noGaps">
-                <a ng-href="/site_circuit/index?circuit={{circuit[0]}}">{{ circuit[0] }}</a>
+                <a ng-href="/site_circuit/index?site=<%= @site.display %>&circuit={{circuit[0]}}">{{ circuit[0] }}</a>
               </p>
               <p class="span3 smallBold activeCost">{{circuit[1]}} W</p>
             </div>
