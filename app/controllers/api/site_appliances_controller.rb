@@ -1,6 +1,10 @@
 class Api::SiteAppliancesController < ApplicationController
 
-	$influxdb = InfluxDB::Client.new "openenos"
+  #Getting influxdb object and series using influx db config file
+	influxdb_config = YAML.load_file('config/influxdb_config.yml')
+  $influxdb_config = influxdb_config[Rails.env]
+  $database = $influxdb_config["database"]
+  $influxdb = InfluxDB::Client.new "#{$database}"
 
 	def get_last_day_usage
 		if params[:site].present?

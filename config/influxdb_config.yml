@@ -1,0 +1,16 @@
+
+development:
+  database: 'openenos'
+  username: 'test'
+  password:	'test'
+  series:
+    min_table: 'power_readings_new'
+    hour_table: 'power_readings_by_hour_new'
+
+production:
+  database: 'openenos'
+  username: 'test'
+  password:	'test'
+  series:
+    min_table: 'power_readings_new'
+    hour_table: 'power_readings_by_hour_new'

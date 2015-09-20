@@ -1,4 +1,6 @@
 class Api::SiteUsageController < ApplicationController
+	
+	#Getting influxdb object and series using influx db config file
 	$influxdb = InfluxDB::Client.new "openenos"
 	
 	def get_year_usage_data_by_site
@@ -145,16 +147,17 @@ class Api::SiteUsageController < ApplicationController
 
 	def get_day_data(load_type)
 		data = []
-		start_time = params[:date].to_time.beginning_of_day
-		end_time = start_time.end_of_day
-		query = "select power from power_readings_by_min where time > '#{start_time.strftime("%Y-%m-%d %H:%M:%S")}' and time < '#{end_time.strftime("%Y-%m-%d %H:%M:%S")}' and site =~ /"+"#{params[:site]}" +"/ and load_type = #{load_type}"
+		start_time = Date.today.to_s
+		end_time = Date.tomorrow.to_s
+		query = "select value from power_readings_new where time > '#{start_time}' and time < '#{end_time}' and Site =~ /"+"#{params[:site]}" +"/ and LoadType = '#{load_type}'"
 		result = $influxdb.query query
-		result.each do |hash|
-			values = hash["values"]
-			values.each do |value|
-				data << value.values
-			end
+		values = result.first["values"]
+		values.each do |hash|
+			array = hash.values
+			array[0] = array[0].to_time.strftime("%Y/%m/%d %H:%M")
+			data << array
 		end
+		return data
 	end
 
 end

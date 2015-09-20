@@ -2,7 +2,7 @@ class SiteUsageController < ApplicationController
 
   include ApplicationHelper
  
-  layout 'dashboard'
+  layout 'site_usage'
   
   def index
      @site = Site.find_by_display(params[:site])

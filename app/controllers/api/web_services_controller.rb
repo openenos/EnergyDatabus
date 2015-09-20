@@ -1,11 +1,19 @@
 class Api::WebServicesController < ApplicationController
+	
+	#Getting influxdb object and series using influx db config file
+	influxdb_config = YAML.load_file('config/influxdb_config.yml')
+	$influxdb_config = influxdb_config[Rails.env]
+	$database = $influxdb_config["database"]
+	$min_series = $influxdb_config["series"]["min_table"]
+	$hr_series = $influxdb_config["series"]["hour_table"]
+	$influxdb = InfluxDB::Client.new "#{$database}"
+	
 
-	$influxdb = InfluxDB::Client.new "openenos"
 	def get_monthly_data_by_site_by_month
 		if params[:site].present? && params[:month].present?
 			starting_day = (Date.today.beginning_of_year + (params["month"].to_i-1).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
 			ending_day = (Date.today.beginning_of_year + (params["month"].to_i).months).to_time.strftime("%Y-%m-%d %H:%M:%S")
-			result = $influxdb.query "select sum(value) from power_readings_by_hour where time>#{starting_day} and time<#{ending_day} and Site='#{params[:site]}'"
+			result = $influxdb.query "select sum(value) from #{$hr_series} where time>#{starting_day} and time<#{ending_day} and Site='#{params[:site]}'"
 			if result.empty?
 				value = 0
 			else
@@ -24,7 +32,7 @@ class Api::WebServicesController < ApplicationController
 		site_group = params[:site_group]
 		if site_group.present? 
 			#query = "select sum(power) from power_readings_by_min where time > #{starting_day} and time < #{ending_day} site_group =~ /"+"#{site}" +"/ group by load_type"
-			query = "select sum(value) from power_readings_by_hour_new where SiteGroup =~ /.*#{site_group}.*/ and time > now() - 30d and LoadType <> 'Demand' and LoadType <> 'Mains' and LoadType <> 'Energy Production' group by LoadType"
+			query = "select sum(value) from #{$hr_series} where SiteGroup =~ /.*#{site_group}.*/ and time > now() - 30d and LoadType <> 'Demand' and LoadType <> 'Mains' and LoadType <> 'Energy Production' group by LoadType"
 			#query = "select sum(value) from power_readings_new where time > '#{starting_day}' and time < '#{ending_day}' and SiteGroup =~ /"+"#{site_group}" +"/ group by LoadType"
 			result = $influxdb.query query
 			data = []
@@ -46,7 +54,7 @@ class Api::WebServicesController < ApplicationController
 
 		if params["month"].present? && params["site_group"].present?
 			site_group = params[:site_group]
-			query = "select sum(value) from power_readings_by_hour_new where time > now() - 30d and SiteGroup =~ /.*#{site_group}.*/ group by Site"
+			query = "select sum(value) from #{$hr_series} where time > now() - 30d and SiteGroup =~ /.*#{site_group}.*/ group by Site"
 			#raise query.inspect
 			result = $influxdb.query query
 			#raise result.inspect
@@ -72,8 +80,8 @@ class Api::WebServicesController < ApplicationController
 		site_group = params[:site_group]
 		if site_group.present? 
 
-			solar_data =  $influxdb.query "SELECT LAST(value) FROM power_readings_new where LoadType='Energy Production' and SiteGroup=~ /.*#{site_group}.*/ group by Circuit"
-			demand_data =  $influxdb.query "SELECT LAST(value) FROM power_readings_new where LoadType='Demand' and SiteGroup=~ /.*#{site_group}.*/ group by Site"
+			solar_data =  $influxdb.query "SELECT LAST(value) FROM #{$min_series} where LoadType='Energy Production' and SiteGroup=~ /.*#{site_group}.*/ group by Circuit"
+			demand_data =  $influxdb.query "SELECT LAST(value) FROM #{$min_series} where LoadType='Demand' and SiteGroup=~ /.*#{site_group}.*/ group by Site"
 			#raise "SELECT LAST(value) FROM power_readings_new where LoadType='Energy Production' and SiteGroup=~ /"+"#{site_group}" +"/ group by Circuit".inspect
 			solar = solar_data.map { |hash| hash["values"].first["last"] }.inject(:+)
 			demand = demand_data.map { |hash| hash["values"].first["last"] }.inject(:+)
@@ -99,10 +107,10 @@ class Api::WebServicesController < ApplicationController
 			data = []
 			from_time = (Date.today.beginning_of_month - 12.months).beginning_of_day.to_time.strftime("%Y-%m-%d %H:%M:%S")
 			end_time = (Date.today.beginning_of_month + 1.months).end_of_day.to_time.strftime("%Y-%m-%d %H:%M:%S")
-			query = "select sum(value) from power_readings_by_hour_new where time>'#{from_time}' and time<'#{end_time}' and SiteGroup =~ /.*#{site_group}.*/ and LoadType = 'Demand' group by Month"
+			query = "select sum(value) from #{$hr_series} where time>'#{from_time}' and time<'#{end_time}' and SiteGroup =~ /.*#{site_group}.*/ and LoadType = 'Demand' group by Month"
 			#raise query.inspect
 			demand_result = $influxdb.query query
-			query = "select sum(value) from power_readings_by_hour_new where time>'#{from_time}' and time<'#{end_time}' and SiteGroup =~ /.*#{site_group}.*/ and LoadType = 'Energy Production' group by Month"
+			query = "select sum(value) from #{$hr_series} where time>'#{from_time}' and time<'#{end_time}' and SiteGroup =~ /.*#{site_group}.*/ and LoadType = 'Energy Production' group by Month"
 			solar_result = $influxdb.query query
 			total_demand = 0
 			total_solar = 0

@@ -2,7 +2,15 @@ require 'open-uri'
 #require 'wunderground'
 
 class Api::SitesController < ApplicationController
-	$influxdb = InfluxDB::Client.new "openenos"
+	
+	#Getting influxdb object and series using influx db config file
+	influxdb_config = YAML.load_file('config/influxdb_config.yml')
+	$influxdb_config = influxdb_config[Rails.env]
+	$database = $influxdb_config["database"]
+	$min_series = $influxdb_config["series"]["min_table"]
+	$hr_series = $influxdb_config["series"]["hour_table"]
+	$influxdb = InfluxDB::Client.new "#{$database}"
+
 
 	# Get the top 5 circuits by usage.
 	def get_top_circuits_by_site
@@ -25,7 +33,7 @@ class Api::SitesController < ApplicationController
 			$start_time = (Time.now.beginning_of_hour - 24.hours).strftime("%Y-%m-%d %H:%M:%S")
 			$end_time = (Time.now.beginning_of_hour).strftime("%Y-%m-%d %H:%M:%S")
 			data = []
-			query = "select value from power_readings_new where time > now() - 24h and Site =~ /#{params[:site]}/ and LoadType='Demand'"
+			query = "select value from #{$min_series} where time > now() - 24h and Site =~ /#{params[:site]}/ and LoadType='Demand'"
 			result = $influxdb.query query
 			result.first["values"].each do |hash|
 				data << {c: [{v: hash["time"].to_time.strftime("%H:%M")}, {v: hash["value"]}]}
@@ -81,7 +89,7 @@ class Api::SitesController < ApplicationController
 			site = Site.find_by_display(params[:site])
    		if site.present?
    			time = Time.now.beginning_of_day.strftime("%Y-%m-%d %H:%M:%S")
-   			query = "select value from power_readings_new where LoadType='Demand' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
+   			query = "select value from #{$min_series} where LoadType='Demand' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
    			result = $influxdb.query query
    			values = result.first["values"].map { |hash| hash["value"] }
    			current_demand = values.last/1000
@@ -103,12 +111,12 @@ class Api::SitesController < ApplicationController
    		if site.present?
    			time = Time.now.beginning_of_day.strftime("%Y-%m-%d %H:%M:%S")
    			#Query to get the total power so far for current day
-   			query = "select sum(value) from power_readings_new where LoadType='Energy Production' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
+   			query = "select sum(value) from #{$min_series} where LoadType='Energy Production' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
    			result = $influxdb.query query
    			total_power = (result.first["values"].first["sum"]/1000.0).round(2)
 
    			#Query to get Current/Live power 
-   			query = "select last(value) from power_readings_new where LoadType='Energy Production' and Site=~ /#{params[:site]}/ and time >= '#{time}' group by Circuit"
+   			query = "select last(value) from #{$min_series} where LoadType='Energy Production' and Site=~ /#{params[:site]}/ and time >= '#{time}' group by Circuit"
    			result = $influxdb.query query
    			current_power = result.map { |hash| hash["values"].first["last"] }.inject(:+)
    			
@@ -140,7 +148,7 @@ class Api::SitesController < ApplicationController
  	private
 
  	def get_demand_by_circuits
- 		query = "select LAST(value) from power_readings_new where Site =~ /#{params[:site]}/ and Circuit <> 'Main Power' and Circuit <> 'Total Power' group by Circuit"
+ 		query = "select LAST(value) from #{$min_series} where Site =~ /#{params[:site]}/ and Circuit <> 'Main Power' and Circuit <> 'Total Power' group by Circuit"
 		result = $influxdb.query query
 		data = {}
 		result.each do |circuit|

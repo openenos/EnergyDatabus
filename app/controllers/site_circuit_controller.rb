@@ -6,7 +6,8 @@ class SiteCircuitController < ApplicationController
   def index
     @site = Site.find_by_display(params[:site])
     @site = Site.first unless @site.present?
-    @channel = Circuit.find_by_display(params[:circuit])
-    @channel = @site.panels.first.circuits.first
+    @circuit = Circuit.find_by_display(params[:circuit])
+    @circuit = @site.panels.first.circuits.first unless @circuit.present?
+    	
   end
 end
