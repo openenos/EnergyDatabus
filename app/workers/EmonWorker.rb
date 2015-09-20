@@ -11,15 +11,16 @@ class EmonWorker
     @avg_power=0
     @flag=0
     @data=[]
-    rowData = []
+	runtimeData = []
+	rowData = []
     rowValues = {}
 
-    #host = "54.203.254.118"
     host = "localhost"
     username = 'enos'
     password = 'p@ssw0rd'
     database = 'openenos'
-    series     = 'power_readings_new'
+    series     = 'emon_readings'
+	runtime_series = 'appliance_runtimes'
     time_precision = 'm'
 
     panel = Panel.find(panelId)
@@ -77,6 +78,12 @@ class EmonWorker
             values: { value: @avg_power },
             tags: { Year: year, Month: mon, SiteGroup: site_group, Site: site_name, LoadType: loads[all_channels], Circuit: cts[all_channels]}
           }
+		  running = @avg_power>0?1:0
+		  runtimeData << {
+            series: runtime_series,
+            values: { value: running },
+            tags: { Site: site_name, LoadType: loads[all_channels], Circuit: cts[all_channels]}
+          }
 
         end
 
@@ -92,6 +99,12 @@ class EmonWorker
               values: { value: value },
               tags: { Year: year, Month: mon, SiteGroup: site_group, Site: site_name, LoadType: loadType, Circuit: circuit}
             }
+			running = value>0?1:0
+		    runtimeData << {
+            series: runtime_series,
+            values: { value: running },
+            tags: { Site: site_name, LoadType: loadType, Circuit: circuit}
+            }
           end
         end
       end
@@ -105,14 +118,15 @@ class EmonWorker
       end
 
       influxdb.write_points(@data)
-      puts "Row Values: "
-      puts rowValues
+	  influxdb.write_points(runtimeData)
+
       rowData << {
-        series: "power_readings_#{site.id}",
-        values: rowValues,
-        tags: {Site: site_name}
+        series: "emon_readings_table_#{site.id}",
+        values: rowValues
       }
+	  
       influxdb.write_points(rowData)
+	  
       puts "Fetching data from #{uri} for #{site_name} - End"
 
     rescue   Exception => e   

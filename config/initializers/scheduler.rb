@@ -8,3 +8,9 @@ s.every '60s' do
 		EmonWorker.perform_async(row.id)
 	end
 end
+
+s.cron '0,15,30,45 * * * *' do
+    PostalCode.all.each do|row|
+		WeatherWorker.perform_async(row.weather_ref)
+	end
+end
