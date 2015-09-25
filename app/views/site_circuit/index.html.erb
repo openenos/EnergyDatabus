@@ -8,9 +8,10 @@
 		    <small><%= @circuit.display %></small>
 		  </h1>
 		  <span id="site" style="display:none"><%= @site.display%></span>
+		  <span id="circuit" style="display:none"><%= @circuit.display%></span>
 		  <ol class="breadcrumb">
 		    <li><a href="#">Site</a></li>
-		    <li class="active"><%= @site.display  %></li>
+		    <li class="active"><a href='<%= "/site_snapshots/index?site=#{@site.display}"%>'><%= @site.display  %></a></li>
 		  </ol>
 	  </section>
 
@@ -32,5 +33,29 @@
         </ul>
     </section>
     <!-- /.sidebar -->
+	</aside>
+
+
+	<!-- Right side column. Contains the navbar and content of the page -->
+  <aside class="right-side" style="margin-left: 180px;">
+	 <!-- Main content -->
+	  <section class="content">
+
+		  <!-- Main row -->
+		  <div class="row">
+		  	<section class="col-lg-6 connectedSortable">
+		  		<%= render "day_month_year" %>
+		  		<%= render "projected" %>
+		  	</section>
+
+		  	<section class="col-lg-6 connectedSortable">
+		  		<%= render "circuit_demand" %>
+		  		<%= render "runtime_information" %>
+		  	</section>
+
+
+		  </div>
+
+		</section>
 	</aside>
 </div>

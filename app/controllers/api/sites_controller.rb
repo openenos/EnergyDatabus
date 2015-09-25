@@ -9,7 +9,9 @@ class Api::SitesController < ApplicationController
 	$database = $influxdb_config["database"]
 	$min_series = $influxdb_config["series"]["min_table"]
 	$hr_series = $influxdb_config["series"]["hour_table"]
-	$influxdb = InfluxDB::Client.new "#{$database}"
+	$username = $influxdb_config["username"]
+  $password = $influxdb_config["password"]
+  $influxdb = InfluxDB::Client.new $database, username: $username, password: $password
 
 
 	# Get the top 5 circuits by usage.
@@ -20,7 +22,10 @@ class Api::SitesController < ApplicationController
 			data = get_demand_by_circuits
 			# Main Power and Total Power not required in the list so remove
 			data = data.sort_by {|k, v| v}.reverse
-			data = data.first(5)
+
+			if params[:all_circuits] == "false"
+				data = data.first(5)
+			end
 			data = data.prepend(["Circuit", "Value"])
 			render json: {data: data}
 		else
@@ -88,13 +93,19 @@ class Api::SitesController < ApplicationController
 		if params[:site].present?
 			site = Site.find_by_display(params[:site])
    		if site.present?
-   			time = Time.now.beginning_of_day.strftime("%Y-%m-%d %H:%M:%S")
-   			query = "select value from #{$min_series} where LoadType='Demand' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
+   			time = Time.zone.now.beginning_of_day.strftime("%Y-%m-%d %H:%M:%S")
+   			query = "select last(value) from #{$min_series} where LoadType='Demand' and Site=~ /#{params[:site]}/"
    			result = $influxdb.query query
-   			values = result.first["values"].map { |hash| hash["value"] }
-   			current_demand = values.last/1000
-   			top_demand = values.max/1000
-   			total_demand = values.sum/(1000)
+   			value = result.first["values"].first["last"]
+   			current_demand = value/1000
+   			query = "select max(value) from #{$min_series} where LoadType='Demand' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
+   			result = $influxdb.query query
+   			value = result.first["values"].first["max"]
+   			top_demand = value/1000
+   			query = "select sum(value) from #{$hr_series} where LoadType='Demand' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
+   			result = $influxdb.query query
+   			value = result.first["values"].first["sum"]
+   			total_demand = (value/(1000)).round(3)
    			data = { current_demand: current_demand, top_demand: top_demand, total_demand: total_demand }
    			render json: { data: data }
    		else
@@ -111,9 +122,10 @@ class Api::SitesController < ApplicationController
    		if site.present?
    			time = Time.now.beginning_of_day.strftime("%Y-%m-%d %H:%M:%S")
    			#Query to get the total power so far for current day
-   			query = "select sum(value) from #{$min_series} where LoadType='Energy Production' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
+   			query = "select sum(value) from #{$min_series} where LoadType='Energy Production' and Site=~ /#{params[:site]}/ and time >= '#{time}' group by Circuit"
    			result = $influxdb.query query
-   			total_power = (result.first["values"].first["sum"]/1000.0).round(2)
+   			total_power = result.map { |hash| hash["values"].first["sum"] }.inject(:+)
+   			total_power = (total_power/1000.0).round(2)
 
    			#Query to get Current/Live power 
    			query = "select last(value) from #{$min_series} where LoadType='Energy Production' and Site=~ /#{params[:site]}/ and time >= '#{time}' group by Circuit"
@@ -144,11 +156,44 @@ class Api::SitesController < ApplicationController
 			render json: { message: "Required parameters are site name"}
 		end
 	end
+
+	def get_cost_predictions
+		if params[:site].present?
+			site = Site.find_by_display(params[:site])
+   		if site.present?
+
+   			#cost predictions for day so far
+   			today = Time.zone.now.beginning_of_day		
+   			hours = Time.zone.now.hour 							#hours so far
+   			time = today.strftime("%Y-%m-%d %H:%M:%S")
+   			query = "select sum(value) from #{$hr_series} where LoadType='Demand' and Site='#{params[:site]}' and time > '#{time}'"
+   			result = $influxdb.query query
+   			demand_today = (result.first["values"].first["sum"])/1000
+   			cost_today = demand_today * site.location.utility.base_rate 			#cost so far
+   			cost_prediction = (cost_today/hours)*24 													#cost predictions for day
+
+   			#cost predictions for month
+   			month_start = today.beginning_of_month
+   			days = today.day 					#days so far
+   			month_days = today.end_of_month.day 			#total days for current month
+   			time = month_start.strftime("%Y-%m-%d %H:%M:%S")
+   			query = "select sum(value) from #{$hr_series} where LoadType='Demand' and Site='#{params[:site]}' and time > '#{time}'"
+   			result = $influxdb.query query
+   			demand_month = (result.first["values"].first["sum"])/1000
+   			month_prediction = (demand_month/days)*month_days 								#cost predictions for month
+   			render json: { cost_today: cost_today.round(2), cost_prediction: cost_prediction.round(2), month_prediction: month_prediction.round(2) }
+   		else
+   			render json: { message: "Required a valid site name"}	
+   		end	
+		else
+			render json: { message: "Required parameters are site name"}
+		end
+	end
  
  	private
 
  	def get_demand_by_circuits
- 		query = "select LAST(value) from #{$min_series} where Site =~ /#{params[:site]}/ and Circuit <> 'Main Power' and Circuit <> 'Total Power' group by Circuit"
+ 		query = "select LAST(value) from #{$min_series} where Site =~ /#{params[:site]}/ and Circuit <> 'Main Power' and Circuit <> 'Total Power' and Circuit <> 'Solar Input' group by Circuit"
 		result = $influxdb.query query
 		data = {}
 		result.each do |circuit|

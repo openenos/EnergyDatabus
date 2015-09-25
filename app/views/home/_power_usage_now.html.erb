@@ -15,9 +15,18 @@
 
         </div>
       <!-- box-body -->
-      <div class="box-body no-padding row-fluid">
+      <div class="box-body no-padding row-fluid row" style="height:200px;" >
 
-        <div google-chart chart="chartObject" style="height:180px; width:100%;"></div>
+        <div google-chart chart="power_usage" style="height:220px;padding-left: 50px;" class="col-md-4"></div>
+        <div google-chart chart="solar_power" style="height:220px;padding-left: 30px;" class="col-md-4"></div>
+        <div google-chart chart="utility_power_gauge" style="height:220px;" class="col-md-4"></div>
+
+      </div><!-- /.box-body-->
+      <div class="box-body no-padding row-fluid row" style="height:75px;" >
+
+        <div  style="padding-left: 70px;" class="col-md-4"><p class="mediumBold span12 noGaps " >Power Usage</p></div>
+        <div  style="padding-left: 70px;" class="col-md-4"><p class="mediumBold span12 noGaps " >Solar Power</p></div>
+        <div  style="padding-left: 70px;" class="col-md-4"><p class="mediumBold span12 noGaps " >Utility Power</p></div>
 
       </div><!-- /.box-body-->
 

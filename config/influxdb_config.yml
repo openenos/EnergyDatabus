@@ -1,11 +1,12 @@
 
 development:
   database: 'openenos'
-  username: 'test'
-  password:	'test'
+  username: 'sridhar'
+  password:	'p@ssw0rd'
   series:
-    min_table: 'power_readings_new'
-    hour_table: 'power_readings_by_hour_new'
+    min_table: 'emon_readings'
+    hour_table: 'emon_readings_by_hour'
+    runtime_series: 'appliance_runtimes'
 
 production:
   database: 'openenos'
@@ -14,3 +15,4 @@ production:
   series:
     min_table: 'emon_readings'
     hour_table: 'emon_readings_by_hour'
+    runtime_series: 'appliance_runtimes'

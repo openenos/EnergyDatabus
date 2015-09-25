@@ -27,7 +27,7 @@ class EmonWorker
     password = $password
     database = $database
     series     = 'emon_readings'
-	 runtime_series = 'appliance_runtimes'
+	  runtime_series = 'appliance_runtimes'
     time_precision = 'm'
 
     panel = Panel.find(panelId)

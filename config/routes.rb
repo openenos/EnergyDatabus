@@ -37,6 +37,10 @@ mount Sidekiq::Web => '/sidekiq'
   get 'site_snapshots/index' => "site_snapshots#index"
   get 'site_circuit/index' => "site_circuit#index"
 
+  get 'home/dashboard'
+
+  get '/get_all_circuits_by_site' => "sites#get_all_circuits_by_site"
+
   #devise_for :users
 
   devise_for :users, controllers: { registrations: 'registrations'}
@@ -76,6 +80,7 @@ mount Sidekiq::Web => '/sidekiq'
     match "/get_appliances_usage_by_site" => "sites#get_appliances_usage_by_site", via: :get
     match "/get_top_demand" => "sites#get_top_demand", via: :get
     match "/get_solar_power" => "sites#get_solar_power", via: :get
+    match "/get_cost_predictions" => "sites#get_cost_predictions", via: :get
 
     #routes for site usage
     match "/get_year_usage_data_by_site" => "site_usage#get_year_usage_data_by_site", via: :get
@@ -89,6 +94,14 @@ mount Sidekiq::Web => '/sidekiq'
 
     #routes for site appliances
     match "/get_last_day_usage" => "site_appliances#get_last_day_usage", via: :get
+
+    #routes for site circuits page
+    match "/get_runtime_info" => "site_circuit#get_runtime_info", via: :get
+    match "/get_circuit_demand" => "site_circuit#get_circuit_demand", via: :get
+    match "/get_day_circuit_demand" => "site_circuit#get_day_circuit_demand", via: :get
+    match "/get_month_circuit_demand" => "site_circuit#get_month_circuit_demand", via: :get
+    match "/get_week_circuit_demand" => "site_circuit#get_week_circuit_demand", via: :get
+ 
     
   end
   # Example of regular route:

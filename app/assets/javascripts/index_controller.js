@@ -16,7 +16,7 @@ angular.module('enos.controllers')
       if(site_group == undefined){
         site_group = 'Historic Green Village'
       }
-      GoogleChartService.piechart({site_group: site_group , month: 9}, function(result) {
+      GoogleChartService.piechart({site_group: site_group , month: moment().format("M")}, function(result) {
       var data = result.data;
       drawPieChart(data);
       console.log(data);
@@ -53,33 +53,35 @@ angular.module('enos.controllers')
       }
       GoogleChartService.gaugechart({site_group: site_group}, function(result) {
         var data = result.data;
-        drawGaugeChart(data);
-        console.log(data);
+        power_usage = drawGaugeChart(data.demand_power, "Demand Power", "#2E9AFE");
+        solar_power = drawGaugeChart(data.solar_power, "Solar Power", "#04B45F");
+        utility_power = drawGaugeChart(data.utility_power, "Utility Power", "#FE2E2E");
+        $scope.power_usage = power_usage;
+        $scope.solar_power = solar_power;
+        $scope.utility_power_gauge = utility_power;
     });
 
     }
     $scope.getGaugeChart();
-    function drawGaugeChart(data){
-      $scope.chartObject = {};
-      $scope.chartObject.type = "Gauge";
+    function drawGaugeChart(data, title, color){
+      gaugechart = {};
+      gaugechart.type = "Gauge";
 
-      $scope.chartObject.options = {
-        width: 450,
-        height: 175,
-        redFrom: 40,
-        redTo: 50,
+      gaugechart.options = {
+        width: 200,
+        height: 200,
         max: 50,
-        yellowFrom: 25,
-        yellowTo: 40,
-        minorTicks: 5
+        minorTicks: 5,
+        greenFrom: 0,
+        greenTo: 50,
+        greenColor: color
       };
 
-      $scope.chartObject.data = [
+      gaugechart.data = [
         ['Label', 'Value'],
-        ['Power Usage', (data.demand_power/1000)],
-        ['Solar Power', (data.solar_power/1000)],
-        ['Utility Power', (data.utility_power/1000)]
+        ["kW", (data/1000)]
       ];
+      return gaugechart
     }
     /* end */
 
@@ -137,7 +139,7 @@ angular.module('enos.controllers')
       if(site_group == undefined){
         site_group = 'Historic Green Village'
       }
-      GoogleChartService.data_tables({site_group: site_group, month: 9}, function(result){
+      GoogleChartService.data_tables({site_group: site_group, month: moment().format("M")}, function(result){
         var data = result.data;
         $scope.sites = data;
          
@@ -146,4 +148,32 @@ angular.module('enos.controllers')
 
     $scope.data_tables();
     /* end */
+
+    /* DateRange picker for usage by site */
+    $('.daterange').daterangepicker(
+      {
+        ranges: {
+          'Today': [moment(), moment()],
+          'Yesterday': [moment().subtract('days', 1), moment()],
+          'Last 7 Days': [moment().subtract('days', 6), moment()],
+          'Last 30 Days': [moment().subtract('days', 29), moment()],
+          'This Month': [moment().startOf('month'), moment().endOf('month')],
+          'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+        },
+        startDate: moment().subtract('days', 29),
+        endDate: moment()
+      },
+      function(start, end) {
+        //window.location = "/home/dashboard?site_group="+$('.form-control').val()+"&from="+start.format('D-M-YYYY')+"&to="+end.format('D-M-YYYY');
+        $scope.data_tables($scope.siteGroup);
+        console.log("Start: - " + start.format('YYYY-MM-DD h:mm:ss'))
+        GoogleChartService.data_tables({site_group: $scope.siteGroup, start_date: start.format('YYYY-MM-DD'), end_date: end.format('YYYY-MM-DD')}, function(result){
+          var data = result.data;
+          $scope.sites = data;
+          //$scope.sites = data;
+        });
+      }
+    );
+
+    /* DateRange picker for usage by site */
 }]);

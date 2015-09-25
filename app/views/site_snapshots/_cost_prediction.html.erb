@@ -19,22 +19,22 @@
     <div class="span12  homeWidgetsPadding" style="margin-left:0">
       <div class="span12 bottomBorder grayBorder spanContent">
         <div class="span7">
-          <p id="costModulePredictedCost" class="extraBold green1 span12 noGaps" style="margin-top:20px">$135.35</p>
+          <p id="costModulePredictedCost" class="extraBold green1 span12 noGaps" style="margin-top:20px">$ {{month_prediction}}</p>
           <p class="tinyBold">PREDICTED THIS MONTH</p>
         </div>
         <div class="span5" style="padding: 10px 5px 5px 20px;">
 
-          <img alt="Money Bag" width="90" height="90" src="/assets/money_bag.png" style="margin-top:10px;padding-bottom:9px">
-
+          <!-- <img alt="Money Bag" width="90" height="90" src="/assets/money_bag.png" style="margin-top:10px;padding-bottom:9px"> -->
+          <%= image_tag "money_bag.png", :size => "75x75", alt: "Money Bag"%>
         </div>
       </div>
       <div class="span12 spanContent" style="margin-left:0">
         <div class="span6">
-          <p class="mediumBold span12 noGaps">$0.85</p>
+          <p class="mediumBold span12 noGaps">$ {{cost_today}}</p>
           <p class="tinyBold noGaps">SO FAR TODAY</p>
         </div>
         <div class="span6 leftBoder grayBorder" style="padding-left:10px">
-          <p class="mediumBold span12 noGaps">$6.1</p>
+          <p class="mediumBold span12 noGaps">$ {{cost_prediction}}</p>
           <p class="tinyBold noGaps">PREDICTED TODAY</p>
         </div>
 

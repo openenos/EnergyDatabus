@@ -20,31 +20,31 @@
 							<span>Home</span>
 						</a>	    				
 					</li>
-					<li class="<%= params[:controller]=="site_snapshots"? "active":"" %>"> 
+					<li class="<%= params[:controller]=="site_snapshots" ? "active" : "" %>"> 
 						<a href="/site_snapshots/index?site=<%= @site.display %>">
 							<i class="fa  fa-camera"></i>
 							<span>Snapshot</span>
 						</a>	    				
 					</li>
 					
-					<li class="<%= params[:controller]=="site_usage"? "active":"" %>"> 				
+					<li class="<%= params[:controller]=="site_usage" ? "active" : "" %>"> 				
 						<a href="/site_usage/index?site=<%= @site.display %>">
 							<i class="fa fa-bar-chart-o"></i>
-							<span>Power Usage</span>
+							<span>Load Profile</span>
 						</a>	    				
 					</li>
 					
 					<li>					
 						<a href="javascript:;">
 							<i class="fa fa-money"></i>
-							<span>Cost</span>
+							<span>Heat Map</span>
 						</a>	    			
 					</li>
 					
 					<li>					
 						<a href="javascript:;">
 							<i class="fa fa-leaf"></i>
-							<span>Carbon Footprint</span>
+							<span>Analytics</span>
 						</a>	   				
 					</li>
 					<li class="<%= params[:controller]=="site_appliances"? "active":"" %>">					

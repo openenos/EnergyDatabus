@@ -1,0 +1,54 @@
+<div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+    <!-- tools box -->
+    <div class="box-tools pull-right">
+      <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa fa-refresh"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa-minus"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="remove"><i class="fa fa-times"></i></button>
+    </div><!-- /. tools -->
+
+    <i class="fa  fa-dashboard"></i>
+    <div id="snap-box-icon" class="snapshot-box-icon"></div>
+    <h3 class="box-title">
+      Demand
+    </h3>
+
+  </div>
+  <!-- box-body -->
+  <div class="box-body no-padding row-fluid">
+
+    <div class="span12  homeWidgetsPadding" style="margin-left:0">
+      <div class="span12 bottomBorder grayBorder spanContent">
+        <!--
+        <div class="col-lg-6">
+          <p class="smallBold" style="text-align:center">Usage Now</p>
+          <!--<canvas id="g1" style="width:100%;">guage</canvas>-->
+
+          <!--<p class="mediumBold"  id="gauge1_val"  style="text-align:center;"> watts</p>
+          <p class="tinyBold" style="text-align:center;" id="breaker_capacity">% Breaker Capacity</p>
+        </div>
+
+        <div class="col-lg-6">
+          <p class="smallBold" style="text-align:center">Past 30 Days</p>
+          <!-- <canvas id="g2" style="width:100%;">guage</canvas>-->
+          <!-- <p class="mediumBold" id="gauge2_val" style="text-align:center;"></p>
+          <p class="tinyBold" style="text-align:center;">Cost: $56</p>
+          <p class="tinyBold" style="text-align:center;">CO2: 4.5Kg</p>
+
+        </div> -->
+        <!-- box-body -->
+      <div class="box-body no-padding row-fluid row">
+
+        <div google-chart chart="current_demand" style="height:220px;" class="col-md-6"></div>
+        <div google-chart chart="total_demand" style="height:220px;" class="col-md-6"></div>
+
+      </div><!-- /.box-body-->
+      </div>
+    </div>
+
+  </div><!-- /.box-body-->
+  <div class="box-footer">
+    <p class="span10 snapShotFooter red" style="margin-left:5px"><i class="fa fa-arrow-up"></i> 26W ABOVE YESTERDAY</p>
+  </div> 
+</div>
+

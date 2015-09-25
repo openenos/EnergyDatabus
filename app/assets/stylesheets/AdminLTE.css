@@ -3121,7 +3121,7 @@ margin:0;
 }
 
 .mediumBold {
-font-size: 26px;
+font-size: 25px;   /*  original font-size: 26px; */
 color: #333;
 }
 

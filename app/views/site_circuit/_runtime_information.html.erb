@@ -1,0 +1,53 @@
+<div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+    <!-- tools box -->
+    <div class="pull-right box-tools">                                        
+      <button class="btn btn-default btn-tn refresh-btn" data-toggle="tooltip" title="" data-original-title="Reload"><i class="fa fa-refresh"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
+    </div><!-- /. tools -->
+
+    <i class="fa ion-ios7-timer"></i>
+    <h3 class="box-title">
+      Runtime Information
+    </h3>
+  </div>
+  <!-- box-body -->
+  <div class="box-body no-padding row-fluid">
+
+
+
+    <div class="span12  homeWidgetsPadding" style="margin-left:0">
+      <div class="span12 bottomBorder grayBorder spanContent">
+
+        <div class="span12 spanContent" style="margin: 0 20px 0 30px;">
+          <div class="row">
+            <p class="span6">Runtime Last 24 Hours</p>
+            <p class="span6">{{day_hours}} Hours {{day_minutes}} Minutes</p>
+          </div>
+          <div class="row">
+            <p class="span6">Runtime Last 7 Days</p>
+            <p class="span6">{{week_hours}} Hours {{week_minutes}} Minutes</p>
+          </div>
+          <div class="row">
+            <p class="span6">Total Runtime since 2012-09-26</p>
+            <p class="span6">{{total_hours}} hours averaging 3.0 hours per day</p>
+          </div>
+          <div class="row">
+            <p class="span6">Degree days since 2012-09-26</p>
+            Adjust Base Temperature
+            <p class="span6">10,291 (cooling), 1,071 (heating)</p>
+          </div>
+          <div class="row">
+            <p class="span6">kWh per degree day since 2012-09-26</p>
+            <p class="span6">1 (cooling), 9 (heating)</p>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+  </div><!-- /.box-body-->
+</div>

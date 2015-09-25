@@ -1,0 +1,63 @@
+<!--box -->
+      <div class="box box-warning sortable" onload="getDayDemand();">
+        <div class="box-header" style="cursor: move;">
+          <!-- tools box -->
+          <div class="box-tools pull-right">
+            <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa fa-refresh"></i></button>
+            <button class="btn btn-default btn-tn" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            <button class="btn btn-default btn-tn" data-widget="remove"><i class="fa fa-times"></i></button>
+          </div><!-- /. tools -->
+
+          <i class="fa  ion-stats-bars"></i>
+          <div id="snap-box-icon" class="snapshot-box-icon"></div>
+          <h3 class="box-title">
+            <%= @circuit.display %> Usage
+          </h3>
+
+        </div>
+        <!-- box-body -->
+        <div class="box-body no-padding row-fluid">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab" class="day">Day</a></li>
+              <li><a href="#tab_2" data-toggle="tab" class="week">Week</a></li>
+              <li><a href="#tab_3" data-toggle="tab" class="month">Month</a></li>
+              <li class="pull-right"><a href="#" class="next_date"><i class="fa fa-chevron-right"></i></a></li>
+              <li class="pull-right"><a href="#" id="display_date_label" range="day" value="<%= Time.now.strftime('%Y-%m-%d')%>"><%= Time.now.strftime('%d %B %Y')  %></a></li>
+              <li class="pull-right"><a href="#" class="prev_date"><i class="fa fa-chevron-left"></i></a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+                <button id="clearSelection1" class="btn btn-primary btn-tn refresh-btn pull-right" style="z-index:10;position:relative">
+                  <i class="fa fa-refresh"></i> Rest Zoom</button>
+                <div id="line-chart1" style="height: 400px;">
+                  <!-- box-body -->
+                  <div class="box-body no-padding row-fluid">
+                    <div google-chart chart="dayDemand" style="height:360px; width:100%;" id="day_demand"></div>
+                  </div><!-- /.box-body-->
+
+                </div>
+              </div><!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_2">
+                <div id="line-chart2" style="height: 400px;" >
+                  <!-- box-body -->
+                  <div class="box-body no-padding row-fluid">
+                    <div google-chart chart="weekDemand" style="height:360px; width:100%;" id="week_demand"></div>
+                  </div><!-- /.box-body-->
+                </div>
+              </div><!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_3">
+                <div id="line-chart3" style="height: 400px;">
+                  <!-- box-body -->
+                  <div class="box-body no-padding row-fluid">
+                    <div google-chart chart="monthDemand" style="height:360px; width:100%;" id="month_demand"></div>
+                  </div><!-- /.box-body-->
+                </div>
+              </div><!-- /.tab-pane -->                                    
+            </div><!-- /.tab-content -->
+          </div>                       
+
+
+        </div><!-- /.box-body-->
+      </div>
+    <!-- /.box -->

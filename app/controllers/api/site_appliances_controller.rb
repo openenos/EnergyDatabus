@@ -4,7 +4,9 @@ class Api::SiteAppliancesController < ApplicationController
 	influxdb_config = YAML.load_file('config/influxdb_config.yml')
   $influxdb_config = influxdb_config[Rails.env]
   $database = $influxdb_config["database"]
-  $influxdb = InfluxDB::Client.new "#{$database}"
+  $username = $influxdb_config["username"]
+  $password = $influxdb_config["password"]
+  $influxdb = InfluxDB::Client.new $database, username: $username, password: $password
 
 	def get_last_day_usage
 		if params[:site].present?
@@ -19,6 +21,7 @@ class Api::SiteAppliancesController < ApplicationController
         result.first["values"].each do |hash|
           hash.delete("Site")
           hash.delete("Main Power")
+          hash["time"] = hash["time"].to_time.strftime("%H:%M")
           data << hash.values
         end
         render json: { data: data }

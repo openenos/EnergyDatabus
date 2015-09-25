@@ -69,6 +69,21 @@ class SitesController < ApplicationController
     end
   end
 
+  #Get all the circuits of the site grouped by LoadType
+  def get_all_circuits_by_site
+    site = Site.find_by_display(params[:site])
+    circuits = site.panels.first.circuits.where(input: false, active: true)
+    hash = {}
+    circuits.each do |circuit|
+      hash[circuit.elec_load_type.display] = []
+    end
+
+    circuits.each do |circuit|
+      hash[circuit.elec_load_type.display] << circuit.display
+    end
+    render json: { data: hash}
+  end
+
   def getWeather
     
     
