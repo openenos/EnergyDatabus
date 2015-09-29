@@ -1,6 +1,6 @@
 angular.module('enos.controllers')
-	.controller('SiteCircuitController', ['$scope', '$window', '$http',  
-    function ($scope, $window, $http){
+	.controller('SiteCircuitController', ['$scope', '$window', '$http', '$interval',  
+    function ($scope, $window, $http, $interval){
     	$scope.site_name = $("#site").text();
     	$scope.circuit = $("#circuit").text();
 
@@ -9,6 +9,13 @@ angular.module('enos.controllers')
 			  build_sidebar(data.data);  
 			});
 
+      function setTimer(){
+        dayChartTimer = $interval(updateDayChart, (1000*60));
+      }
+      
+      function updateDayChart(){
+        $scope.getDayDemand();
+      }
       
     	//Display current month when switched to month tab
     	$(".month").click(function(){
@@ -16,6 +23,8 @@ angular.module('enos.controllers')
     		$("#display_date_label").attr("range", "month");
     		$("#display_date_label").attr("value", moment().format("YYYY-MM-DD"));
         $scope.getMonthDemand();
+        $interval.cancel(dayChartTimer);
+
     	});
 
     	//Display current day when switched to day tab
@@ -24,7 +33,7 @@ angular.module('enos.controllers')
     		$("#display_date_label").attr("range", "day");
     		$("#display_date_label").attr("value", moment().format("YYYY-MM-DD"));
         $scope.getDayDemand();
-
+        setTimer();
     	});
 
     	//Display current week when switched to week tab
@@ -37,6 +46,7 @@ angular.module('enos.controllers')
     		$("#display_date_label").attr("range", "week");
     		$("#display_date_label").attr("value", moment().subtract('days', 6).format("YYYY-MM-DD"));
         $scope.getWeekDemand();
+        $interval.cancel(dayChartTimer);
     	});
 
 
@@ -162,8 +172,8 @@ angular.module('enos.controllers')
 
 			$http(req).then(function(result){
 				data = result.data.data
-				current_demand = drawGaugeChart(data.current_demand, "Current Demand");
-        total_demand = drawGaugeChart(data.total_demand, "Total Demand");
+				current_demand = drawGaugeChart(data.current_demand, "Watt");
+        total_demand = drawGaugeChart(data.total_demand, "kWh");
         $scope.current_demand = current_demand
         $scope.total_demand = total_demand
 			}, 

@@ -1,0 +1,31 @@
+<%= render :partial=>"shared/subnavbar" %>
+<div class="wrapper row-offcanvas row-offcanvas-left" ng-controller="HeatmapController">
+	<aside class="right-side strech">
+  	<!-- Content Header (Page header) -->
+	  <section class="content-header">
+		  <h1> 
+		    <%= @site.display  %>
+		  </h1>
+		  <span id="site" style="display:none"><%= @site.display%></span>
+		  <ol class="breadcrumb">
+		    <li><a href="#">Site</a></li>
+		    <li class="active"><a href='<%= "/site_snapshots/index?site=#{@site.display}"%>'><%= @site.display  %></a></li>
+		  </ol>
+	  </section>
+
+	  <section class="content">
+		  <!-- Main row -->
+		  <div class="row">
+		    <!-- Left col -->
+		    <section class="col-lg-12 connectedSortable"> 
+		    	<%= render "heatmap" %>
+
+		    </section><!-- end section -->
+
+		  </div><!-- end div row -->
+
+		</section><!-- end content section -->
+
+	</aside>
+
+</div>

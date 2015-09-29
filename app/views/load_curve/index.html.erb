@@ -1,0 +1,17 @@
+<%= render :partial=>"shared/subnavbar" %>
+<div class="wrapper row-offcanvas row-offcanvas-left">
+	<aside class="right-side strech">
+  	<!-- Content Header (Page header) -->
+	  <section class="content-header">
+		  <h1> 
+		    <%= @site.display  %>
+		  </h1>
+		  <span id="site" style="display:none"><%= @site.display%></span>
+		  <ol class="breadcrumb">
+		    <li><a href="#">Site</a></li>
+		    <li class="active"><a href='<%= "/site_snapshots/index?site=#{@site.display}"%>'><%= @site.display  %></a></li>
+		  </ol>
+	  </section>
+
+	</aside>
+</div>

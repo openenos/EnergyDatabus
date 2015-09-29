@@ -52,6 +52,7 @@ GEM
     coffee-script-source (1.9.1.1)
     commonjs (0.2.7)
     connection_pool (2.2.0)
+    descriptive-statistics (2.1.2)
     devise (3.5.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -212,6 +213,7 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 4.1.0)
+  descriptive-statistics
   devise
   influxdb (~> 0.2.2)
   jbuilder (~> 2.0)

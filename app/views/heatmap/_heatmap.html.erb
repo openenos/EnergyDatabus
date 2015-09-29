@@ -1,0 +1,91 @@
+<div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+    <!-- tools box -->
+
+    <div class="pull-right box-tools">                                        
+      <button class="btn btn-default btn-tn refresh-btn" data-toggle="tooltip" title="" data-original-title="Reload"><i class="fa fa-refresh"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
+    </div><!-- /. tools -->
+
+    <h3 class="box-title">
+      Heat Map
+    </h3>
+  </div><!-- /. box header -->
+
+  <div class="box-body no-padding row-fluid row">
+  	<div class="col-md-1" style="border-right: solid 1px;">
+  		<table class="table table-vertical">
+  			<tr>
+  				<td><%= (Date.today - 1.days).strftime("%b %d") %></td>
+  			</tr>
+  			<tr>
+  				<td><%= (Date.today - 2.days).strftime("%b %d") %></td>
+  			</tr>
+  			<tr>
+  				<td><%= (Date.today - 3.days).strftime("%b %d") %></td>
+  			</tr>
+  			<tr>
+  				<td><%= (Date.today - 4.days).strftime("%b %d") %></td>
+  			</tr>
+  			<tr>
+  				<td><%= (Date.today - 5.days).strftime("%b %d") %></td>
+  			</tr>
+  			<tr>
+  				<td><%= (Date.today - 6.days).strftime("%b %d") %></td>
+  			</tr>
+  			<tr>
+  				<td><%= (Date.today - 7.days).strftime("%b %d") %></td>
+  			</tr>
+  		</table>
+  	</div>
+  	<div class="col-md-11">
+  		<div class="heatmap" style="height:580px;width:870;">
+  		</div>
+  		<div style="border-top: solid 1px;max-width: 80%;" >
+  			<table class="table table-horizontal" style="max-width: 40%;">
+  				<tr>
+  					<td>00:00</td>
+  					<td>01:00</td>
+  					<td>02:00</td>
+  					<td>03:00</td>
+  					<td>04:00</td>
+  					<td>05:00</td>
+  					<td>06:00</td>
+  					<td>07:00</td>
+  					<td>08:00</td>
+  					<td>09:00</td>
+  					<td>10:00</td>
+  					<td>11:00</td>
+  					<td>12:00</td>
+  					<td>13:00</td>
+  					<td>14:00</td>
+  					<td>15:00</td>
+  					<td>16:00</td>
+  					<td>17:00</td>
+  					<td>18:00</td>
+  					<td>19:00</td>
+  					<td>20:00</td>
+  					<td>21:00</td>
+  					<td>22:00</td>
+  					<td>23:00</td>
+
+  				</tr>
+  			</table>
+  		</div>
+  	</div>
+
+
+	</div>
+
+  
+</div><!-- /. box -->
+
+
+<script>
+$(".table-vertical tr").css("height","77px");
+$(".table-vertical tr td").css({"border":"none","padding":"30px"});
+
+$(".table-horizontal tr td").css({"border":"none", "padding":"6px"});
+
+</script>

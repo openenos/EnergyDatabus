@@ -32,10 +32,13 @@ mount Sidekiq::Web => '/sidekiq'
   resources :circuits 
     
 
-  get 'site_appliances/index' 
-  get 'site_usage/index'
-  get 'site_snapshots/index' => "site_snapshots#index"
-  get 'site_circuit/index' => "site_circuit#index"
+  get '/site_appliances/index' 
+  get '/site_usage/index'
+  get '/site_snapshots/index' => "site_snapshots#index"
+  get '/site_circuit/index' => "site_circuit#index"
+  get '/heatmap/index' => "heatmap#index"
+  get '/analytics/index' => "analytics#index"
+  get '/load_curve/index' => "load_curve#index"
 
   get 'home/dashboard'
 
@@ -101,6 +104,13 @@ mount Sidekiq::Web => '/sidekiq'
     match "/get_day_circuit_demand" => "site_circuit#get_day_circuit_demand", via: :get
     match "/get_month_circuit_demand" => "site_circuit#get_month_circuit_demand", via: :get
     match "/get_week_circuit_demand" => "site_circuit#get_week_circuit_demand", via: :get
+
+    #routes for heat map page
+    match "/get_heat_map" => "heatmap#get_heat_map", via: :get
+
+    #routes for analytics of site
+    match "/analytics" => "analytics#analytics", via: :get
+
  
     
   end

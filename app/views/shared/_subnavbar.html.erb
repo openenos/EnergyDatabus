@@ -34,19 +34,29 @@
 						</a>	    				
 					</li>
 					
-					<li>					
-						<a href="javascript:;">
+					<li class="<%= params[:controller]=="heatmap" ? "active" : "" %>">					
+						<a href="/heatmap/index?site=<%= @site.display %>">
 							<i class="fa fa-money"></i>
 							<span>Heat Map</span>
 						</a>	    			
 					</li>
+
+
 					
-					<li>					
-						<a href="javascript:;">
+					<li class="<%= params[:controller]=="analytics" ? "active" : "" %>">					
+						<a href="/analytics/index?site=<%= @site.display %>">
 							<i class="fa fa-leaf"></i>
 							<span>Analytics</span>
 						</a>	   				
 					</li>
+
+					<li class="<%= params[:controller]=="load_curve" ? "active" : "" %>">					
+						<a href="/load_curve/index?site=<%= @site.display %>">
+							<i class="fa fa-random"></i>
+							<span>Load Curve</span>
+						</a>	    			
+					</li>
+
 					<li class="<%= params[:controller]=="site_appliances"? "active":"" %>">					
 						<a href="/site_appliances/index?site=<%= @site.display %>">
 							<i class="fa fa-bolt"></i>

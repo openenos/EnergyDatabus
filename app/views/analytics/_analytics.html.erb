@@ -1,0 +1,89 @@
+<div class="box box-warning sortable">
+  <div class="box-header" style="cursor: move;">
+    <!-- tools box -->
+
+    <div class="pull-right box-tools">                                        
+      <button class="btn btn-default btn-tn refresh-btn" data-toggle="tooltip" title="" data-original-title="Reload"><i class="fa fa-refresh"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus"></i></button>
+      <button class="btn btn-default btn-tn" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
+    </div><!-- /. tools -->
+
+    <h3 class="box-title">
+      Analytics
+    </h3>
+  </div><!-- /. box header -->
+
+  <div class="box-body no-padding row-fluid row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10" style="padding:30px;">
+      <table class="table table-bordered">
+        <tr>
+          <td><p><b>Peak Load Benchmark (W/sf)</b></p>
+            <i>This is the absolute maximum electric load based on all of your data.
+            The median for commercial buildings under 150,000 sf is 4.4 W/sf. 
+            Values much higher than 4.4 therefore indicate an opportunity to improve building performance.</i>
+          </td>
+          <td>
+            <p><b>
+            <%= @max_avg_site %>
+          </b></p>
+          </td>
+        </tr>
+        <tr>
+          <td><p><b>Average Daily Max (kW)</b></p>
+            <i>The daily maximum usage could be dominated by a single large load, or could be the sum of several smaller ones.
+            Long periods of usage near the maximum increase overall energy use.</i>
+          </td>
+          <td>
+            <p><b>
+            <%= @avg_daily_max %>
+            </b></p>
+          </td>
+        </tr>
+        <tr>
+          <td><p><b>Average Daily Min (kW)</b></p>
+            <i>Minimum usage is often dominated by loads that run 24 hours a day. In homes, these include refrigerators and vampire loads.
+            In commercial buildings, these include ventilation, hallway lighting, computers, and vampire loads.</i>
+          </td>
+          <td>
+            <p><b>
+            <%= @avg_daily_min %>
+            </b></p>
+          </td>
+        </tr>
+        <tr>
+          <td><p><b>Average Daily Range (kW)</b></p>
+            <i>This is a rough estimate of the total load turned on and off every day. Higher values may indicated good control, but could also indicate excessive peak usage.</i>
+          </td>
+          <td>
+            <p><b>
+            <%= @range %>
+            </b></p>
+          </td>
+        </tr>
+        <tr>
+          <td><p><b>Base-to-peak Load Ratio</b></p>
+            <i>Values over 0.33 indicate that significant loads are shut off for parts of the day. To save energy, look to extend and deepen shutoff periods, while also reducing peak energy use.</i>
+          </td>
+          <td>
+            <p><b>
+            <%= @ratio %>
+            </b></p>
+          </td>
+        </tr>
+        <tr>
+          <td><p><b>Load Variability Metric</b></p>
+            <i>This metric is used to understand regularity of operations, and the likelihood of consistency in the building's demand responsiveness.
+            It represents a coefficient of variation that ranges from 0 to 1, which can be interpreted based on rule of thumb guidelines.
+            For example, variability above 0.15 is generally considered high for commercial buildings.</i>
+          </td>
+          <td>
+            <p><b>
+            <%= @load_variable_metric %>
+            </b></p>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

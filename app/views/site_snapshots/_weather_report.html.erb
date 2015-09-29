@@ -37,7 +37,7 @@
 
               <div class="span12">
                 <div class="span4">
-                  <img width="36" height="36" style="margin: 5px;" src="/assets/wind.png"></img>
+                  <%= image_tag "wind.png", :size => "36", :alt => "wind speed", :style => "margin: 5px;"%>
                 </div>
                 <div class="span8">
                   <p class="smallBold"><span id="wind_string">{{weather_data.wind_string}}</span></p>
@@ -46,7 +46,7 @@
 
               <div class="span12">
                 <div class="span4">
-                  <img width="36" height="36" style="margin: 5px;" src="/assets/humidity.png"></img>
+                  <%= image_tag "humidity.png", :size => "36", :alt => "humidity", :style => "margin: 5px;"%>
                 </div>
                 <div class="span8">
                   <p class="smallBold" style="margin-top: 10px;">Humidity <span id="relative_humidity">{{weather_data.relative_humidity}}</span></p>

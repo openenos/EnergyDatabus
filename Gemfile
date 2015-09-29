@@ -48,5 +48,9 @@ gem 'redis'
 
 gem 'lograge'
 
+#replacement of unicorn
 gem 'puma'
+
+#for statistics calculation
+gem 'descriptive-statistics'
 

@@ -1,8 +1,19 @@
 angular.module('enos.controllers')
-	.controller('SiteSnapshotController', ['$scope', '$window', '$http',  
-    function ($scope, $window, $http){
+	.controller('SiteSnapshotController', ['$scope', '$window', '$http', '$interval',  
+    function ($scope, $window, $http, $interval){
     	$scope.name = "Site Snapshot"
-      $scope.site_name = $("#site").text();    	
+      $scope.site_name = $("#site").text(); 
+
+
+      $interval(updateDemandChart, (1000*60));
+
+      function updateDemandChart(){
+        //console.log("Calling day demand chart..");
+        $scope.getLastDayDemand();
+        //console.log("Called day demand chart..");
+      }
+
+
       /* Weather Report Chart */
     	$scope.getWeatherReport = function(){
     		var req = {
