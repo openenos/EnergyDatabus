@@ -1,7 +1,15 @@
 class Api::SiteUsageController < ApplicationController
 	
 	#Getting influxdb object and series using influx db config file
-	$influxdb = InfluxDB::Client.new "openenos"
+	influxdb_config = YAML.load_file('config/influxdb_config.yml')
+	$influxdb_config = influxdb_config[Rails.env]
+	$database = $influxdb_config["database"]
+	$min_series = $influxdb_config["series"]["min_table"]
+	$hr_series = $influxdb_config["series"]["hour_table"]
+	$runtime_series = $influxdb_config["series"]["runtime_series"]
+	$username = $influxdb_config["username"]
+  $password = $influxdb_config["password"]
+  $influxdb = InfluxDB::Client.new $database, username: $username, password: $password
 	
 	def get_year_usage_data_by_site
 		#To get the usage for site for a year
@@ -33,9 +41,11 @@ class Api::SiteUsageController < ApplicationController
 	def get_week_usage_data_by_site
 		#To get the usage for site for a week
 
-		if params[:site].present? && params[:week_start_date]
-			data = get_week_data("Demand")
-			render json: { data: value }
+		if params[:site].present? && params[:date]
+			start_time = params["date"].to_date.to_time
+			end_time = (params["date"].to_date + 6.days).to_time.end_of_day
+			data = get_week_data(params["load_type"], start_time, end_time)
+			render json: { data: data }
 		else
 			render json: { message: "Required parameters are site name and week start date"}
 		end
@@ -45,7 +55,9 @@ class Api::SiteUsageController < ApplicationController
 		#To get the usage for site for a day
 
 		if params[:site].present? && params[:date]
-			data = get_day_data("Demand")
+			start_time = params["date"].to_date.to_time
+			end_time = start_time.end_of_day
+			data = get_day_data(params["load_type"], start_time, end_time)
 			render json: { data: data }
 		else
 			render json: { message: "Required parameters are site name and date"}
@@ -145,17 +157,32 @@ class Api::SiteUsageController < ApplicationController
 		result = $influxdb.query query
 	end
 
-	def get_day_data(load_type)
-		data = []
-		start_time = Date.today.to_s
-		end_time = Date.tomorrow.to_s
-		query = "select value from power_readings_new where time > '#{start_time}' and time < '#{end_time}' and Site =~ /"+"#{params[:site]}" +"/ and LoadType = '#{load_type}'"
-		result = $influxdb.query query
-		values = result.first["values"]
-		values.each do |hash|
-			array = hash.values
-			array[0] = array[0].to_time.strftime("%Y/%m/%d %H:%M")
-			data << array
+	def get_day_data(load_type, start_time, end_time)
+		
+		start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
+		end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
+		unless load_type == "Both"
+			data = "Time,Load\n"
+			query = "select value from #{$min_series} where time > '#{start_time}' and time < '#{end_time}' and Site = '#{params[:site]}' and LoadType = '#{load_type}'"
+			result = $influxdb.query query
+			values = result.first["values"]
+			values.each do |hash|
+				array = hash.values
+				data << array[0].to_time.strftime("%Y/%m/%d %H:%M")+","
+				data << array[1].to_s+"\n"
+			end
+		else
+			query = "select value from #{$min_series} where time > '#{start_time}' and time < '#{end_time}' and Site = '#{params[:site]}' and (LoadType='Demand' or LoadType='Energy Production') group by LoadType"
+			data = "Time,Demand,Energy Production\n"
+			result = $influxdb.query query
+			demand_values = result.first["values"]
+			production_values = result.second["values"]
+			demand_values.each_with_index do |hash, i|
+				array = hash.values
+				data << array[0].to_time.strftime("%Y/%m/%d %H:%M") + ","
+				data << array[1].to_s + ","
+				data << production_values[i]["value"].to_s + "\n"
+			end
 		end
 		return data
 	end

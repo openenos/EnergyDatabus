@@ -35,21 +35,27 @@
       <div class="box-body no-padding row-fluid">
         <div class="nav-tabs-custom">
           <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab_1" data-toggle="tab">Day</a></li>
-            <li><a href="#tab_2" data-toggle="tab">Week</a></li>
-            <li><a href="#tab_3" data-toggle="tab">Month</a></li>
-            <li><a href="#tab_4" data-toggle="tab">Year</a></li>
-            <li class="pull-right"><a href="#" class="prev_date"><i class="fa fa-chevron-right"></i></a></li>
-            <li class="pull-right"><a href="#" id="display_date_lable"><%= Time.now.strftime('%d %B %Y')  %></a></li>
-            <li class="pull-right"><a href="#" class="next_date"><i class="fa fa-chevron-left"></i></a></li>
+            <li class="active"><a href="#tab_1" data-toggle="tab" class="day">Day</a></li>
+            <li><a href="#tab_2" data-toggle="tab" class="week">Week</a></li>
+            <li><a href="#tab_3" data-toggle="tab" class="month">Month</a></li>
+            <li><a href="#tab_4" data-toggle="tab" class="year">Year</a></li>
+ 
+
+            <li class="pull-right"><a href="#" class="next_date"><i class="fa fa-chevron-right"></i></a></li>
+              <li class="pull-right"><a href="#" id="display_date_label" range="day" value="<%= Time.now.strftime('%Y-%m-%d')%>"><%= Time.now.strftime('%d %B %Y')  %></a></li>
+              <li class="pull-right"><a href="#" class="prev_date"><i class="fa fa-chevron-left"></i></a></li>
+
+
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tab_1"  style="height: 500px;">
               <div class="row spanContent">
                 <div class="col-lg-4">                            
-                  <label class="day_1"><input type="radio" name="r1" checked="true" value="usage"> Usage </label>
-                  <label class="day_1"><input type="radio" name="r1" value="production"> Production </label>
-                  <label class="day_1"><input type="radio" name="r1" value="both"> Both </label>
+                  <label class="day_1"><input type="radio" name="r1" checked="true" value="Demand"> Usage </label>
+                  <% unless @site.panels.map(&:circuits).first.where(:is_producing => true).empty? %>
+                    <label class="day_1"><input type="radio" name="r1" value="Energy Production"> Production </label>
+                    <label class="day_1"><input type="radio" name="r1" value="Both"> Both </label>
+                  <% end %>
                 </div>
                 <div class="col-lg-4">
                   <i class="fa  fa-square" style="color:#3366FF" id="today"><b> Today</b></i> 
@@ -57,15 +63,11 @@
                   <i class="fa  fa-square" style="color:#FFFFFF" id="p_today"></i> 
                   <i class="fa  fa-square" style="color:#FFFFFF" id="p_yesterday"></i> 
                 </div>
-                <div class="col-lg-4">
-                  <button id="resetDayZoom" class="btn btn-primary btn-tn refresh-btn pull-right">
-                    <i class="fa fa-refresh"></i> Rest Zoom</button>
-                </div>
+                <input type="hidden" name="load_type" value="Demand" id="load_type">
               </div>
 
               <div class="span12" style="margin-left:0">
                 <div id="day-chart" style="height: 450px;">
-                  
                 </div>
               </div>
             </div><!-- /.tab-pane -->
@@ -130,3 +132,11 @@
     </aside><!-- /.right-side -->
   </div><!-- ./wrapper -->
 </div>
+
+<script>
+ $("input[type='radio']").change(function(){
+    alert("hello");
+
+  });
+
+</script>
