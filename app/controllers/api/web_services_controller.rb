@@ -105,8 +105,10 @@ class Api::WebServicesController < ApplicationController
 			query = "select sum(value) from #{$hr_series} where time>'#{from_time}' and time<'#{end_time}' and SiteGroup =~ /.*#{site_group}.*/ and LoadType = 'Demand' group by Month"
 			#raise query.inspect
 			demand_result = $influxdb.query query
+			demand_result = demand_result.reverse
 			query = "select sum(value) from #{$hr_series} where time>'#{from_time}' and time<'#{end_time}' and SiteGroup =~ /.*#{site_group}.*/ and LoadType = 'Energy Production' group by Month"
 			solar_result = $influxdb.query query
+			solar_result = solar_result.reverse
 			total_demand = 0
 			total_solar = 0
 			demand_result.each_with_index do |hash, i|
@@ -118,7 +120,7 @@ class Api::WebServicesController < ApplicationController
 				data << {c: [{v: month}, {v: demand}, {v: solar}]}
 			end
 
-			render :json => {data: data, total_demand: total_demand, total_solar: total_solar, utility_power: (total_demand - total_solar).abs.round(2) }
+			render :json => {data: data, total_demand: total_demand.round(2), total_solar: total_solar.round(2), utility_power: (total_demand - total_solar).abs.round(2) }
 
 		else
 			render :json => {message: "Required parameters are site group name"}

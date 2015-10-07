@@ -189,7 +189,7 @@ angular.module('enos.controllers')
 
       circuitDemand.options = {
         width: 450,
-        height: 220,
+        height: 180,
         max: 100,
         minorTicks: 5
       };

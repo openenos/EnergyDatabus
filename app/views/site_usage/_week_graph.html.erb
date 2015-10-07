@@ -1,0 +1,36 @@
+<div class="tab-pane" id="tab_2"  style="height: 500px;">
+  <div class="row spanContent">
+    <div class="col-lg-4">                            
+      <label class="day_1"><input type="radio" name="r2" checked="true" value="Demand"> Usage </label>
+      <% unless @site.panels.map(&:circuits).first.where(:is_producing => true).empty? %>
+        <label class="day_1"><input type="radio" name="r2" value="Energy Production"> Production </label>
+        <label class="day_1"><input type="radio" name="r2" value="Both"> Both </label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="span12" style="margin-left:0">
+    <div id="week-chart" style="height: 450px;">
+    </div>
+  </div>
+</div><!-- /.tab-pane -->
+
+
+<!--
+
+<div class="tab-pane" id="tab_2" style="height: 500px;">
+              <div class="row spanContent" style="margin-left:40px">
+                <div class="col-lg-4">                            
+                  <label class="day_2"><input type="radio" name="r2" checked="true" value="usage"> Usage </label>
+                  <label class="day_2"><input type="radio" name="r2" value="production"> Production </label>
+                  <label class="day_2"><input type="radio" name="r2" value="both"> Both </label>
+                </div>
+              </div>
+
+              <div class="span12" style="margin-left:0">
+                <button id="clearSelection1" class="btn btn-primary btn-tn refresh-btn pull-right" style="z-index:10;position:relative">
+                  <i class="fa fa-refresh"></i> Rest Zoom</button>
+                <div id="week-chart" style="height: 450px;">Hello</div>
+              </div>
+            </div><!-- /.tab-pane -->
+

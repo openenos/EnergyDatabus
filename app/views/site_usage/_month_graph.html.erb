@@ -1,0 +1,18 @@
+<div class="tab-pane" id="tab_3"  style="height: 500px;">
+  <div class="row spanContent">
+    <div class="col-lg-4">                            
+      <label class="day_3"><input type="radio" name="r3" checked="true" value="Demand"> Usage </label>
+      <% unless @site.panels.map(&:circuits).first.where(:is_producing => true).empty? %>
+        <label class="day_3"><input type="radio" name="r3" value="Energy Production"> Production </label>
+        <label class="day_3"><input type="radio" name="r3" value="Both"> Both </label>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="span12" style="margin-left:0">
+    <!-- <div id="month-chart" style="height: 450px;" google-chart >
+    </div>
+    <div google-chart style="height:450px; width:100%;" id="month-chart"></div>-->
+    <div id="month-chart" style="height: 450px;"></div>
+  </div>
+</div><!-- /.tab-pane -->

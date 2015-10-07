@@ -69,7 +69,7 @@ angular.module('enos.controllers')
 
       gaugechart.options = {
         width: 200,
-        height: 200,
+        height: 180,
         max: 50,
         minorTicks: 5,
         greenFrom: 0,

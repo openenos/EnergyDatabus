@@ -1,0 +1,23 @@
+<div class="tab-pane active" id="tab_1"  style="height: 500px;">
+  <div class="row spanContent">
+    <div class="col-lg-4">                            
+      <label class="day_1"><input type="radio" name="r1" checked="true" value="Demand"> Usage </label>
+      <% unless @site.panels.map(&:circuits).first.where(:is_producing => true).empty? %>
+        <label class="day_1"><input type="radio" name="r1" value="Energy Production"> Production </label>
+        <label class="day_1"><input type="radio" name="r1" value="Both"> Both </label>
+      <% end %>
+    </div>
+    <div class="col-lg-4">
+      <i class="fa  fa-square" style="color:#3366FF" id="today"><b> Today</b></i> 
+      <i class="fa  fa-square" style="color:#808080" id="yesterday"><b> Yesterday </b></i> 
+      <i class="fa  fa-square" style="color:#FFFFFF" id="p_today"></i> 
+      <i class="fa  fa-square" style="color:#FFFFFF" id="p_yesterday"></i> 
+    </div>
+    <input type="hidden" name="load_type" value="Demand" id="load_type">
+  </div>
+
+  <div class="span12" style="margin-left:0">
+    <div id="day-chart" style="height: 450px;">
+    </div>
+  </div>
+</div><!-- /.tab-pane -->
