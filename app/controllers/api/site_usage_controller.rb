@@ -69,13 +69,27 @@ class Api::SiteUsageController < ApplicationController
 	private
 
 	def get_year_data(load_type, year)
-		data = [["Day", "Load"]]
 		unless load_type == "Both"
+			data = [["Day", load_type]]
 			query = "select sum(value) from #{$hr_series} where Year='#{year}' and Site = '#{params[:site]}' and LoadType = '#{load_type}' group by Month"
 			result = $influxdb.query query
 			result.reverse.each do |hash|
 				data << [hash["tags"]["Month"], hash["values"].first["sum"].present? ? hash["values"].first["sum"].to_i/1000 : 0]
 			end
+		else
+			data = [["Day", "Demand", "Energy Production"]]
+			query = "select sum(value) from #{$hr_series} where Year='#{year}' and Site = '#{params[:site]}' and LoadType='Energy Production' group by Month"
+			production_result = $influxdb.query query
+			production_result = production_result.reverse
+			
+			query = "select sum(value) from #{$hr_series} where Year='#{year}' and Site = '#{params[:site]}' and LoadType='Demand' group by Month"
+			demand_result = $influxdb.query query
+			demand_result = demand_result.reverse
+			
+			demand_result.each_with_index do |hash, i|
+				data << [hash["tags"]["Month"], hash["values"].first["sum"].present? ? hash["values"].first["sum"].to_i/1000 : 0, production_result[i]["values"].first["sum"].present? ? production_result[i]["values"].first["sum"].to_i/1000 : 0]
+			end
+
 		end
 		return data
 	end
@@ -83,13 +97,23 @@ class Api::SiteUsageController < ApplicationController
 	def get_month_data(load_type, date)
 		month = date.strftime("%b")
 		year = date.strftime("%Y")
-		data = [["Day", "Load"]]
+		
 		unless load_type == "Both"
+			data = [["Day", load_type]]
 			query = "select sum(value) from #{$hr_series} where time > '#{date.to_time.beginning_of_month.strftime("%Y-%m-%d %H:%M:%S")}' and Month='#{month}' and Year= '#{year}' and Site = '#{params[:site]}' and LoadType = '#{load_type}' group by time(1d)"
 			result = $influxdb.query query
 			result.first["values"].each do |hash|
 				values = hash.values
 				data << [values[0].to_date.to_s, values[1].present? ? values[1].to_i/1000 : 0]
+			end
+		else
+			data = [["Day", "Demand", "Energy Production"]]
+			query = "select sum(value) from #{$hr_series} where time > '#{date.to_time.beginning_of_month.strftime("%Y-%m-%d %H:%M:%S")}' and Month='#{month}' and Year= '#{year}' and Site = '#{params[:site]}' and LoadType = 'Demand' group by time(1d)"
+			demand_result = $influxdb.query query
+			query = "select sum(value) from #{$hr_series} where time > '#{date.to_time.beginning_of_month.strftime("%Y-%m-%d %H:%M:%S")}' and Month='#{month}' and Year= '#{year}' and Site = '#{params[:site]}' and LoadType = 'Energy Production' group by time(1d)"
+			production_result = $influxdb.query query
+			demand_result.first["values"].each_with_index do |hash, i|
+				data << [hash["time"].to_date.to_s, hash["sum"].present? ? hash["sum"]/1000 : 0, production_result.first["values"][i]["sum"].present? ? production_result.first["values"][i]["sum"]/1000 : 0]
 			end
 		end
 		return data
@@ -99,7 +123,7 @@ class Api::SiteUsageController < ApplicationController
 		start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
 		end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
 		unless load_type == "Both"
-			data = "Time,Load\n"
+			data = "Time,#{load_type}\n"
 			query = "select value from #{$hr_series} where time > '#{start_time}' and time < '#{end_time}' and Site = '#{params[:site]}' and LoadType = '#{load_type}'"
 			result = $influxdb.query query
 			values = result.first["values"]
@@ -129,7 +153,7 @@ class Api::SiteUsageController < ApplicationController
 		start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
 		end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
 		unless load_type == "Both"
-			data = "Time,Load\n"
+			data = "Time,#{load_type}\n"
 			query = "select value from #{$min_series} where time > '#{start_time}' and time < '#{end_time}' and Site = '#{params[:site]}' and LoadType = '#{load_type}'"
 			result = $influxdb.query query
 			values = result.first["values"]

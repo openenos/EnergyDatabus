@@ -3,13 +3,20 @@ angular.module('enos.controllers')
     function ($scope, $window, $http, GoogleChartService){
 
     $scope.siteGroup = "Historic Green Village"
+    $scope.loadType = "Select Load Type"
+    
     $scope.change = function() {
-      console.log("Change site_group:" + $scope.siteGroup)
+      console.log("Change site_group:" + $scope.siteGroup);
       $scope.getPieChart($scope.siteGroup);
       $scope.getGaugeChart($scope.siteGroup);
       $scope.getLineChart($scope.siteGroup);
-      $scope.data_tables($scope.siteGroup);
+      $scope.data_tables($scope.siteGroup, $scope.loadType);
     };
+
+    $scope.changeLoad = function() {
+      console.log("Change load:" + $scope.loadType);
+      $scope.data_tables($scope.siteGroup, $scope.loadType);
+    }
 
 		/* Pie chart code */
     $scope.getPieChart = function (site_group) {
@@ -38,7 +45,7 @@ angular.module('enos.controllers')
       pie_chart.formatters = {
         number : [{
           columnNum: 1,
-          pattern: "Watt #,##0.00"
+          pattern: "kWh #,##0.00"
         }]
       };
       $scope.pie_chart = pie_chart;
@@ -135,11 +142,11 @@ angular.module('enos.controllers')
     /* end */
 		
     /* data tables code */
-    $scope.data_tables = function(site_group){
+    $scope.data_tables = function(site_group, load_type){
       if(site_group == undefined){
         site_group = 'Historic Green Village'
       }
-      GoogleChartService.data_tables({site_group: site_group, month: moment().format("M")}, function(result){
+      GoogleChartService.data_tables({site_group: site_group, load_type: load_type, month: moment().format("M")}, function(result){
         var data = result.data;
         $scope.sites = data;
          

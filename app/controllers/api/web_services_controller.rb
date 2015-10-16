@@ -33,15 +33,13 @@ class Api::WebServicesController < ApplicationController
 
 		site_group = params[:site_group]
 		if site_group.present? 
-			#query = "select sum(power) from power_readings_by_min where time > #{starting_day} and time < #{ending_day} site_group =~ /"+"#{site}" +"/ group by load_type"
 			query = "select sum(value) from #{$hr_series} where SiteGroup =~ /.*#{site_group}.*/ and time > now() - 30d and LoadType <> 'Demand' and LoadType <> 'Mains' and LoadType <> 'Energy Production' group by LoadType"
-			#query = "select sum(value) from power_readings_new where time > '#{starting_day}' and time < '#{ending_day}' and SiteGroup =~ /"+"#{site_group}" +"/ group by LoadType"
 			result = $influxdb.query query
 			data = []
 			data << ["LoadType", "Value"]
 			result.each do |site|
 
-				data << [site["tags"]["LoadType"], (site["values"].first["sum"]).abs.round(2)]
+				data << [site["tags"]["LoadType"], (site["values"].first["sum"]/1000).abs.round(2)]
 			end
 			 
 			render :json => { data: data }
@@ -53,15 +51,24 @@ class Api::WebServicesController < ApplicationController
 
 	def get_last_month_data_by_site
 		#Get last month power consumption for given site group grouped by site
-
+		load_type = params["load_type"] == "Select Load Type" ? nil : params["load_type"]
 		if params["month"].present? && params["site_group"].present?
 			site_group = params[:site_group]
-			query = "select sum(value) from #{$hr_series} where time > now() - 30d and SiteGroup =~ /.*#{site_group}.*/ and LoadType = 'Demand' group by Site"
+			if load_type.present?
+				query = "select sum(value) from #{$hr_series} where time > now() - 30d and SiteGroup =~ /.*#{site_group}.*/ and LoadType = '#{load_type}' group by Site"
+			else
+				query = "select sum(value) from #{$hr_series} where time > now() - 30d and SiteGroup =~ /.*#{site_group}.*/ and LoadType = 'Demand' group by Site"
+			end
 			result = $influxdb.query query
 			data = format_data_by_site(result)
 			render :json => {data: data}
 		elsif params["site_group"].present? && params["start_date"].present? && params["end_date"].present?
-			query = "select sum(value) from #{$hr_series} where time > '#{params[:start_date]}' and time < '#{params[:end_date]}' and LoadType = 'Demand' and SiteGroup =~ /.*#{params[:site_group]}.*/ group by Site"
+			if load_type.present?
+				query = "select sum(value) from #{$hr_series} where time > '#{params[:start_date]}' and time < '#{params[:end_date]}' and LoadType = '#{load_type}' and SiteGroup =~ /.*#{params[:site_group]}.*/ group by Site"
+			else
+				query = "select sum(value) from #{$hr_series} where time > '#{params[:start_date]}' and time < '#{params[:end_date]}' and LoadType = 'Demand' and SiteGroup =~ /.*#{params[:site_group]}.*/ group by Site"
+			end
+			
 			result = $influxdb.query query
 			data = format_data_by_site(result)
 			render :json => {data: data}
@@ -74,7 +81,6 @@ class Api::WebServicesController < ApplicationController
 		#Code to be re-written for exact data
 		site_group = params[:site_group]
 		if site_group.present? 
-
 			solar_data =  $influxdb.query "SELECT LAST(value) FROM #{$min_series} where LoadType='Energy Production' and SiteGroup=~ /.*#{site_group}.*/ group by Circuit"
 			demand_data =  $influxdb.query "SELECT LAST(value) FROM #{$min_series} where LoadType='Demand' and SiteGroup=~ /.*#{site_group}.*/ group by Site"
 			#raise "SELECT LAST(value) FROM power_readings_new where LoadType='Energy Production' and SiteGroup=~ /"+"#{site_group}" +"/ group by Circuit".inspect
@@ -102,6 +108,8 @@ class Api::WebServicesController < ApplicationController
 			data = []
 			from_time = (Date.today.beginning_of_month - 12.months).beginning_of_day.to_time.strftime("%Y-%m-%d %H:%M:%S")
 			end_time = (Date.today.beginning_of_month + 1.months).end_of_day.to_time.strftime("%Y-%m-%d %H:%M:%S")
+			
+			
 			query = "select sum(value) from #{$hr_series} where time>'#{from_time}' and time<'#{end_time}' and SiteGroup =~ /.*#{site_group}.*/ and LoadType = 'Demand' group by Month"
 			#raise query.inspect
 			demand_result = $influxdb.query query

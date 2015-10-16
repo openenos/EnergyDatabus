@@ -79,13 +79,11 @@
     </div>
     <div class="box-body col-lg-6">
       <label>View by Usage</label>
-      <select class="form-control">
-        <option>All</option>
-        <option>HVAC</option>
-        <option>Lighting</option>
-        <option>Refrigeration</option>
-        <option>Always On</option>
-        <option>Others</option>
+      <select class="form-control" id="changeLoadType" ng-model="loadType" ng-change="changeLoad()">
+        <option>Select Load Type</option>
+        <% @load_types.each do |load|%>
+          <option><%= load %></option>
+        <% end %>
       </select>
     </div>
     </section>

@@ -36,7 +36,7 @@ class Api::SiteCircuitController < ApplicationController
 			result = $influxdb.query "SELECT LAST(value) FROM #{$min_series} where Site = '#{site.display}' and Circuit = '#{circuit.display}'"
 			current_demand = result.first["values"].first["last"]
 			result = $influxdb.query "select sum(value) from #{$hr_series} where Site = '#{site.display}' and Circuit = '#{circuit.display}' and time > now() - 30d "
-			total_demand = (result.first["values"].first["sum"]/1000).round(3)
+			total_demand = (result.first["values"].first["sum"]/1000).round(2)
 
 			render json: { data: { current_demand: current_demand, total_demand: total_demand }}
 

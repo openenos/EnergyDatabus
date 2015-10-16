@@ -105,7 +105,7 @@ class Api::SitesController < ApplicationController
    			query = "select sum(value) from #{$hr_series} where LoadType='Demand' and Site=~ /#{params[:site]}/ and time >= '#{time}'"
    			result = $influxdb.query query
    			value = result.first["values"].first["sum"]
-   			total_demand = (value/(1000)).round(3)
+   			total_demand = (value/(1000)).round(2)
    			data = { current_demand: current_demand, top_demand: top_demand, total_demand: total_demand }
    			render json: { data: data }
    		else
@@ -197,7 +197,7 @@ class Api::SitesController < ApplicationController
 		result = $influxdb.query query
 		data = {}
 		result.each do |circuit|
-			data[circuit["tags"]["Circuit"]] = (circuit["values"].first["last"]).round
+			data[circuit["tags"]["Circuit"]] = (circuit["values"].first["last"]).round(2)
 		end
 		return data
 

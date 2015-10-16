@@ -19,6 +19,7 @@ class HomeController < ApplicationController
       end
       @resp_data = []
       @site_group = SiteGroup.first
+      @load_types = ElecLoadType.all.map(&:display)
   end
 
 end
