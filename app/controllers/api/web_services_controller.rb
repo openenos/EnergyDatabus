@@ -88,7 +88,7 @@ class Api::WebServicesController < ApplicationController
 			demand = demand_data.map { |hash| hash["values"].first["last"] }.inject(:+)
 			
 			utility_power = (demand - solar).abs
-			render :json => {data: {demand_power: demand, solar_power: solar, utility_power: utility_power} }
+			render :json => {data: {demand_power: (demand/1000.0).round(2), solar_power: (solar/1000.0).round(2), utility_power: (utility_power/1000.0).round(2)} }
 		else
 			render :json => {message: "Required parameters are site group name"}
 		end

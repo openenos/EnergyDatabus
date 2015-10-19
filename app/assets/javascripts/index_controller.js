@@ -86,7 +86,7 @@ angular.module('enos.controllers')
 
       gaugechart.data = [
         ['Label', 'Value'],
-        ["kW", (data/1000)]
+        ["kW", data]
       ];
       return gaugechart
     }
